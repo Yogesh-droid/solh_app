@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:solh/constants/api.dart';
 import 'package:http/http.dart' as http;
@@ -87,15 +88,24 @@ class CreateJournal {
               "mediaWidth": mediaHeight,
               "aspectRatio": aspectRatio
             };
-      print('${APIConstants.api}/api/create-user-post');
-      print("body $body");
 
       await http.post(Uri.parse('${APIConstants.api}/api/create-user-post'),
           body: jsonEncode(body),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) {});
+          }).then((value) {
+        log('value ${value.body}');
+        if (json.decode(value.body)['body']['inGroup']) {
+          globalNavigatorKey.currentState!.push(
+            MaterialPageRoute(
+                builder: (context) => CommentScreen(
+                    journalModel:
+                        Journals(id: json.decode(value.body)['body']['postId']),
+                    index: -1)),
+          );
+        }
+      });
 
       return "posted";
     } else {
@@ -114,8 +124,6 @@ class CreateJournal {
               "journalType": journalType,
               "anonymousJournal": isAnonymous
             };
-      print('${APIConstants.api}/api/create-user-post');
-      print(body);
       var response = await http.post(
           Uri.parse("${APIConstants.api}/api/create-user-post"),
           body: jsonEncode(body),
@@ -123,7 +131,7 @@ class CreateJournal {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
           }).onError((error, stackTrace) => throw ("error $error"));
-      print('response ${response.body}');
+
       if (json.decode(response.body)['body']['inGroup']) {
         globalNavigatorKey.currentState!.push(
           MaterialPageRoute(
@@ -140,7 +148,6 @@ class CreateJournal {
 
   Future<String> postJournalFromDiary() async {
     if (mediaUrl != null) {
-      print('${APIConstants.api}/api/pick-from-diary');
       await http.put(Uri.parse('${APIConstants.api}/api/pick-from-diary'),
           body: groupId != ''
               ? jsonEncode({
@@ -173,8 +180,6 @@ class CreateJournal {
 
       return "posted";
     } else {
-      print('${APIConstants.api}/api/pick-from-diary');
-
       await http.put(Uri.parse("${APIConstants.api}/api/pick-from-diary"),
           body: groupId != ''
               ? jsonEncode({
@@ -196,7 +201,7 @@ class CreateJournal {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) => print("post response" + value.body));
+          }).then((value) => print("post response${value.body}"));
 
       return "posted";
     }

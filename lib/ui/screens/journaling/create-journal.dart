@@ -162,7 +162,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                     SizedBox(height: 2.h),
 
-                    JournalTextField(),
+                    const JournalTextField(),
                     SizedBox(height: 1.h),
                     getFeelingTitle(),
                     SizedBox(
@@ -191,7 +191,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               ),
             Column(
               children: [
-                Spacer(),
+                const Spacer(),
                 getCustomFeelingTextBox(),
               ],
             ),
@@ -226,7 +226,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     child: Center(
                                         child: Text(
                                       "Post".tr,
-                                      style: TextStyle(color: SolhColors.white),
+                                      style: const TextStyle(
+                                          color: SolhColors.white),
                                     ))))
                             : Container();
                       });
@@ -294,6 +295,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         setState(() {
           _isPosting = false;
         });
+      }
+      if (journalPageController.selectedGroupId.value == '') {
+        Navigator.pop(context);
       }
     } else {
       List<String> feelings = [];
@@ -384,7 +388,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             focusNode: _customFeelingFocusNode,
                             controller: _customFeelingController,
                             maxLines: null,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: "Feeling/Emotion",
                               border: InputBorder.none,
                             ),
@@ -401,7 +405,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 child: Container(
                                     height: 36,
                                     width: 36,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Color(0xffEFEFEF),
                                     )),
@@ -414,7 +418,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 feelingsController
                                     .isCreatingCustomFeeling.value = false;
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.clear,
                                 size: 20,
                               ),
@@ -430,7 +434,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 child: Container(
                                     height: 36,
                                     width: 36,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: SolhColors.primary_green,
                                     )),
@@ -447,7 +451,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                         .isCreatingCustomFeeling.value = false;
                                   }
                                 },
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.check,
                                   color: Colors.white,
                                   size: 20,
@@ -523,7 +527,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 feelingsController.isCreatingCustomFeeling.value = true;
                 _customFeelingFocusNode.requestFocus();
               },
-              icon: Icon(
+              icon: const Icon(
                 Icons.add,
                 color: SolhColors.primary_green,
                 size: 18,
@@ -575,53 +579,52 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             });
                           },
                           iconSize: 14,
-                          icon: Icon(Icons.close, color: SolhColors.black),
+                          icon:
+                              const Icon(Icons.close, color: SolhColors.black),
                         ),
                       ),
                     )
                   ],
                 )
-              : Container(
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 20,
-                        height: 200,
-                        child: VideoPlayer(
-                          VideoPlayerController.network(
+              : Stack(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 20,
+                      height: 200,
+                      child: VideoPlayer(
+                        VideoPlayerController.network(
+                          journalPageController.selectedDiary.value.mediaUrl ??
+                              '',
+                        )..initialize(),
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        height: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.6),
+                          border: Border.all(
+                              color: SolhColors.primary_green, width: 2),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
                             journalPageController
-                                    .selectedDiary.value.mediaUrl ??
-                                '',
-                          )..initialize(),
+                                .selectedDiary.value.mediaType = null;
+
+                            setState(() {
+                              _isImageAdded = false;
+                            });
+                          },
+                          iconSize: 14,
+                          icon:
+                              const Icon(Icons.close, color: SolhColors.black),
                         ),
                       ),
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.6),
-                            border: Border.all(
-                                color: SolhColors.primary_green, width: 2),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              journalPageController
-                                  .selectedDiary.value.mediaType = null;
-
-                              setState(() {
-                                _isImageAdded = false;
-                              });
-                            },
-                            iconSize: 14,
-                            icon: Icon(Icons.close, color: SolhColors.black),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 )
           /////////  the above portion was if my diary is selected and below is if my diary is not selected
           : _isImageAdded
@@ -654,7 +657,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             });
                           },
                           iconSize: 14,
-                          icon: Icon(Icons.close, color: SolhColors.black),
+                          icon:
+                              const Icon(Icons.close, color: SolhColors.black),
                         ),
                       ),
                     ),
@@ -712,8 +716,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   });
                                 },
                                 iconSize: 14,
-                                icon:
-                                    Icon(Icons.close, color: SolhColors.black),
+                                icon: const Icon(Icons.close,
+                                    color: SolhColors.black),
                               ),
                             ),
                           ),
@@ -726,8 +730,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       value: 0.0,
                                       backgroundColor:
                                           Colors.blue.withOpacity(0.5),
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          SolhColors.primary_green),
+                                      valueColor:
+                                          const AlwaysStoppedAnimation<Color>(
+                                              SolhColors.primary_green),
                                     ),
                                   )
                                 : Container();
@@ -779,7 +784,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     children: [
                       IconButton(
                         iconSize: 40,
-                        icon: Icon(Icons.photo),
+                        icon: const Icon(Icons.photo),
                         onPressed: () async {
                           print("picking image");
                           _xFile = await _picker.pickImage(
@@ -855,7 +860,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       ),
                       IconButton(
                         iconSize: 40,
-                        icon: Icon(Icons.video_camera_back),
+                        icon: const Icon(Icons.video_camera_back),
                         onPressed: () async {
                           print("picking video");
                           _xFile = await _picker.pickVideo(
@@ -951,7 +956,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             }
                             // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.camera_alt,
                             size: 40,
                           ))
@@ -993,11 +998,11 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
       height: 20.h,
       alignment: Alignment.centerLeft,
       child: RawScrollbar(
-        thumbColor: Color(0xFFA6A6A6),
+        thumbColor: const Color(0xFFA6A6A6),
         controller: _scrollController,
         trackVisibility: true,
         thumbVisibility: true,
-        radius: Radius.circular(30),
+        radius: const Radius.circular(30),
         thickness: 6,
         scrollbarOrientation: ScrollbarOrientation.bottom,
         interactive: true,
@@ -1031,7 +1036,7 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                     },
                     child: FilterChip(
                         selectedColor: SolhColors.primary_green,
-                        backgroundColor: Color(0xFFEFEFEF),
+                        backgroundColor: const Color(0xFFEFEFEF),
                         showCheckmark: false,
                         label: Text(feelingsController
                                 .feelingsList[index].feelingName ??
@@ -1071,17 +1076,17 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Delete Feeling'),
-          content: Text('Are you sure you want to delete this feeling?'),
+          title: const Text('Delete Feeling'),
+          content: const Text('Are you sure you want to delete this feeling?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () {
                 feelingsController.deleteCustomFeeling(
                     feelingsController.feelingsList[index].sId ?? '', index);
@@ -1160,23 +1165,23 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                 width: 37.w,
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    borderRadius: const BorderRadius.all(Radius.circular(30)),
                     border: Border.all(
                       color: SolhColors.primary_green,
                     )),
                 child: DropdownButton(
                     isExpanded: true,
-                    icon: Icon(CupertinoIcons.chevron_down),
+                    icon: const Icon(CupertinoIcons.chevron_down),
                     iconSize: 14,
                     iconEnabledColor: SolhColors.primary_green,
-                    underline: SizedBox(),
+                    underline: const SizedBox(),
                     value: journalPageController.selectedGroupId.value == ''
                         ? journalPageController.dropdownValue.value
                         : "Group",
                     onChanged: (String? newValue) {
                       widget._onTypeChanged.call(newValue!);
                     },
-                    style: TextStyle(color: SolhColors.primary_green),
+                    style: const TextStyle(color: SolhColors.primary_green),
                     items: [
                       DropdownMenuItem(
                         child: Text("Publically".tr),
@@ -1201,7 +1206,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                         ),
                     ]),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -1212,8 +1217,8 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                           backgroundImage: CachedNetworkImageProvider(
                               journalPageController.selectedGroupImg.value),
                         )
-                      : SizedBox(),
-                  SizedBox(
+                      : const SizedBox(),
+                  const SizedBox(
                     width: 5,
                   ),
                   Text(
@@ -1265,7 +1270,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
           : CircleAvatar(
               radius: journalPageController.anonymousProfileRadius.value,
               backgroundColor: Colors.grey,
-              backgroundImage: CachedNetworkImageProvider(
+              backgroundImage: const CachedNetworkImageProvider(
                 "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
               )),
     );
@@ -1359,7 +1364,7 @@ class GetNormalStack extends StatelessWidget {
           top: -5,
           child: InkWell(
             onTap: onTapped,
-            child: Icon(
+            child: const Icon(
               Icons.swap_horiz,
               color: SolhColors.primary_green,
             ),
@@ -1386,7 +1391,7 @@ class GetCircleImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       top: top,
       left: left,
       child: CircleAvatar(
@@ -1450,7 +1455,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
                   decoration: InputDecoration(
                     fillColor: SolhColors.grey239,
                     hintText: "What's on your mind?".tr,
-                    hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
+                    hintStyle: const TextStyle(color: Color(0xFFA6A6A6)),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -1478,7 +1483,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
                         ),
                       );
                     }),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 )
               ],
@@ -1500,7 +1505,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
               child: Container(
                 height: 24,
                 width: 52,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color(0xffEFEFEF),
                   borderRadius: BorderRadius.all(
                     Radius.circular(18),
@@ -1509,11 +1514,11 @@ class _JournalTextFieldState extends State<JournalTextField> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Tag',
                       style: TextStyle(color: SolhColors.primary_green),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 2,
                     ),
                     SvgPicture.asset('assets/images/plus.svg'),
@@ -1571,16 +1576,16 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Divider(
+                const Divider(
                   thickness: 1,
                 )
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 6,
           ),
           _connectionController.myConnectionModel.value.myConnections!.length ==
@@ -1593,7 +1598,7 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                         color: Colors.grey.shade300,
                         size: 100,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
@@ -1691,12 +1696,12 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                                   Checkbox(
                                     checkColor: Colors.white,
                                     side: MaterialStateBorderSide.resolveWith(
-                                      (states) => BorderSide(
+                                      (states) => const BorderSide(
                                           width: 1.0, color: Colors.white),
                                     ),
                                     activeColor: SolhColors.primary_green,
                                     value: _tagsController.selectedTags[index],
-                                    shape: CircleBorder(),
+                                    shape: const CircleBorder(),
                                     onChanged: (bool? value) {
                                       if (_tagsController.selectedTags[index] ==
                                           true) {
@@ -1789,12 +1794,12 @@ class GroupModalSheet extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: SolhColors.grey_3, shape: BoxShape.circle),
                         child: InkWell(
                           onTap: (() => Navigator.of(context).pop()),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
+                          child: const Padding(
+                            padding: EdgeInsets.all(3.0),
                             child: Icon(
                               Icons.close,
                               color: Colors.grey,
@@ -1805,22 +1810,21 @@ class GroupModalSheet extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Divider(
+                const Divider(
                   thickness: 1,
                 )
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 6,
           ),
           discoverGroupController.joinedGroupModel.value.groupList!.isNotEmpty
-              ? Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   child: Text(
                     'Joined Groups',
                     style: SolhTextStyles.QS_body_2_semi,
@@ -1831,7 +1835,7 @@ class GroupModalSheet extends StatelessWidget {
               ? Container()
               : Expanded(
                   child: ListView.separated(
-                      separatorBuilder: (context, index) => SizedBox(
+                      separatorBuilder: (context, index) => const SizedBox(
                             height: 5,
                           ),
                       itemCount: discoverGroupController
@@ -1911,9 +1915,8 @@ class GroupModalSheet extends StatelessWidget {
                       }),
                 ),
           discoverGroupController.createdGroupModel.value.groupList!.isNotEmpty
-              ? Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
                   child: Text(
                     'Created Groups',
                     style: SolhTextStyles.QS_body_2_semi,
@@ -2042,23 +2045,23 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
                   color: SolhColors.grey),
             ),
           ),
-          Divider(
+          const Divider(
             color: SolhColors.grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text(
+          const Text(
             'Anonymous Profile',
             style: SolhTextStyles.JournalingUsernameText,
           ),
-          Text(
+          const Text(
             'Post or leave a comment, join group, book \n appointment, etc anonymously.',
             style: SolhTextStyles.JournalingHintText,
             textAlign: TextAlign.center,
           ),
           getUserName(),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           getDoneButton()
@@ -2091,7 +2094,7 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
                             _croppedFile = null;
                           });
                         },
-                        icon: Icon(Icons.close)))
+                        icon: const Icon(Icons.close)))
               ],
             )
           else
@@ -2102,7 +2105,7 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
                 onPressed: _pickImage,
               ),
             ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Column(
@@ -2135,7 +2138,7 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
               ),
               Obx(() {
                 return _anonController.isNameTaken.value
-                    ? Text(
+                    ? const Text(
                         "Username Already taken",
                         style: TextStyle(color: Colors.red),
                       )
@@ -2202,7 +2205,7 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
         padding: const EdgeInsets.all(8.0),
         child: SolhGreenButton(
             height: 6.h,
-            child: Text("Next"),
+            child: const Text("Next"),
             onPressed: _anonController.isNameTaken.value
                 ? () {
                     Utility.showToast('Username Already taken');
