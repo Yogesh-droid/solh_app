@@ -42,17 +42,21 @@ class ItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 195,
+        height: 156,
         padding: const EdgeInsets.only(right: 12, top: 12, bottom: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-                flex: 1,
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Container(
+                width: 113,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: const Color(0xFFD9D9D9)),
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 8),
+                  padding: const EdgeInsets.all(3),
                   child: CachedNetworkImage(
-                    fit: BoxFit.fitWidth,
                     imageUrl: image,
                     errorWidget: (context, url, error) {
                       return Image.asset("assets/icons/app-bar/no-image.png");
@@ -61,7 +65,9 @@ class ItemWidget extends StatelessWidget {
                       return Image.asset("assets/images/opening_link.gif");
                     },
                   ),
-                )),
+                ),
+              ),
+            ),
             const SizedBox(width: 20),
             Expanded(
                 flex: 2,
@@ -72,15 +78,18 @@ class ItemWidget extends StatelessWidget {
                           style: SolhTextStyles.QS_body_2_bold.copyWith(
                               color: SolhColors.black,
                               fontFamily: GoogleFonts.quicksand().fontFamily),
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis),
+                      const SizedBox(height: 5),
                       Html(data: descrition!.trim(), shrinkWrap: true, style: {
                         "body": Style(
                             padding: HtmlPaddings.zero, margin: Margins.zero),
                         "p": Style(
-                          textOverflow: TextOverflow.ellipsis,
-                          fontSize: FontSize(12),
-                        )
+                            maxLines: 2,
+                            textOverflow: TextOverflow.ellipsis,
+                            fontSize: FontSize(12),
+                            padding: HtmlPaddings.zero,
+                            margin: Margins.zero)
                       }),
                       const Spacer(),
                       Row(
@@ -120,15 +129,14 @@ class ItemWidget extends StatelessWidget {
                                 )
                         ],
                       ),
-                      const SizedBox(height: 10),
                       if (discountedPrice! > 0)
                         Container(
-                          width: 100,
+                          width: 70,
                           decoration: BoxDecoration(
                               color: SolhColors.greenShade4,
                               borderRadius: BorderRadius.circular(10)),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(3.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -165,14 +173,19 @@ class PriceContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      height: 25,
+      width: 50,
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: SolhColors.greenShade4),
-      child: Text("$currency$discountedPrice",
-          style: GoogleFonts.quicksand(
-              textStyle: SolhTextStyles.QS_caption_2_bold.copyWith(
-                  color: const Color(0xFF666666), fontSize: 12))),
+      child: Text(
+        "$currency $discountedPrice",
+        style: GoogleFonts.quicksand(
+            textStyle: SolhTextStyles.QS_caption_2_bold.copyWith(
+                color: const Color(0xFF666666), fontSize: 12)),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
@@ -185,7 +198,7 @@ class MrpContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Text("$currency",
+      Text("$currency ",
           style: GoogleFonts.quicksand(
               textStyle:
                   SolhTextStyles.QS_cap_2.copyWith(color: SolhColors.Grey_1))),

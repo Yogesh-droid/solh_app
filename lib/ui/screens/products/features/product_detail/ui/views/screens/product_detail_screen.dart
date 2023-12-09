@@ -50,7 +50,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: widget.key,
-        appBar: GetProductDeatilAppBar(),
+        appBar: GetProductDeatilAppBar(id: widget._id),
         body: isLoading
             ? Center(
                 child: MyLoader(),
@@ -60,7 +60,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ListView(
                     children: [
                       GetProductStatsAndImage(
-                          productDetailsModel: productDetailsModel),
+                          productDetailsModel: productDetailsModel,
+                          id: widget._id),
                       const GetHelpDivider(),
                       ProductDetails(productDetailsModel: productDetailsModel),
                       const GetHelpDivider(),
@@ -73,13 +74,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ),
                     ],
                   ),
-                  Positioned(
+                  /*  Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,
                     child: AddToCartBuyNowButton(
                         productId: productDetailsModel.product!.sId ?? ''),
-                  )
+                  ) */
                 ],
               ));
   }
@@ -231,9 +232,11 @@ class RelatedProductsSection extends StatelessWidget {
 }
 
 class GetProductStatsAndImage extends StatelessWidget {
-  const GetProductStatsAndImage({super.key, required this.productDetailsModel});
+  const GetProductStatsAndImage(
+      {super.key, required this.productDetailsModel, required this.id});
   // final ProductDetailController productDetailController = Get.find();
   final ProductDetailsModel productDetailsModel;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -335,18 +338,57 @@ class GetProductStatsAndImage extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Html(
-                  data: productDetailsModel.product!.shortDescription ?? '',
-                  shrinkWrap: true,
-                  style: {
-                    "body":
-                        Style(padding: HtmlPaddings.zero, margin: Margins.zero),
-                    "p": Style(
-                      maxLines: 1,
-                      textOverflow: TextOverflow.ellipsis,
-                      fontSize: FontSize(12),
-                    )
+              Row(
+                children: [
+                  Html(
+                      data: productDetailsModel.product!.shortDescription ?? '',
+                      shrinkWrap: true,
+                      style: {
+                        "body": Style(
+                            padding: HtmlPaddings.zero, margin: Margins.zero),
+                        "p": Style(
+                          maxLines: 1,
+                          textOverflow: TextOverflow.ellipsis,
+                          fontSize: FontSize(12),
+                        )
+                      }),
+                  const Spacer(),
+                  Obx(() {
+                    // print(
+                    //     "Rebuilding AddRemoveProductButton ${Get.find<ProductDetailController>().productDetail.value.product!.inCartCount}");
+                    return AddRemoveProductButtoon(
+                      buttonTitle: Get.find<ProductDetailController>()
+                                  .productDetail
+                                  .value
+                                  .product!
+                                  .stockAvailable ==
+                              0
+                          ? "Out of stock"
+                          : 'Add to cart',
+                      productId: productDetailsModel.product!.sId ?? '',
+                      productsInCart: Get.find<ProductDetailController>()
+                              .productDetail
+                              .value
+                              .product!
+                              .inCartCount ??
+                          0,
+                      buttonWidth: 100,
+                      isEnabled: Get.find<ProductDetailController>()
+                              .productDetail
+                              .value
+                              .product!
+                              .stockAvailable !=
+                          0,
+                      stockLimit: Get.find<ProductDetailController>()
+                          .productDetail
+                          .value
+                          .product!
+                          .stockAvailable,
+                      id: id,
+                    );
                   }),
+                ],
+              ),
               const SizedBox(
                 height: 15,
               ),
@@ -530,7 +572,8 @@ class _GetProductImagesState extends State<GetProductImages> {
 // ignore: must_be_immutable
 class GetProductDeatilAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  GetProductDeatilAppBar({super.key});
+  GetProductDeatilAppBar({super.key, required this.id});
+  final String id;
   final ProductDetailController productDetailController = Get.find();
   final AddDeleteWishlistItemController addDeleteWishlistItemController =
       Get.find();
@@ -553,9 +596,11 @@ class GetProductDeatilAppBar extends StatelessWidget
       actions: [
         Obx(() {
           return CartButton(
-              itemsInCart: cartController.cartEntity.value.cartList != null
-                  ? cartController.cartEntity.value.cartList!.items!.length
-                  : 0);
+            itemsInCart: cartController.cartEntity.value.cartList != null
+                ? cartController.cartEntity.value.cartList!.items!.length
+                : 0,
+            id: id,
+          );
         }),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -580,7 +625,6 @@ class GetProductDeatilAppBar extends StatelessWidget
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => const Size(0, 50);
 }
 

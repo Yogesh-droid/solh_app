@@ -107,12 +107,13 @@ class ProductSubCatWidget extends StatelessWidget {
           children: [
             InkWell(
               onTap: onTap,
+              borderRadius: BorderRadius.circular(30),
               child: CircleAvatar(
                 radius: 35,
                 backgroundColor:
                     isActive ? SolhColors.primary_green : Colors.grey[200],
                 child: CircleAvatar(
-                  radius: 30,
+                  radius: 33,
                   backgroundColor: Colors.white,
                   backgroundImage: CachedNetworkImageProvider(image),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/address_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
@@ -132,21 +133,38 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                         .productId!
                                         .productName,
                                     onIncreaseCartCount: () {
-                                      widget.onIncreaseCartCount(
-                                          index,
-                                          cartController
+                                      if (cartController
                                               .cartEntity
                                               .value
                                               .cartList!
                                               .items![index]
                                               .productId!
-                                              .id!,
+                                              .stockAvailable! >
                                           cartController
                                               .cartEntity
                                               .value
                                               .cartList!
                                               .items![index]
-                                              .quantity!);
+                                              .quantity!) {
+                                        widget.onIncreaseCartCount(
+                                            index,
+                                            cartController
+                                                .cartEntity
+                                                .value
+                                                .cartList!
+                                                .items![index]
+                                                .productId!
+                                                .id!,
+                                            cartController
+                                                .cartEntity
+                                                .value
+                                                .cartList!
+                                                .items![index]
+                                                .quantity!);
+                                      } else {
+                                        Utility.showToast(
+                                            "Quantity more than stock cannot be added");
+                                      }
                                     },
                                     onDecreaseCartCount: () {
                                       widget.onDecreaseCartCount(
@@ -318,7 +336,7 @@ class PaymentSummarySection extends StatelessWidget {
                       colorFilter: const ColorFilter.mode(
                           SolhColors.primary_green, BlendMode.srcIn),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 3,
                     ),
                     Text(

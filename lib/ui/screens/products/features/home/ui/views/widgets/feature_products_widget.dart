@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:isolate';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -8,6 +11,8 @@ import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
+import 'package:solh/ui/screens/products/features/products_list/data/models/product_list_model.dart';
+import 'package:solh/ui/screens/products/features/products_list/ui/controllers/products_list_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -317,7 +322,8 @@ class AddRemoveProductButtoon extends StatefulWidget {
       this.buttonWidth = 100,
       this.isEnabled,
       this.stockLimit,
-      this.buttonTitle = 'Add To Cart'});
+      this.buttonTitle = 'Add To Cart',
+      this.id});
 
   final String productId;
   final String buttonTitle;
@@ -325,6 +331,7 @@ class AddRemoveProductButtoon extends StatefulWidget {
   final double buttonWidth;
   final bool? isEnabled;
   final int? stockLimit;
+  final String? id; // id of item for which detail is fetched
 
   @override
   State<AddRemoveProductButtoon> createState() =>
@@ -339,6 +346,17 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
   late ValueNotifier<int> poductNumber;
 
   Future<void> onValueChange(int quantity) async {
+    final List<Products> products =
+        Get.find<ProductsListController>().productList;
+    if (products.isNotEmpty) {
+      for (var element in products) {
+        if (element.id == widget.id) {
+          element.inCartCount = quantity;
+          Get.find<ProductsListController>().productList.refresh();
+        }
+      }
+    }
+
     await addToCartController
         .addToCart(productId: widget.productId, quantity: quantity)
         .then((value) => cartController.getCart());
@@ -346,6 +364,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
 
   @override
   void initState() {
+    print("Running Init in AddRemoveButton");
     poductNumber = ValueNotifier(widget.productsInCart);
 
     super.initState();
@@ -353,9 +372,11 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
 
   @override
   Widget build(BuildContext context) {
+    poductNumber = ValueNotifier(widget.productsInCart);
     return ValueListenableBuilder(
         valueListenable: poductNumber,
         builder: (context, value, child) {
+          print("Rebuilding AddRemoveProductButton $value");
           return value == 0
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
