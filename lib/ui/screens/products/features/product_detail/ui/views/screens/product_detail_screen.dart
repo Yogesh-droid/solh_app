@@ -3,11 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:html/parser.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/app_bar_cart_icon.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
@@ -15,13 +18,19 @@ import 'package:solh/ui/screens/products/features/product_detail/data/model/prod
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
+import 'package:solh/ui/screens/products/features/products_list/data/models/product_list_model.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/zoom_image.dart';
+
+import '../../../../products_list/ui/controllers/products_list_controller.dart';
+import '../../../../products_list/ui/widgets/cart_count_btn.dart';
+import '../widgets/deactivated_cart_btn.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   ProductDetailScreen({required Map<dynamic, dynamic> args})
@@ -173,7 +182,7 @@ class RelatedProductsSection extends StatelessWidget {
                 // onPressed: () {},
               ),
               SizedBox(
-                height: 360,
+                height: 300,
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   shrinkWrap: true,
@@ -232,10 +241,12 @@ class RelatedProductsSection extends StatelessWidget {
 }
 
 class GetProductStatsAndImage extends StatelessWidget {
-  const GetProductStatsAndImage(
+  GetProductStatsAndImage(
       {super.key, required this.productDetailsModel, required this.id});
-  // final ProductDetailController productDetailController = Get.find();
+  final ProductDetailController productDetailController = Get.find();
   final ProductDetailsModel productDetailsModel;
+  final AddToCartController addToCartController = Get.find();
+  final CartController cartController = Get.find();
   final String id;
 
   @override
@@ -341,7 +352,8 @@ class GetProductStatsAndImage extends StatelessWidget {
               Row(
                 children: [
                   Html(
-                      data: productDetailsModel.product!.shortDescription ?? '',
+                      data: productDetailsModel.product!.shortDescription ??
+                          productDetailsModel.product!.description,
                       shrinkWrap: true,
                       style: {
                         "body": Style(
@@ -353,40 +365,28 @@ class GetProductStatsAndImage extends StatelessWidget {
                         )
                       }),
                   const Spacer(),
-                  Obx(() {
-                    // print(
-                    //     "Rebuilding AddRemoveProductButton ${Get.find<ProductDetailController>().productDetail.value.product!.inCartCount}");
-                    return AddRemoveProductButtoon(
-                      buttonTitle: Get.find<ProductDetailController>()
-                                  .productDetail
-                                  .value
-                                  .product!
-                                  .stockAvailable ==
+                  Obx(() => cartController.isCartLoading.value ||
+                          addToCartController.addingToCart.value
+                      ? const DeactivatedCartBtn()
+                      : productDetailController
+                                  .productDetail.value.product!.inCartCount! >
                               0
-                          ? "Out of stock"
-                          : 'Add to cart',
-                      productId: productDetailsModel.product!.sId ?? '',
-                      productsInCart: Get.find<ProductDetailController>()
-                              .productDetail
-                              .value
-                              .product!
-                              .inCartCount ??
-                          0,
-                      buttonWidth: 100,
-                      isEnabled: Get.find<ProductDetailController>()
-                              .productDetail
-                              .value
-                              .product!
-                              .stockAvailable !=
-                          0,
-                      stockLimit: Get.find<ProductDetailController>()
-                          .productDetail
-                          .value
-                          .product!
-                          .stockAvailable,
-                      id: id,
-                    );
-                  }),
+                          ? CartCountBtn(
+                              decreaseCartCount: () => onChangeCartCount(false),
+                              increaseCartCount: () => onChangeCartCount(true),
+                              itemInCart: productDetailController.productDetail
+                                      .value.product!.inCartCount ??
+                                  0)
+                          : SolhGreenButton(
+                              height: 30,
+                              width: 50,
+                              onPressed: () => onChangeCartCount(true),
+                              child: Text(
+                                'Add',
+                                style: GoogleFonts.quicksand(
+                                    textStyle: SolhTextStyles.CTA,
+                                    color: SolhColors.white),
+                              )))
                 ],
               ),
               const SizedBox(
@@ -397,6 +397,46 @@ class GetProductStatsAndImage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  onChangeCartCount(bool isIncrease) async {
+    final List<Products> products =
+        Get.find<ProductsListController>().productList;
+    if (productDetailController.productDetail.value.product!.stockAvailable! <
+        productDetailController.productDetail.value.product!.inCartCount! + 1) {
+      Utility.showToast("Quantity more than stock cannot be added");
+      return;
+    }
+    if (products.isNotEmpty) {
+      for (var element in products) {
+        if (element.id == id) {
+          element.inCartCount =
+              isIncrease ? element.inCartCount! + 1 : element.inCartCount! - 1;
+          Get.find<ProductsListController>().productList.refresh();
+        }
+      }
+    }
+
+    await addToCartController
+        .addToCart(
+            productId: productDetailsModel.product!.sId ?? '',
+            quantity: isIncrease
+                ? productDetailController
+                        .productDetail.value.product!.inCartCount! +
+                    1
+                : productDetailController
+                        .productDetail.value.product!.inCartCount! -
+                    1)
+        .then((value) => cartController.getCart());
+    productDetailController.productDetail.value.product!.inCartCount =
+        isIncrease
+            ? productDetailController
+                    .productDetail.value.product!.inCartCount! +
+                1
+            : productDetailController
+                    .productDetail.value.product!.inCartCount! -
+                1;
+    productDetailController.productDetail.refresh();
   }
 }
 

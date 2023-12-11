@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'dart:isolate';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,7 +8,6 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
-import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/data/models/product_list_model.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/controllers/products_list_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
@@ -115,16 +112,19 @@ class ProductsCard extends StatelessWidget {
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
                   ),
-                  child: CachedNetworkImage(
-                    errorWidget: (context, error, stackTrace) {
-                      return Image.asset('assets/icons/app-bar/no-image.png');
-                    },
-                    placeholder: (context, url) =>
-                        Image.asset('assets/images/opening_link.gif'),
-                    imageUrl: productImage![0],
-                    fit: BoxFit.fitHeight,
-                    width: double.infinity,
-                    height: 180,
+                  child: Container(
+                    color: SolhColors.grey_3,
+                    child: CachedNetworkImage(
+                      errorWidget: (context, error, stackTrace) {
+                        return Image.asset('assets/icons/app-bar/no-image.png');
+                      },
+                      placeholder: (context, url) =>
+                          Image.asset('assets/images/opening_link.gif'),
+                      imageUrl: productImage![0],
+                      fit: BoxFit.fitHeight,
+                      width: double.infinity,
+                      height: 180,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -194,7 +194,7 @@ class ProductsCard extends StatelessWidget {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     const SizedBox(
                       height: 5,
@@ -202,96 +202,78 @@ class ProductsCard extends StatelessWidget {
                     Text(
                       productName ?? '',
                       style: SolhTextStyles.QS_caption_bold,
-                      maxLines: 2,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
+                    const SizedBox(height: 5),
                     shortDescription != null
                         ? Html(
-                            data: shortDescription,
+                            data: shortDescription ?? description,
                             style: {
                               "body": Style(
                                   padding: HtmlPaddings.zero,
-                                  margin: Margins.zero,
-                                  fontSize: FontSize(12)),
+                                  margin: Margins.zero),
+                              "p": Style(
+                                  maxLines: 2,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  fontSize: FontSize(12),
+                                  padding: HtmlPaddings.zero,
+                                  margin: Margins.zero)
                             },
                           )
                         : Container(),
-                    // Html(data: description, shrinkWrap: true, style: {
-                    //   "body":
-                    //       Style(padding: HtmlPaddings.zero, margin: Margins.zero),
-                    //   "p": Style(
-                    //     maxLines: 3,
-                    //     textOverflow: TextOverflow.ellipsis,
-                    //     fontSize: FontSize(12),
-                    //   )
-                    // }),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        Text(
+                          '$currency $afterDiscountPrice',
+                          style: SolhTextStyles.QS_caption_bold,
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Row(
+                          // mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 4),
-                              decoration: BoxDecoration(
-                                  color: SolhColors.greenShade3,
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Text(
-                                '$currency $afterDiscountPrice',
-                                style: SolhTextStyles.QS_caption_bold,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text("$currency",
-                                    style: SolhTextStyles.QS_cap_2),
-                                const SizedBox(
-                                  width: 0,
-                                ),
-                                Text(
-                                  '$price',
-                                  style: SolhTextStyles.QS_caption.copyWith(
-                                      decoration: TextDecoration.lineThrough),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            // Container(
-                            //   padding: const EdgeInsets.symmetric(
-                            //       horizontal: 8, vertical: 4),
-                            //   decoration: BoxDecoration(
-                            //       color: SolhColors.greenShade3,
-                            //       borderRadius: BorderRadius.circular(8)),
-                            //   child: Row(
-                            //     children: [
-                            //       const Icon(
-                            //         CupertinoIcons.bolt_fill,
-                            //         color: SolhColors.greenShade1,
-                            //         size: 12,
-                            //       ),
-                            //       Text(
-                            //         '${(100 - (afterDiscountPrice! / price!) * 100).toInt()}% OFF',
-                            //         style:
-                            //             SolhTextStyles.QS_caption_2_bold.copyWith(
-                            //                 color: SolhColors.greenShade1),
-                            //       )
-                            //     ],
-                            //   ),
-                            //)
+                            Text("$currency", style: SolhTextStyles.QS_cap_2),
+                            const SizedBox(width: 2),
+                            Text(
+                              '$price',
+                              style: SolhTextStyles.QS_caption.copyWith(
+                                  decoration: TextDecoration.lineThrough),
+                            )
                           ],
                         ),
-                        AddRemoveProductButtoon(
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        /* Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                              color: SolhColors.greenShade3,
+                              borderRadius: BorderRadius.circular(8)),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                CupertinoIcons.bolt_fill,
+                                color: SolhColors.greenShade1,
+                                size: 12,
+                              ),
+                              Text(
+                                '${(100 - (afterDiscountPrice! / price!) * 100).toInt()}% OFF',
+                                style:
+                                    SolhTextStyles.QS_caption_2_bold.copyWith(
+                                        color: SolhColors.greenShade1),
+                              )
+                            ],
+                          ),
+                        ) */
+                        /*  AddRemoveProductButtoon(
                           buttonTitle:
                               stockAvailable != 0 ? 'Add' : 'Out of stock',
                           buttonWidth: 50,
@@ -299,7 +281,7 @@ class ProductsCard extends StatelessWidget {
                           productsInCart: inCartItems ?? 0,
                           isEnabled: stockAvailable != 0,
                           stockLimit: stockAvailable,
-                        ),
+                        ), */
                       ],
                     ),
                   ],

@@ -39,7 +39,7 @@ class CartButton extends StatelessWidget {
             if (products.isNotEmpty) {
               for (var element in products) {
                 if (element.id == id) {
-                  element.inCartCount = element.inCartCount! - 1;
+                  element.inCartCount = quantity - 1;
                   Get.find<ProductsListController>().productList.refresh();
                 }
               }
@@ -48,8 +48,7 @@ class CartButton extends StatelessWidget {
             final ProductDetailsModel productDetailsModel =
                 Get.find<ProductDetailController>().productDetail.value;
             if (productDetailsModel.product!.sId == id) {
-              productDetailsModel.product!.inCartCount =
-                  productDetailsModel.product!.inCartCount! - 1;
+              productDetailsModel.product!.inCartCount = quantity - 1;
               Get.find<ProductDetailController>().productDetail.refresh();
             }
           }
@@ -72,7 +71,7 @@ class CartButton extends StatelessWidget {
             if (products.isNotEmpty) {
               for (var element in products) {
                 if (element.id == id) {
-                  element.inCartCount = element.inCartCount! + 1;
+                  element.inCartCount = quantity + 1;
                   Get.find<ProductsListController>().productList.refresh();
                 }
               }
@@ -81,8 +80,7 @@ class CartButton extends StatelessWidget {
             final ProductDetailsModel productDetailsModel =
                 Get.find<ProductDetailController>().productDetail.value;
             if (productDetailsModel.product!.sId == id) {
-              productDetailsModel.product!.inCartCount =
-                  productDetailsModel.product!.inCartCount! + 1;
+              productDetailsModel.product!.inCartCount = quantity + 1;
               Get.find<ProductDetailController>().productDetail.refresh();
             }
           }

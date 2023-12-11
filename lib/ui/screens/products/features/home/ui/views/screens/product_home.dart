@@ -490,7 +490,7 @@ class FeatureProductsSection extends StatelessWidget {
           return featureProductsController.isLoading.value
               ? MyLoader()
               : SizedBox(
-                  height: 350,
+                  height: 300,
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
