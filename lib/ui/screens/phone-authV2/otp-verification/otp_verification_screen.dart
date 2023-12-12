@@ -63,7 +63,7 @@ class OtpVerificationScreen extends StatelessWidget {
             SizedBox(
               height: 1.h,
             ),
-            ResendButton(),
+            const ResendButton(),
             SizedBox(
               height: 5.h,
             ),
@@ -83,7 +83,7 @@ class VerifyPhoneNo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Verify Phone No.',
           style: SolhTextStyles.Large2BlackTextS24W7,
         ),
@@ -301,7 +301,7 @@ class ResendButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       children: [
-        Text(
+        const Text(
           "Did not receive an OTP?  ",
           style: SolhTextStyles.SmallTextGrey1S12W5,
         ),
@@ -336,7 +336,7 @@ class _TimerWidgetState extends State<TimerWidget> {
   int time = 60;
 
   int timeManager() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
       time--;
       if (time == 0) {
         timer.cancel();

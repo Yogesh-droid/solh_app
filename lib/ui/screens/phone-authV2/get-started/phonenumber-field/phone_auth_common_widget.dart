@@ -11,6 +11,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/privacy_web.dart';
@@ -61,7 +62,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
             Column(
               children: [
                 Text('Country'.tr),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 SolhCountryCodePicker(onCountryChange: ((countryCode) {
@@ -72,7 +73,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                 }))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Expanded(
@@ -80,7 +81,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Mobile No.'.tr),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   TextField(
@@ -88,15 +89,15 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                     controller: phoneAuthController.phoneNumber,
                     decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
                         hintText: 'Your mobile no.',
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 16, horizontal: 10)),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 10)),
                   ),
                 ],
               ),
             )
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
         SizedBox(
@@ -117,19 +118,46 @@ class PhoneAuthCommonWidget extends StatelessWidget {
               //         ),
               //       )
               //     :
-              SolhGreenButton(
-                width: double.maxFinite,
-                child: Text(
-                  'Continue'.tr,
-                ),
-                onPressed: (() {
-                  if (phoneAuthController.phoneNumber.text.trim().isEmpty) {
-                    SolhSnackbar.error('Opps !!', 'Enter a valid number');
-                  } else {
-                    signInWithPhoneNumber(context, country ?? 'IN');
-                  }
-                }),
-              ),
+              Obx(() {
+                return phoneAuthController.isCheckingForMpin.value
+                    ? SolhGreenBorderButton(
+                        child: const ButtonLoadingAnimation(
+                          ballColor: SolhColors.primary_green,
+                          ballSizeLowerBound: 3,
+                          ballSizeUpperBound: 8,
+                        ),
+                      )
+                    : SolhGreenButton(
+                        width: double.maxFinite,
+                        onPressed: (() async {
+                          if (phoneAuthController.phoneNumber.text
+                              .trim()
+                              .isEmpty) {
+                            SolhSnackbar.error(
+                                'Opps !!', 'Enter a valid number');
+                          } else {
+                            bool doesMpinExist = await phoneAuthController
+                                .isMpinSet(phoneAuthController.countryCode +
+                                    phoneAuthController.phoneNumber.text
+                                        .trim());
+
+                            if (doesMpinExist) {
+                              if (context.mounted) {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.enterMpinScreen);
+                              }
+                            } else {
+                              if (context.mounted) {
+                                signInWithPhoneNumber(context, country ?? 'IN');
+                              }
+                            }
+                          }
+                        }),
+                        child: Text(
+                          'Continue'.tr,
+                        ),
+                      );
+              }),
               // }),
               SizedBox(
                 height: 1.h,
@@ -147,7 +175,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                             ..onTap = () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PrivacyWeb(
+                                    builder: (context) => const PrivacyWeb(
                                           title: 'Terms of services',
                                           url:
                                               "https://solhapp.com/termsandcondition.html",
@@ -159,7 +187,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                             ..onTap = () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PrivacyWeb(
+                                    builder: (context) => const PrivacyWeb(
                                           title: 'Privacy policy',
                                           url:
                                               "https://solhapp.com/privacypolicy.html",
@@ -197,7 +225,7 @@ class SolhCountryCodePicker extends StatelessWidget {
           decoration: BoxDecoration(
               color: SolhColors.white,
               border: Border.all(color: SolhColors.black666),
-              borderRadius: BorderRadius.all(Radius.circular(4))),
+              borderRadius: const BorderRadius.all(Radius.circular(4))),
           padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.height / 100,
           ),
@@ -206,9 +234,9 @@ class SolhCountryCodePicker extends StatelessWidget {
             children: [
               Text(
                 '${countryCode!.dialCode}',
-                style: TextStyle(color: SolhColors.primary_green),
+                style: const TextStyle(color: SolhColors.primary_green),
               ),
-              Icon(
+              const Icon(
                 CupertinoIcons.chevron_down,
                 size: 15,
                 color: SolhColors.primary_green,
@@ -243,18 +271,18 @@ class SocialLoginRow extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
+            const Expanded(
                 child: Divider(
               thickness: 1.5,
             )),
             SizedBox(
               width: 1.w,
             ),
-            Text('Or'),
+            const Text('Or'),
             SizedBox(
               width: 1.w,
             ),
-            Expanded(
+            const Expanded(
                 child: Divider(
               thickness: 1.5,
             ))

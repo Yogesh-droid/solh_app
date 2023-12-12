@@ -322,12 +322,14 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                     title: 'People'.tr,
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewAllSearchResults(
-                                    title: 'People',
-                                    connection: connection,
-                                  )));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewAllSearchResults(
+                            title: 'People',
+                            connection: connection,
+                          ),
+                        ),
+                      );
                     },
                   ),
                   Column(
