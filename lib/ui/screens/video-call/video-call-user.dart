@@ -1,15 +1,14 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
@@ -17,9 +16,11 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+
 import '../../../bloc/user-bloc.dart';
 import '../chat/chat_services/chat_socket_service.dart';
 
+// ignore: must_be_immutable
 class VideoCallUser extends StatefulWidget {
   String appId = "4db2d5eea0c3466cb8dPc7ba7f488dbef";
   var token;
@@ -29,7 +30,8 @@ class VideoCallUser extends StatefulWidget {
   String? type;
 
   VideoCallUser(
-      {required this.token,
+      {super.key,
+      required this.token,
       required this.channel,
       required this.sId,
       this.type});
@@ -40,16 +42,15 @@ class VideoCallUser extends StatefulWidget {
 
 class _CallState extends State<VideoCallUser> {
   int? _remoteUid;
-  List _remoteUidList = [];
+  final List _remoteUidList = [];
   bool _localUserJoined = false;
   late RtcEngine _engine;
   bool muted = false;
   bool _isVideoDisabled = false;
   late Timer timer;
-  ChatController _controller = Get.put(ChatController());
-  ChatListController _chatListController = Get.put(ChatListController());
+  final ChatController _controller = Get.put(ChatController());
   // OverlayEntry? overlayEntry;
-  SocketService _service = SocketService();
+  final SocketService _service = SocketService();
   PageController pageController = PageController();
   bool isBottomSheetOpened = false;
 
@@ -58,7 +59,7 @@ class _CallState extends State<VideoCallUser> {
     timer.cancel();
     super.dispose();
     _engine.leaveChannel(
-        options: LeaveChannelOptions(
+        options: const LeaveChannelOptions(
             stopAllEffect: true,
             stopAudioMixing: true,
             stopMicrophoneRecording: true));
@@ -74,12 +75,12 @@ class _CallState extends State<VideoCallUser> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       SocketService.currentSId = widget.sId ?? '';
       _controller.currentSid = widget.sId ?? '';
-      timer = Timer(Duration(seconds: 20), () {
+      timer = Timer(const Duration(seconds: 20), () {
         if (_remoteUid == null) {
           _engine.leaveChannel();
           _engine.release();
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
               'Person not available',
               style: TextStyle(color: Colors.white),
@@ -139,7 +140,7 @@ class _CallState extends State<VideoCallUser> {
           setState(() {
             _remoteUidList.remove(remoteUid);
           });
-          if (_remoteUidList.length == 0) {
+          if (_remoteUidList.isEmpty) {
             Navigator.of(context).pop();
           }
         },
@@ -172,7 +173,7 @@ class _CallState extends State<VideoCallUser> {
         backgroundColor: Colors.grey[900],
         appBar: SolhAppBar(
           isLandingScreen: false,
-          title: Text(
+          title: const Text(
             'Video Call',
             style: SolhTextStyles.QS_body_1_bold,
           ),
@@ -181,7 +182,7 @@ class _CallState extends State<VideoCallUser> {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text(
+                    title: const Text(
                         'Your Call will be stopped \n Do you want to exit session ?'),
                     actions: [
                       TextButton(
@@ -190,13 +191,13 @@ class _CallState extends State<VideoCallUser> {
                           Navigator.pop(context);
                           _engine.leaveChannel();
                         },
-                        child: Text('Yes'),
+                        child: const Text('Yes'),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text('No'),
+                        child: const Text('No'),
                       )
                     ],
                   );
@@ -220,7 +221,7 @@ class _CallState extends State<VideoCallUser> {
         ));
       }
       return GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               childAspectRatio: 3 / 4,
               crossAxisCount: 2,
               crossAxisSpacing: 4.0,
@@ -242,7 +243,7 @@ class _CallState extends State<VideoCallUser> {
             ));
           }));
     } else {
-      return ButtonLoadingAnimation(
+      return const ButtonLoadingAnimation(
         ballColor: Colors.white,
       );
     }
@@ -253,7 +254,7 @@ class _CallState extends State<VideoCallUser> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text(
+            title: const Text(
                 'Your Call will be stopped \n Do you want to exit session ?'),
             actions: [
               MaterialButton(
@@ -262,13 +263,13 @@ class _CallState extends State<VideoCallUser> {
                   Navigator.pop(context);
                   _engine.leaveChannel();
                 },
-                child: Text('Yes'),
+                child: const Text('Yes'),
               ),
               MaterialButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('No'),
+                child: const Text('No'),
               )
             ],
           );
@@ -284,7 +285,7 @@ class _CallState extends State<VideoCallUser> {
         ),
         Align(
           alignment: Alignment.topLeft,
-          child: Container(
+          child: SizedBox(
             width: 100,
             height: 150,
             child: Center(
@@ -294,7 +295,7 @@ class _CallState extends State<VideoCallUser> {
                       rtcEngine: _engine,
                       canvas: const VideoCanvas(uid: 0),
                     ))
-                  : CircularProgressIndicator(),
+                  : const CircularProgressIndicator(),
             ),
           ),
         ),
@@ -305,7 +306,7 @@ class _CallState extends State<VideoCallUser> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: 50,
                 child: RawMaterialButton(
                   onPressed: () {
@@ -315,18 +316,18 @@ class _CallState extends State<VideoCallUser> {
                     });
                     // _engine.muteLocalAudioStream(muted);
                   },
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: muted ? SolhColors.primary_green : Colors.white,
+                  padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     muted ? Icons.mic_off : Icons.mic,
                     color: muted ? Colors.white : SolhColors.primary_green,
                     size: 20.0,
                   ),
-                  shape: CircleBorder(),
-                  elevation: 2.0,
-                  fillColor: muted ? SolhColors.primary_green : Colors.white,
-                  padding: const EdgeInsets.all(8.0),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 50,
                 child: RawMaterialButton(
                   onPressed: () {
@@ -335,6 +336,12 @@ class _CallState extends State<VideoCallUser> {
                       _engine.muteLocalVideoStream(_isVideoDisabled);
                     });
                   },
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: _isVideoDisabled
+                      ? SolhColors.primary_green
+                      : Colors.white,
+                  padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     _isVideoDisabled ? Icons.videocam_off : Icons.videocam,
                     color: _isVideoDisabled
@@ -342,15 +349,9 @@ class _CallState extends State<VideoCallUser> {
                         : SolhColors.primary_green,
                     size: 20.0,
                   ),
-                  shape: CircleBorder(),
-                  elevation: 2.0,
-                  fillColor: _isVideoDisabled
-                      ? SolhColors.primary_green
-                      : Colors.white,
-                  padding: const EdgeInsets.all(8.0),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 50,
                 child: RawMaterialButton(
                   onPressed: () {
@@ -358,33 +359,33 @@ class _CallState extends State<VideoCallUser> {
                     _engine.release();
                     Navigator.pop(context);
                   },
-                  child: Icon(
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.redAccent,
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Icon(
                     Icons.call_end,
                     color: Colors.white,
                     size: 35.0,
                   ),
-                  shape: CircleBorder(),
-                  elevation: 2.0,
-                  fillColor: Colors.redAccent,
-                  padding: const EdgeInsets.all(8.0),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 50,
                 child: RawMaterialButton(
                   onPressed: () => _engine.switchCamera(),
-                  child: Icon(
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.white,
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Icon(
                     CupertinoIcons.switch_camera_solid,
                     color: SolhColors.primary_green,
                     size: 20.0,
                   ),
-                  shape: CircleBorder(),
-                  elevation: 2.0,
-                  fillColor: Colors.white,
-                  padding: const EdgeInsets.all(8.0),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 50,
                 child: RawMaterialButton(
                   onPressed: () {
@@ -399,15 +400,15 @@ class _CallState extends State<VideoCallUser> {
                         builder: (context) => getChatPage(widget.sId));
                     isBottomSheetOpened = true;
                   },
-                  child: Icon(
+                  shape: const CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.white,
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Icon(
                     Icons.chat_bubble_outline,
                     color: SolhColors.primary_green,
                     size: 20.0,
                   ),
-                  shape: CircleBorder(),
-                  elevation: 2.0,
-                  fillColor: Colors.white,
-                  padding: const EdgeInsets.all(8.0),
                 ),
               ),
             ],
@@ -431,21 +432,21 @@ class _CallState extends State<VideoCallUser> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Chat',
                     style: SolhTextStyles.AppBarText,
                   ),
                   Container(
                     height: 40,
                     width: 40,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: SolhColors.greyS200, shape: BoxShape.circle),
                     child: IconButton(
                         onPressed: () {
                           isBottomSheetOpened = false;
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.close)),
+                        icon: const Icon(Icons.close)),
                   )
                 ],
               ),
@@ -463,9 +464,9 @@ class _CallState extends State<VideoCallUser> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _controller.istyping.value == true
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
+                    ? const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Text(
                           'Typing....',
                           style: TextStyle(color: Colors.grey),

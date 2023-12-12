@@ -12,6 +12,7 @@ import 'package:solh/ui/screens/products/features/products_list/ui/widgets/item_
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_list_bottom_nav.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_list_shimmer.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_sub_cat_widget.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -30,6 +31,8 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
   final ProductsListController productsListController = Get.find();
   final CartController cartController = Get.find();
   final AddToCartController addToCartController = Get.find();
+  final AddDeleteWishlistItemController addDeleteWishlistItemController =
+      Get.find();
   final ProductSubCatController productSubCatController = Get.find();
   final ScrollController scrollController = ScrollController();
   late int pageNo;
@@ -174,6 +177,13 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
                                         .productList[index].inCartCount!,
                                     productsListController
                                         .productList[index].stockAvailable!);
+                              },
+                              onWishlisted: () async {
+                                await addDeleteWishlistItemController
+                                    .addDeleteWhishlist({
+                                  "productId": productsListController
+                                      .productList[index].id!
+                                });
                               },
                             ),
                           );

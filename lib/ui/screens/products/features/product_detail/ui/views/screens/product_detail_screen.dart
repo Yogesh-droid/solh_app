@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:html/parser.dart';
@@ -12,7 +13,6 @@ import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
-import 'package:solh/ui/screens/products/features/home/ui/views/widgets/app_bar_cart_icon.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/model/product_details_model.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
@@ -20,7 +20,6 @@ import 'package:solh/ui/screens/products/features/product_detail/ui/views/widget
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/ui/screens/products/features/products_list/data/models/product_list_model.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
-import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -44,8 +43,8 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   ProductDetailController productDetailController = Get.find();
-  late ProductDetailsModel productDetailsModel;
-  bool isLoading = false;
+  ProductDetailsModel? productDetailsModel;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -59,7 +58,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: widget.key,
-        appBar: GetProductDeatilAppBar(id: widget._id),
+        appBar: const GetProductDeatilAppBar(),
         body: isLoading
             ? Center(
                 child: MyLoader(),
@@ -69,15 +68,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ListView(
                     children: [
                       GetProductStatsAndImage(
-                          productDetailsModel: productDetailsModel,
+                          productDetailsModel: productDetailsModel!,
                           id: widget._id),
                       const GetHelpDivider(),
-                      ProductDetails(productDetailsModel: productDetailsModel),
+                      ProductDetails(productDetailsModel: productDetailsModel!),
                       const GetHelpDivider(),
-                      ReviewsSection(productDetailsModel: productDetailsModel),
+                      ReviewsSection(productDetailsModel: productDetailsModel!),
                       const GetHelpDivider(),
                       RelatedProductsSection(
-                          productDetailsModel: productDetailsModel),
+                          productDetailsModel: productDetailsModel!),
                       const SizedBox(
                         height: 90,
                       ),
@@ -95,8 +94,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   Future<void> getProductDetails() async {
-    isLoading = true;
-    setState(() {});
     await productDetailController.getProductDetail(widget._id);
     productDetailsModel = productDetailController.productDetail.value;
     isLoading = false;
@@ -339,11 +336,6 @@ class GetProductStatsAndImage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    '${(100 - (productDetailsModel.product!.afterDiscountPrice! / productDetailsModel.product!.price!) * 100).toInt()}% OFF',
-                    style: SolhTextStyles.QS_body_2_semi.copyWith(
-                        color: SolhColors.primary_green),
-                  ),
                 ],
               ),
               const SizedBox(
@@ -565,19 +557,97 @@ class _GetProductImagesState extends State<GetProductImages> {
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ZoomImage(image: e),
                           )),
-                      child: Container(
-                        color: SolhColors.grey_3,
-                        child: CachedNetworkImage(
-                          imageUrl: e,
-                          errorWidget: (context, url, error) {
-                            return Image.asset(
-                                "assets/icons/app-bar/no-image.png");
-                          },
-                          placeholder: (context, url) {
-                            return Image.asset(
-                                "assets/images/opening_link.gif");
-                          },
-                        ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            color: SolhColors.grey239,
+                            child: CachedNetworkImage(
+                              imageUrl: e,
+                              errorWidget: (context, url, error) {
+                                return Image.asset(
+                                    "assets/icons/app-bar/no-image.png");
+                              },
+                              placeholder: (context, url) {
+                                return Image.asset(
+                                    "assets/images/opening_link.gif");
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 5),
+                                  child: Stack(
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/images/discount_bg.svg',
+                                        height: 40,
+                                      ),
+                                      Positioned(
+                                        left: 0,
+                                        right: 0,
+                                        top: 0,
+                                        bottom: 0,
+                                        child: Center(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                height: 4,
+                                              ),
+                                              Text(
+                                                '${(100 - (widget.productDetailsModel.product!.afterDiscountPrice! / widget.productDetailsModel.product!.price!) * 100).toInt()}%',
+                                                style: SolhTextStyles
+                                                        .QS_cap_2_semi
+                                                    .copyWith(
+                                                        color:
+                                                            SolhColors.white),
+                                              ),
+                                              Text(
+                                                'OFF',
+                                                style: SolhTextStyles
+                                                        .QS_cap_2_semi
+                                                    .copyWith(
+                                                        color:
+                                                            SolhColors.white),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: AnimatedAddToWishlistButton(
+                                    isSelected: widget.productDetailsModel
+                                            .product!.isWishlisted ??
+                                        false,
+                                    onClick: () async {
+                                      await Get.find<
+                                              AddDeleteWishlistItemController>()
+                                          .addDeleteWhishlist({
+                                        "productId": widget
+                                            .productDetailsModel.product!.sId
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       )),
                 )
                 .toList(),
@@ -615,14 +685,7 @@ class _GetProductImagesState extends State<GetProductImages> {
 // ignore: must_be_immutable
 class GetProductDeatilAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  GetProductDeatilAppBar({super.key, required this.id});
-  final String id;
-  final ProductDetailController productDetailController = Get.find();
-  final AddDeleteWishlistItemController addDeleteWishlistItemController =
-      Get.find();
-  final ProductWishlistController productWishlistController = Get.find();
-
-  CartController cartController = Get.find();
+  const GetProductDeatilAppBar({super.key});
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -636,7 +699,7 @@ class GetProductDeatilAppBar extends StatelessWidget
       ),
       backgroundColor: SolhColors.white,
       iconTheme: const IconThemeData(color: SolhColors.black),
-      actions: [
+      /* actions: [
         Obx(() {
           return CartButton(
             itemsInCart: cartController.cartEntity.value.cartList != null
@@ -663,7 +726,7 @@ class GetProductDeatilAppBar extends StatelessWidget
             );
           }),
         )
-      ],
+      ], */
     );
   }
 

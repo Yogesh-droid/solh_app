@@ -4,22 +4,23 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
+// ignore: must_be_immutable
 class GenderSelectionDropdown extends StatefulWidget {
-  GenderSelectionDropdown({
-    Key? key,
+  const GenderSelectionDropdown({
+    super.key,
     BoxDecoration? dropDownDecoration,
     String? initialDropdownValue,
     Function(String?)? newValue,
   })  : _newValue = newValue,
         _dropDownDecoration = dropDownDecoration,
-        _initialDropdownValue = initialDropdownValue,
-        super(key: key);
+        _initialDropdownValue = initialDropdownValue;
 
-  String? _initialDropdownValue;
-  Function(String?)? _newValue;
-  BoxDecoration? _dropDownDecoration;
+  final String? _initialDropdownValue;
+  final Function(String?)? _newValue;
+  final BoxDecoration? _dropDownDecoration;
 
   @override
+  // ignore: library_private_types_in_public_api
   _GenderSelectionDropdownState createState() =>
       _GenderSelectionDropdownState();
 }
@@ -42,35 +43,35 @@ class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
       decoration: widget._dropDownDecoration,
       child: DropdownButton(
           isExpanded: true,
-          icon: Icon(CupertinoIcons.chevron_down),
+          icon: const Icon(CupertinoIcons.chevron_down),
           iconSize: 18,
           iconEnabledColor: SolhColors.primary_green,
-          underline: SizedBox(),
-          hint: Text(
+          underline: const SizedBox(),
+          hint: const Text(
             'Select Gender',
             style: SolhTextStyles.ProfileMenuGreyText,
           ),
-          value: _dropdownValue ?? null,
+          value: _dropdownValue,
           onChanged: (newValue) {
             setState(() {
               _dropdownValue = newValue.toString();
             });
             widget._newValue!.call(newValue.toString());
           },
-          style: TextStyle(color: SolhColors.primary_green),
-          items: [
+          style: const TextStyle(color: SolhColors.primary_green),
+          items: const [
             DropdownMenuItem(
-              child: Text("Male"),
               value: "Male",
+              child: Text("Male"),
             ),
-            DropdownMenuItem(child: Text("Female"), value: "Female"),
+            DropdownMenuItem(value: "Female", child: Text("Female")),
             DropdownMenuItem(
-              child: Text("Others"),
               value: "Others",
+              child: Text("Others"),
             ),
-              DropdownMenuItem(
-              child: Text("Select Gender"),
+            DropdownMenuItem(
               value: "N/A",
+              child: Text("Select Gender"),
             )
           ]),
     );

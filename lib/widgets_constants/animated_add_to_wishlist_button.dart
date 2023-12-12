@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
-import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 // ignore: must_be_immutable

@@ -113,7 +113,7 @@ class ProductsCard extends StatelessWidget {
                     topLeft: Radius.circular(12),
                   ),
                   child: Container(
-                    color: SolhColors.grey_3,
+                    color: SolhColors.grey239,
                     child: CachedNetworkImage(
                       errorWidget: (context, error, stackTrace) {
                         return Image.asset('assets/icons/app-bar/no-image.png');
@@ -123,7 +123,7 @@ class ProductsCard extends StatelessWidget {
                       imageUrl: productImage![0],
                       fit: BoxFit.fitHeight,
                       width: double.infinity,
-                      height: 180,
+                      height: 200,
                     ),
                   ),
                 ),
@@ -132,7 +132,8 @@ class ProductsCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 5),
                         child: Stack(
                           children: [
                             SvgPicture.asset(
@@ -177,8 +178,6 @@ class ProductsCard extends StatelessWidget {
                           onClick: () async {
                             await addDeleteWishlistItemController
                                 .addDeleteWhishlist({"productId": sId});
-                            // await Get.find<FeatureProductsController>()
-                            //     .getFeatureProducts();
                           },
                         ),
                       ),

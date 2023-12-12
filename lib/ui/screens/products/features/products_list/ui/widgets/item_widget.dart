@@ -8,6 +8,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
+import '../../../../../../../widgets_constants/animated_add_to_wishlist_button.dart';
+
 class ItemWidget extends StatelessWidget {
   const ItemWidget(
       {super.key,
@@ -23,7 +25,8 @@ class ItemWidget extends StatelessWidget {
       required this.onIncreaseCartCount,
       required this.onDecreaseCartCount,
       this.descrition,
-      this.stock});
+      this.stock,
+      required this.onWishlisted});
 
   final String? descrition;
   final String image;
@@ -38,11 +41,12 @@ class ItemWidget extends StatelessWidget {
   final Function() onAddedCart;
   final Function() onIncreaseCartCount;
   final Function() onDecreaseCartCount;
+  final Function() onWishlisted;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 156,
+        height: 163,
         padding: const EdgeInsets.only(right: 12, top: 12, bottom: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,12 +78,23 @@ class ItemWidget extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(productName ?? '',
-                          style: SolhTextStyles.QS_body_2_bold.copyWith(
-                              color: SolhColors.black,
-                              fontFamily: GoogleFonts.quicksand().fontFamily),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(productName ?? '',
+                                style: SolhTextStyles.QS_body_2_bold.copyWith(
+                                    color: SolhColors.black,
+                                    fontFamily:
+                                        GoogleFonts.quicksand().fontFamily),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                          AnimatedAddToWishlistButton(
+                              isSelected: isWishListed ?? false,
+                              onClick: onWishlisted),
+                        ],
+                      ),
                       const SizedBox(height: 5),
                       Html(data: descrition!.trim(), shrinkWrap: true, style: {
                         "body": Style(
