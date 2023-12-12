@@ -9,6 +9,7 @@ class PhoneAuthController extends GetxController {
 
   var countryCode = '+91';
   var isRequestingAuth = false.obs;
+  var isCheckingForMpin = false.obs;
   TextEditingController otpCode = TextEditingController();
 
   Future<void> login(String countryCode, String phoneNo) async {
@@ -29,5 +30,23 @@ class PhoneAuthController extends GetxController {
         body: {"dialCode": "$dialCode", "phone": "$phoneNo", "code": "$code"});
 
     return map;
+  }
+
+  Future<bool> isMpinSet(String phoneNo) async {
+    isCheckingForMpin(true);
+    try {
+      bool mPinStatus = false;
+      var response = await Network.makeGetRequest(
+          '${APIConstants.api}/api/is-mpin-set/$phoneNo');
+
+      if (response["success"]) {
+        mPinStatus = response['hasMpin'];
+      }
+      isCheckingForMpin(false);
+      return mPinStatus;
+    } catch (e) {
+      isCheckingForMpin(false);
+      rethrow;
+    }
   }
 }

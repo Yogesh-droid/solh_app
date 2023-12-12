@@ -99,7 +99,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
           MaterialButton(
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CreateGroup();
+                return const CreateGroup();
               }));
             },
             child: Text(
@@ -185,13 +185,13 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                               height: 100,
                               child: MyLoader(),
                             )
-                          : SizedBox())
+                          : const SizedBox())
                     ],
                   )
-                : Center(
+                : const Center(
                     child: Text('No groups joined yet'),
                   ))
-        : Center(
+        : const Center(
             child: Text('No groups joined yet'),
           );
   }
@@ -246,7 +246,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                               height: 100,
                               child: MyLoader(),
                             )
-                          : SizedBox())
+                          : const SizedBox())
                     ],
                   )
                 : Center(
@@ -298,7 +298,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                               height: 100,
                               child: MyLoader(),
                             )
-                          : SizedBox())
+                          : const SizedBox())
                     ],
                   )
                 : Center(
