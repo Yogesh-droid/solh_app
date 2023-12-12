@@ -1,10 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/bottom-navigation/profile_icon.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
@@ -23,7 +22,6 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
-import '../../../../../../my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import '../../../../products_list/ui/widgets/product_list_bottom_nav.dart';
 
 class ProductsHome extends StatefulWidget {
@@ -56,7 +54,7 @@ class _ProductsHomeState extends State<ProductsHome> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: ProductsAppBar(
-          title: getDrawer(),
+          title: const ProfileIcon(),
           popupMenu: getMorePopMenu(),
         ),
         bottomNavigationBar: Obx(() =>
@@ -101,62 +99,7 @@ class _ProductsHomeState extends State<ProductsHome> {
                     ),
                   ],
                 )),
-            //Positioned(bottom: 0, left: 0, right: 0, child: NextBottomBar())
           ],
-        ));
-  }
-
-  Widget getDrawer() {
-    final ProfileController profileController = Get.find();
-    return Container(
-        decoration: const BoxDecoration(shape: BoxShape.circle),
-        child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => MyProfileScreenV2()));
-          },
-          child: Obx(() {
-            return profileController.isProfileLoading.value
-                ? Center(
-                    child: SizedBox(
-                        height: 15, width: 15, child: MyLoader(strokeWidth: 2)),
-                  )
-                : profileController.myProfileModel.value.body == null
-                    ? InkWell(
-                        onTap: () {
-                          profileController.getMyProfile();
-                        },
-                        splashColor: Colors.transparent,
-                        child: Container(
-                          // height: 30,
-                          // width: 30,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: SolhColors.primary_green),
-                          child: const Icon(
-                            Icons.refresh_rounded,
-                            color: SolhColors.white,
-                            size: 20,
-                          ),
-                        ),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: CircleAvatar(
-                          radius: 4.8.w,
-                          backgroundColor: SolhColors.primary_green,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 4.5.w,
-                            backgroundImage: CachedNetworkImageProvider(
-                              profileController.myProfileModel.value.body!.user!
-                                      .profilePicture ??
-                                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                            ),
-                          ),
-                        ),
-                      );
-          }),
         ));
   }
 

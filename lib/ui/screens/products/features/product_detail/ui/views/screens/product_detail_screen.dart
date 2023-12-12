@@ -565,16 +565,19 @@ class _GetProductImagesState extends State<GetProductImages> {
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ZoomImage(image: e),
                           )),
-                      child: CachedNetworkImage(
-                        // fit: BoxFit.fill,
-                        imageUrl: e,
-                        errorWidget: (context, url, error) {
-                          return Image.asset(
-                              "assets/icons/app-bar/no-image.png");
-                        },
-                        placeholder: (context, url) {
-                          return Image.asset("assets/images/opening_link.gif");
-                        },
+                      child: Container(
+                        color: SolhColors.grey_3,
+                        child: CachedNetworkImage(
+                          imageUrl: e,
+                          errorWidget: (context, url, error) {
+                            return Image.asset(
+                                "assets/icons/app-bar/no-image.png");
+                          },
+                          placeholder: (context, url) {
+                            return Image.asset(
+                                "assets/images/opening_link.gif");
+                          },
+                        ),
                       )),
                 )
                 .toList(),

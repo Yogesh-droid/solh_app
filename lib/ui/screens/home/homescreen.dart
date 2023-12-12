@@ -7,7 +7,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -205,7 +204,6 @@ class _HomePageState extends State<HomePage> {
   checkForUserActive() async {
     var response = await Network.makeGetRequestWithToken(
         "${APIConstants.api}/api/checkUserProfile");
-    print("checkForUserActive ${response["success"]}");
     if (response["success"] == false) {
       logOut();
     }

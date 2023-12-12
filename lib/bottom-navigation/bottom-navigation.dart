@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bottom-navigation/profile_icon.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/homepage/offer_carousel_controller.dart';
@@ -180,7 +179,7 @@ class _MasterScreen2State extends State<MasterScreen2>
           key: _scaffoldKey,
           appBar: bottomNavigatorController.activeIndex.value != 3
               ? SolhAppBar(
-                  title: getDrawer(),
+                  title: const ProfileIcon(),
                   isLandingScreen: true,
                 )
               : null,
@@ -698,74 +697,6 @@ class _MasterScreen2State extends State<MasterScreen2>
                               ))),
                         label: "Get Help",
                       ), */
-  }
-
-  Widget getDrawer() {
-    return Container(
-        decoration: const BoxDecoration(shape: BoxShape.circle),
-        child: InkWell(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => MyProfileScreenV2()));
-          },
-          child: Obx(() {
-            return profileController.isProfileLoading.value
-                ? Center(
-                    child: SizedBox(
-                        height: 15, width: 15, child: MyLoader(strokeWidth: 2)),
-                  )
-                : profileController.myProfileModel.value.body == null
-                    ? InkWell(
-                        onTap: () {
-                          profileController.getMyProfile();
-                        },
-                        splashColor: Colors.transparent,
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: SolhColors.primary_green),
-                          child: const Icon(
-                            Icons.refresh_rounded,
-                            color: SolhColors.white,
-                            size: 20,
-                          ),
-                        ),
-                      )
-                    : CircleAvatar(
-                        radius: 4.w,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 3.8.w,
-                          backgroundImage: CachedNetworkImageProvider(
-                            profileController.myProfileModel.value.body!.user!
-                                    .profilePicture ??
-                                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                          ),
-                        ),
-                      );
-          }),
-
-          // bottomNavigatorController.isDrawerOpen.value
-          //     ? bottomNavigatorController.isDrawerOpen.value = false
-          //     : bottomNavigatorController.isDrawerOpen.value = true;
-          // bottomNavigatorController.isDrawerOpen.value
-          //     ? animationController.forward()
-          //     : animationController.reverse();
-
-          // ------------------------- Above comment for opening side drawer  -------------------------//
-
-          // child: Container(
-          //     decoration: BoxDecoration(shape: BoxShape.circle),
-          //     height: 40,
-          //     width: 40,
-          //     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          //     child: Icon(
-          //       Icons.account_circle_outlined,
-          //       color: SolhColors.primary_green,
-          //     )),
-        ));
   }
 
   openMoreSheet(BuildContext context) {

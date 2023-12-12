@@ -88,7 +88,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                           : Container(),
                     );
                   })
-                : Container(),
+                : const SizedBox(),
           ],
         ),
         bottom: _bottom,
@@ -425,14 +425,20 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
       elevation: 0.5,
       foregroundColor: Colors.white,
-      leading: title ??
-          IconButton(
-            icon: const Icon(
-              CupertinoIcons.back,
-              color: SolhColors.black,
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+      leading: Row(
+        children: [
+          const SizedBox(width: 15),
+          title ??
+              IconButton(
+                icon: const Icon(
+                  CupertinoIcons.back,
+                  color: SolhColors.black,
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+          const SizedBox()
+        ],
+      ),
     );
   }
 
