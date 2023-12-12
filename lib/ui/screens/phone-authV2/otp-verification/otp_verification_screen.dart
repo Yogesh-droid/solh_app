@@ -195,7 +195,7 @@ class _OtpFieldState extends State<OtpField> {
               : false;
 
           if (isProfileCreated) {
-            Navigator.pushNamed(context, AppRoutes.master);
+            Navigator.pushNamed(context, AppRoutes.createMpinScreen);
           } else {
             facebookAppEvents.logEvent(
               name: 'signup',
