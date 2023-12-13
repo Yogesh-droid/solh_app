@@ -132,6 +132,20 @@ class Setting extends StatelessWidget {
                 'Organization'.tr,
                 null),
           ),
+          const SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () =>
+                Navigator.pushNamed(context, AppRoutes.changeMpinScreen),
+            child: getSettingOptions(
+                const Icon(
+                  Icons.visibility,
+                  color: SolhColors.primary_green,
+                ),
+                'Change mPIN'.tr,
+                null),
+          ),
 
           // SizedBox(
           //   height: 15,

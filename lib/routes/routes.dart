@@ -30,6 +30,7 @@ import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart'
 import 'package:solh/ui/screens/my-profile/appointments/profile_transfer.dart';
 import 'package:solh/ui/screens/my-profile/appointments/profile_transfer_detail.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/change_mpin_screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/language_setting_page.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/add_org.dart';
@@ -190,6 +191,7 @@ class AppRoutes {
   static const String languageSettingPage = '/languageSettingPage';
   static const String OrgSetting = '/OrgSetting';
   static const String addOrg = '/addOrg';
+  static const String changeMpinScreen = '/changeMpinScreen';
 
   //products
   static const String productsHome = '/productsHome';
@@ -556,11 +558,12 @@ class RouteGenerator {
             settings: const RouteSettings(name: AppRoutes.cancelOrderPage));
       case AppRoutes.createMpinScreen:
         return MaterialPageRoute(
-            builder: ((context) => CreateMpinScren(
-                  args: args as Map<String, dynamic>,
-                )),
-            settings: RouteSettings(
-                name: AppRoutes.createMpinScreen, arguments: args));
+            builder: ((context) => CreateMpinScren()),
+            settings: const RouteSettings(name: AppRoutes.createMpinScreen));
+      case AppRoutes.changeMpinScreen:
+        return MaterialPageRoute(
+            builder: ((context) => ChangeMpinScreen()),
+            settings: const RouteSettings(name: AppRoutes.changeMpinScreen));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

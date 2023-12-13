@@ -63,10 +63,16 @@ class EnterMpinScreen extends StatelessWidget {
                   shape: PinCodeFieldShape.box,
                   selectedColor: SolhColors.primary_green),
             ),
-            Text(
-              'Forgot mPIN? Login with OTP.',
-              style:
-                  SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
+            InkWell(
+              onTap: () async {
+                await phoneAuthController.signInWithPhoneNumber(
+                    context, phoneAuthController.country);
+              },
+              child: Text(
+                'Forgot mPIN? Login with OTP.',
+                style: SolhTextStyles.CTA
+                    .copyWith(color: SolhColors.primary_green),
+              ),
             ),
             const SizedBox(
               height: 30,

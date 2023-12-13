@@ -12,10 +12,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 class CreateMpinScren extends StatelessWidget {
-  CreateMpinScren({super.key, required Map<dynamic, dynamic> args})
-      : _phoneNumber = args["phoneNumber"];
-
-  final String _phoneNumber;
+  CreateMpinScren({super.key});
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController pin1Controller = TextEditingController();
@@ -55,6 +52,12 @@ class CreateMpinScren extends StatelessWidget {
               ),
               PinCodeTextField(
                 controller: pin1Controller,
+                mainAxisAlignment: MainAxisAlignment.start,
+                separatorBuilder: (a, b) {
+                  return SizedBox(
+                    width: 20,
+                  );
+                },
                 validator: (value) {
                   if (value?.trim() == '') {
                     return "Field can't be empty";
@@ -68,6 +71,7 @@ class CreateMpinScren extends StatelessWidget {
                     inactiveColor: SolhColors.grey_2,
                     borderWidth: 1,
                     activeColor: SolhColors.primary_green,
+                    borderRadius: BorderRadius.circular(8),
                     shape: PinCodeFieldShape.box,
                     selectedColor: SolhColors.primary_green),
               ),
@@ -80,6 +84,7 @@ class CreateMpinScren extends StatelessWidget {
               ),
               PinCodeTextField(
                 controller: pin2Controller,
+                mainAxisAlignment: MainAxisAlignment.start,
                 validator: (value) {
                   if (pin1Controller.text != pin2Controller.text) {
                     return "Pin not matched";
@@ -89,10 +94,16 @@ class CreateMpinScren extends StatelessWidget {
                 appContext: context,
                 length: 4,
                 keyboardType: TextInputType.number,
+                separatorBuilder: (a, b) {
+                  return SizedBox(
+                    width: 20,
+                  );
+                },
                 pinTheme: PinTheme(
                     inactiveColor: SolhColors.grey_2,
                     borderWidth: 1,
                     activeColor: SolhColors.primary_green,
+                    borderRadius: BorderRadius.circular(8),
                     shape: PinCodeFieldShape.box,
                     selectedColor: SolhColors.primary_green),
               ),
@@ -106,11 +117,14 @@ class CreateMpinScren extends StatelessWidget {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           bool response = await phoneAuthController.createMpin(
-                              _phoneNumber, pin1Controller.text);
+                              phoneAuthController.countryCode +
+                                  phoneAuthController.phoneNumber.text,
+                              pin1Controller.text);
 
                           if (response) {
                             if (context.mounted) {
-                              Navigator.of(context).pushNamed(AppRoutes.master);
+                              Navigator.of(context)
+                                  .pushReplacementNamed(AppRoutes.master);
                             } else {
                               SolhSnackbar.error(
                                   'Error', "unable to create pin");

@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
   SearchMarketController searchMarketController = Get.find();
   HomeController homeController = Get.find();
   PsychologyTestController psychologyTestController = Get.find();
-  final ProfileController profileController = Get.find();
+  final ProfileController profileController = Get.put(ProfileController());
 
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
@@ -211,11 +211,6 @@ class _HomePageState extends State<HomePage> {
         logOut();
       }
     }
-
-    //  var response = await Network.makeGetRequestWithToken(
-    //     "${APIConstants.api}/api/checkUserProfile");
-    // if (response["success"] == false) {
-    //   logOut();
   }
 
   @override

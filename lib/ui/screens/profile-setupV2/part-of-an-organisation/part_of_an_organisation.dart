@@ -45,7 +45,7 @@ class PartOfAnOrganisationPage extends StatelessWidget {
                     .toList())
               });
               if (response) {
-                Navigator.pushNamed(context, AppRoutes.master);
+                Navigator.pushNamed(context, AppRoutes.createMpinScreen);
               }
             } else {
               SolhSnackbar.error(

@@ -1,10 +1,15 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/services/user/session-cookie.dart';
@@ -14,6 +19,7 @@ class PhoneAuthController extends GetxController {
   var map = <String, dynamic>{}.obs;
 
   var countryCode = '+91';
+  var country = 'IN';
   var isRequestingAuth = false.obs;
   var isCheckingForMpin = false.obs;
   var isCreatingPin = false.obs;
@@ -85,17 +91,35 @@ class PhoneAuthController extends GetxController {
       var response = await Network.makePostRequest(
           url: '${APIConstants.api}/api/verify-mpin',
           body: {'mobile': phoneNo, 'mpin': pin});
-
+      log(response.toString());
       if (response['success']) {
         pinVerificationStatus = true;
-        isVerifyingPin(false);
       }
-
+      isVerifyingPin(false);
       return (response['message'], pinVerificationStatus);
     } catch (e) {
       isVerifyingPin(false);
 
       rethrow;
+    }
+  }
+
+  Future<void> signInWithPhoneNumber(context, String country) async {
+    await login(countryCode, phoneNumber.text);
+
+    if (map['success']) {
+      log(map['message']);
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.setString('userCountry', country);
+      Get.find<SearchMarketController>().country = country;
+      Navigator.pushNamed(context, AppRoutes.otpVerification, arguments: {
+        "phoneNumber": phoneNumber.text,
+        "dialCode": countryCode
+      });
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(map['message'])));
     }
   }
 }

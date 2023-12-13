@@ -105,7 +105,7 @@ class VerifyPhoneNo extends StatelessWidget {
 }
 
 class OtpField extends StatefulWidget {
-  OtpField({Key? key, required this.dialCode, required this.phone})
+  const OtpField({Key? key, required this.dialCode, required this.phone})
       : super(key: key);
   final String dialCode;
   final String phone;
@@ -195,9 +195,22 @@ class _OtpFieldState extends State<OtpField> {
               : false;
 
           if (isProfileCreated) {
-            if (context.mounted) {
-              Navigator.pushNamed(context, AppRoutes.createMpinScreen,
-                  arguments: {'phoneNumber': widget.phone});
+            bool response = await phoneAuthController.isMpinSet(widget.phone);
+            print(context.mounted);
+            if (response) {
+              if (context.mounted) {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.master,
+                );
+              }
+            } else {
+              if (context.mounted) {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.createMpinScreen,
+                );
+              }
             }
           } else {
             facebookAppEvents.logEvent(
@@ -302,9 +315,9 @@ class ResendButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return const Wrap(
       children: [
-        const Text(
+        Text(
           "Did not receive an OTP?  ",
           style: SolhTextStyles.SmallTextGrey1S12W5,
         ),
@@ -315,7 +328,7 @@ class ResendButton extends StatelessWidget {
 }
 
 class SubmitButton extends StatelessWidget {
-  SubmitButton({Key? key}) : super(key: key);
+  SubmitButton({super.key});
   final PhoneAuthController phoneAuthController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -328,7 +341,7 @@ class SubmitButton extends StatelessWidget {
 }
 
 class TimerWidget extends StatefulWidget {
-  TimerWidget({Key? key, this.phoneNo}) : super(key: key);
+  const TimerWidget({Key? key, this.phoneNo}) : super(key: key);
   final String? phoneNo;
 
   @override
