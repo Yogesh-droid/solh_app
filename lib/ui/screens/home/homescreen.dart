@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
@@ -95,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GoalSettingController goalSettingController =
       Get.put(GoalSettingController());
   final MoodMeterController moodMeterController = Get.find();
-  final ProfileController profileController = Get.find();
+  final ProfileController profileController = Get.put(ProfileController());
 
   final HomeController homeController = Get.find();
   LiveStreamController liveStreamController = Get.find();
@@ -202,11 +203,19 @@ class _HomePageState extends State<HomePage> {
   }
 
   checkForUserActive() async {
-    var response = await Network.makeGetRequestWithToken(
-        "${APIConstants.api}/api/checkUserProfile");
-    if (response["success"] == false) {
-      logOut();
+    var response = userBlocNetwork.getSessionCookie;
+    if (response != '' && response != null) {
+      var response = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/checkUserProfile");
+      if (response["success"] == false) {
+        logOut();
+      }
     }
+
+    //  var response = await Network.makeGetRequestWithToken(
+    //     "${APIConstants.api}/api/checkUserProfile");
+    // if (response["success"] == false) {
+    //   logOut();
   }
 
   @override

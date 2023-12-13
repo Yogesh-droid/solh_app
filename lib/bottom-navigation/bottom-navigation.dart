@@ -91,8 +91,9 @@ class _MasterScreen2State extends State<MasterScreen2>
   final JournalPageController journalPageController =
       Get.put(JournalPageController());
   final MoodMeterController meterController = Get.find();
-  final BottomNavigatorController bottomNavigatorController = Get.find();
-  ProfileController profileController = Get.find();
+  final BottomNavigatorController bottomNavigatorController =
+      Get.put(BottomNavigatorController());
+
   final LiveStreamController liveStreamController = Get.find();
 
   final MoodMeterController moodMeterController =
@@ -101,6 +102,7 @@ class _MasterScreen2State extends State<MasterScreen2>
   late TabController tabController;
   late AnimationController animationController;
   PersistentBottomSheetController? persistentBottomSheetController;
+  final ProfileController profileController = Get.put(ProfileController());
 
   List<Widget> bottomWidgetList = [];
 
@@ -175,7 +177,8 @@ class _MasterScreen2State extends State<MasterScreen2>
       onWillPop: () {
         return _onWillPop(context);
       },
-      child: Obx(() => Scaffold(
+      child: Obx(
+        () => Scaffold(
           key: _scaffoldKey,
           appBar: bottomNavigatorController.activeIndex.value != 3
               ? SolhAppBar(
@@ -186,7 +189,9 @@ class _MasterScreen2State extends State<MasterScreen2>
           body: IndexedStack(
               index: bottomNavigatorController.activeIndex.value,
               children: bottomWidgetList),
-          bottomNavigationBar: getBottomBar(context))),
+          bottomNavigationBar: getBottomBar(context),
+        ),
+      ),
       /* child: Obx(() {
       return AnimatedPositioned(
         duration: Duration(milliseconds: 300),

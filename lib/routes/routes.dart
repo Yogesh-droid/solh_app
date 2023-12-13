@@ -550,12 +550,17 @@ class RouteGenerator {
                 name: AppRoutes.cancelOrderPage, arguments: args));
       case AppRoutes.enterMpinScreen:
         return MaterialPageRoute(
-            builder: ((context) => const EnterMpinScreen()),
+            builder: ((context) => EnterMpinScreen(
+                  args: args as Map<String, dynamic>,
+                )),
             settings: const RouteSettings(name: AppRoutes.cancelOrderPage));
       case AppRoutes.createMpinScreen:
         return MaterialPageRoute(
-            builder: ((context) => const CreateMpinScren()),
-            settings: const RouteSettings(name: AppRoutes.createMpinScreen));
+            builder: ((context) => CreateMpinScren(
+                  args: args as Map<String, dynamic>,
+                )),
+            settings: RouteSettings(
+                name: AppRoutes.createMpinScreen, arguments: args));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

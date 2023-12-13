@@ -175,10 +175,9 @@ class _SolhAppState extends State<SolhApp> {
     if (widget.isProfileCreated!) {
       Get.put(BottomNavigatorController());
 
-      Get.put(ProfileSetupController());
       Get.put(BottomNavigatorController());
       Get.put(ChatListController());
-      Get.put(ProfileSetupController());
+
       Get.put(AnonController());
     }
   }

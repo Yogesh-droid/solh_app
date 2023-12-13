@@ -98,7 +98,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   Get.delete<DiscoverGroupController>();
                                   Get.delete<CreateGroupController>();
                                   Get.delete<BottomNavigatorController>();
-                                  Get.delete<ProfileController>();
+                                  //Get.delete<ProfileController>();
 
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,

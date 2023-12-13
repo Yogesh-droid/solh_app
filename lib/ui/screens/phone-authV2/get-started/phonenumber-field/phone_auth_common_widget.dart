@@ -144,7 +144,13 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                             if (doesMpinExist) {
                               if (context.mounted) {
                                 Navigator.pushNamed(
-                                    context, AppRoutes.enterMpinScreen);
+                                    context, AppRoutes.enterMpinScreen,
+                                    arguments: {
+                                      'phoneNumber': phoneAuthController
+                                              .countryCode +
+                                          phoneAuthController.phoneNumber.text
+                                              .trim()
+                                    });
                               }
                             } else {
                               if (context.mounted) {

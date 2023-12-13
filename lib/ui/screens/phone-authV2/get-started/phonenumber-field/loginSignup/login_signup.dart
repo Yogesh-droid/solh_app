@@ -28,7 +28,7 @@ class LoginSignup extends StatelessWidget {
                 _isLogin ? 'Login' : 'Signup',
                 style: SolhTextStyles.Large2BlackTextS24W7,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 32,
               ),
               PhoneAuthCommonWidget(
