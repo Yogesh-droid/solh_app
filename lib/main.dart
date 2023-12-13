@@ -90,7 +90,7 @@ class SolhApp extends StatefulWidget {
 class _SolhAppState extends State<SolhApp> {
   @override
   void initState() {
-    checkConnectivity();
+    //checkConnectivity();
     super.initState();
   }
 
