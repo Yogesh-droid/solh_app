@@ -52,6 +52,7 @@ class CreateMpinScren extends StatelessWidget {
                 height: 10,
               ),
               PinCodeTextField(
+                obscureText: true,
                 controller: pin1Controller,
                 mainAxisAlignment: MainAxisAlignment.start,
                 separatorBuilder: (a, b) {

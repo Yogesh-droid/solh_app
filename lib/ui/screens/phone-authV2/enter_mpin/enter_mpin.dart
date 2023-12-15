@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -53,26 +58,65 @@ class EnterMpinScreen extends StatelessWidget {
               height: 10,
             ),
             PinCodeTextField(
+              obscureText: true,
               controller: pinController,
               appContext: context,
+              mainAxisAlignment: MainAxisAlignment.start,
+              separatorBuilder: (a, b) {
+                return const SizedBox(
+                  width: 20,
+                );
+              },
               length: 4,
               pinTheme: PinTheme(
                   inactiveColor: SolhColors.grey_2,
                   borderWidth: 1,
                   activeColor: SolhColors.primary_green,
+                  borderRadius: BorderRadius.circular(8),
                   shape: PinCodeFieldShape.box,
                   selectedColor: SolhColors.primary_green),
             ),
-            InkWell(
-              onTap: () async {
-                await phoneAuthController.signInWithPhoneNumber(
-                    context, phoneAuthController.country);
-              },
-              child: Text(
-                'Forgot mPIN? Login with OTP.',
-                style: SolhTextStyles.CTA
-                    .copyWith(color: SolhColors.primary_green),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    SharedPreferences sharedPreferences =
+                        await SharedPreferences.getInstance();
+                    await sharedPreferences.setString(
+                        'userCountry', phoneAuthController.country);
+                    Get.find<SearchMarketController>().country =
+                        phoneAuthController.country;
+                    (bool, String) response = await phoneAuthController.login(
+                        phoneAuthController.countryCode,
+                        phoneAuthController.phoneNumber.text);
+
+                    if (response.$1) {
+                      if (context.mounted) {
+                        Navigator.of(context)
+                            .pushNamed(AppRoutes.forgotMpinScreen);
+                      }
+                    } else {
+                      Utility.showToast(response.$2);
+                    }
+                  },
+                  child: Text(
+                    'Forgot mPIN?',
+                    style: SolhTextStyles.CTA
+                        .copyWith(color: SolhColors.primary_green),
+                  ),
+                ),
+                InkWell(
+                  onTap: () async =>
+                      await phoneAuthController.signInWithPhoneNumber(
+                          context, phoneAuthController.country),
+                  child: Text(
+                    'Login with OTP.',
+                    style: SolhTextStyles.CTA
+                        .copyWith(color: SolhColors.primary_green),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 30,
@@ -89,7 +133,7 @@ class EnterMpinScreen extends StatelessWidget {
                               (String, bool) response =
                                   await phoneAuthController.verifyPin(
                                       _phoneNumber, pinController.text.trim());
-                              print(response);
+
                               if (response.$2) {
                                 await Prefs.setString("phone", _phoneNumber);
                                 await isNewUser();

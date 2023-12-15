@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/user/user.dart';
@@ -78,7 +79,8 @@ class UserBlocNetwork {
   }
 
   Future<bool> isProfileCreated() async {
-    var response = await Network.makeHttpGetRequestWithToken(
+    log(_sessionCookie, name: '_session');
+    var response = await Network.makeGetRequestWithToken(
             "${APIConstants.api}/api/is-profile-created")
         .onError((error, stackTrace) {
       print("error: " + error.toString());

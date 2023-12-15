@@ -49,6 +49,7 @@ import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/phone-authV2/create_mpin/create_mpin_screen.dart';
 import 'package:solh/ui/screens/phone-authV2/enter_mpin/enter_mpin.dart';
+import 'package:solh/ui/screens/phone-authV2/forgot_mpin/forgot_mpin_screen.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/get_started.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/phonenumber-field/loginSignup/login_signup.dart';
 import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_screen.dart';
@@ -129,6 +130,7 @@ class AppRoutes {
   static const String otpVerification = '/otpVerification';
   static const String enterMpinScreen = '/enterMpinScreen';
   static const String createMpinScreen = '/createMpinScreen';
+  static const String forgotMpinScreen = '/forgotMpinScreen';
 
   /// Group related  ///
   ///
@@ -564,6 +566,10 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) => ChangeMpinScreen()),
             settings: const RouteSettings(name: AppRoutes.changeMpinScreen));
+      case AppRoutes.forgotMpinScreen:
+        return MaterialPageRoute(
+            builder: ((context) => ForgotMpinScreen()),
+            settings: const RouteSettings(name: AppRoutes.forgotMpinScreen));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

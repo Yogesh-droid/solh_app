@@ -103,6 +103,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                 height: 10,
               ),
               PinCodeTextField(
+                obscureText: true,
                 controller: currentPinController,
                 mainAxisAlignment: MainAxisAlignment.start,
                 validator: (value) {
@@ -135,6 +136,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                 height: 10,
               ),
               PinCodeTextField(
+                obscureText: true,
                 controller: newPinController,
                 mainAxisAlignment: MainAxisAlignment.start,
                 separatorBuilder: (a, b) {
@@ -186,6 +188,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                   return null;
                 },
                 appContext: context,
+                obscureText: true,
                 length: 4,
                 keyboardType: TextInputType.number,
                 pinTheme: PinTheme(

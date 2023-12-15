@@ -129,7 +129,8 @@ class _OtpFieldState extends State<OtpField> {
   @override
   void dispose() {
     phoneAuthController.isRequestingAuth.value = false;
-    phoneAuthController.dispose();
+    phoneAuthController.phoneNumber.clear();
+
     super.dispose();
   }
 
@@ -186,9 +187,11 @@ class _OtpFieldState extends State<OtpField> {
               utm_compaign: utm_name,
               utm_source: utm_source);
           log(isSessionCookieCreated.toString(),
-              name: "isSessionCookieCreated");
+              name: "isSessionCookieCreatedxxxx");
           ProfileController profileController = Get.put(ProfileController());
           await profileController.getMyProfile();
+          var x = await userBlocNetwork.isProfileCreated();
+          log(x.toString(), name: 'userBlocNetwork.isProfileCreated()');
           bool isProfileCreated = isSessionCookieCreated != null
               ? await userBlocNetwork.isProfileCreated() &&
                   !isSessionCookieCreated
@@ -196,7 +199,7 @@ class _OtpFieldState extends State<OtpField> {
 
           if (isProfileCreated) {
             bool response = await phoneAuthController.isMpinSet(widget.phone);
-            print(context.mounted);
+            log(context.mounted.toString());
             if (response) {
               if (context.mounted) {
                 Navigator.pushNamed(
