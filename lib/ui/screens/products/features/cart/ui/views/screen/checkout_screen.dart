@@ -8,6 +8,7 @@ import 'package:solh/ui/screens/products/features/cart/ui/controllers/address_co
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/cart_address.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/empty_cart_widget.dart';
+import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet_cart_item.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -16,20 +17,21 @@ import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../../../../../../routes/routes.dart';
+import '../../../../products_list/data/models/product_list_model.dart';
+import '../../../../products_list/ui/controllers/products_list_controller.dart';
+import '../../controllers/add_to_cart_controller.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  CheckoutScreen({super.key, required Map<String, dynamic> args})
-      : onDecreaseCartCount = args['onDecrease'],
-        onIncreaseCartCount = args['onIncrease'];
-
-  final Function(int index, String id, int quantity) onIncreaseCartCount;
-  final Function(int index, String id, int quantity) onDecreaseCartCount;
+  const CheckoutScreen({super.key});
 
   @override
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
+  final CartController cartController = Get.find();
+  final AddToCartController addToCartController = Get.find();
+  final ProductDetailController productDetailController = Get.find();
   @override
   void initState() {
     super.initState();
@@ -37,7 +39,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final CartController cartController = Get.find();
     return Scaffold(
         appBar: SolhAppBar(
           isLandingScreen: false,
@@ -76,124 +77,45 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               return const GetHelpDivider();
                             },
                             itemBuilder: (context, index) {
+                              var item = cartController
+                                  .cartEntity.value.cartList!.items![index];
                               return Padding(
                                   padding: const EdgeInsets.only(right: 12),
                                   child: SheetCartItem(
-                                    isOutOfStock: cartController
-                                            .cartEntity
-                                            .value
-                                            .cartList!
-                                            .items![index]
-                                            .isOutOfStock ??
-                                        false,
-                                    image: cartController
-                                            .cartEntity
-                                            .value
-                                            .cartList!
-                                            .items![index]
-                                            .productId!
-                                            .defaultImage ??
-                                        '',
-                                    id: cartController
-                                            .cartEntity
-                                            .value
-                                            .cartList!
-                                            .items![index]
-                                            .productId!
-                                            .id ??
-                                        '',
-                                    discountedPrice: cartController
-                                        .cartEntity
-                                        .value
-                                        .cartList!
-                                        .items![index]
-                                        .productId!
-                                        .afterDiscountPrice,
-                                    currency: cartController
-                                        .cartEntity
-                                        .value
-                                        .cartList!
-                                        .items![index]
-                                        .productId!
-                                        .currency,
-                                    inCartNo: cartController.cartEntity.value
-                                        .cartList!.items![index].quantity,
-                                    itemPrice: cartController
-                                        .cartEntity
-                                        .value
-                                        .cartList!
-                                        .items![index]
-                                        .productId!
-                                        .price,
-                                    productName: cartController
-                                        .cartEntity
-                                        .value
-                                        .cartList!
-                                        .items![index]
-                                        .productId!
-                                        .productName,
+                                    isOutOfStock: item.isOutOfStock ?? false,
+                                    image: item.productId!.defaultImage ?? '',
+                                    id: item.productId!.id ?? '',
+                                    discountedPrice:
+                                        item.productId!.afterDiscountPrice,
+                                    currency: item.productId!.currency,
+                                    inCartNo: item.quantity,
+                                    itemPrice: item.productId!.price,
+                                    productName: item.productId!.productName,
                                     onIncreaseCartCount: () {
-                                      if (cartController
-                                              .cartEntity
-                                              .value
-                                              .cartList!
-                                              .items![index]
-                                              .productId!
-                                              .stockAvailable! >
-                                          cartController
-                                              .cartEntity
-                                              .value
-                                              .cartList!
-                                              .items![index]
-                                              .quantity!) {
-                                        widget.onIncreaseCartCount(
-                                            index,
-                                            cartController
-                                                .cartEntity
-                                                .value
-                                                .cartList!
-                                                .items![index]
-                                                .productId!
-                                                .id!,
-                                            cartController
-                                                .cartEntity
-                                                .value
-                                                .cartList!
-                                                .items![index]
-                                                .quantity!);
-                                      } else {
-                                        Utility.showToast(
-                                            "Quantity more than stock cannot be added");
-                                      }
+                                      onChangeItemQuantity(
+                                          index: index,
+                                          quantity: cartController
+                                                  .cartEntity
+                                                  .value
+                                                  .cartList!
+                                                  .items![index]
+                                                  .quantity! +
+                                              1);
                                     },
                                     onDecreaseCartCount: () {
-                                      widget.onDecreaseCartCount(
-                                          index,
-                                          cartController
-                                              .cartEntity
-                                              .value
-                                              .cartList!
-                                              .items![index]
-                                              .productId!
-                                              .id!,
-                                          cartController
-                                              .cartEntity
-                                              .value
-                                              .cartList!
-                                              .items![index]
-                                              .quantity!);
+                                      onChangeItemQuantity(
+                                          index: index,
+                                          quantity: cartController
+                                                  .cartEntity
+                                                  .value
+                                                  .cartList!
+                                                  .items![index]
+                                                  .quantity! -
+                                              1);
                                     },
                                     onDeleteItem: () {
-                                      widget.onDecreaseCartCount(
-                                          index,
-                                          cartController
-                                              .cartEntity
-                                              .value
-                                              .cartList!
-                                              .items![index]
-                                              .productId!
-                                              .id!,
-                                          1);
+                                      onChangeItemQuantity(
+                                          index: index, quantity: 0);
                                     },
                                   ));
                             },
@@ -211,6 +133,39 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   )
                 : const EmptyCartWidget()
             : const EmptyCartWidget()));
+  }
+
+  Future<void> onChangeItemQuantity(
+      {required int index, required int quantity}) async {
+    var product = cartController.cartEntity.value.cartList!.items![index];
+    var isOutOfStock = product.productId!.stockAvailable! < quantity;
+
+    if (isOutOfStock) {
+      Utility.showToast("Quantity more than stock cannot be added");
+      return;
+    } else {
+      addToCartController.indexOfItemToBeUpdated.value = product.productId!.id!;
+      final List<Products> products =
+          Get.find<ProductsListController>().productList;
+
+      if (products.isNotEmpty) {
+        for (var element in products) {
+          if (element.id == product.productId!.id!) {
+            element.inCartCount = quantity;
+            Get.find<ProductsListController>().productList.refresh();
+          }
+        }
+      }
+      if (product.productId!.id ==
+          productDetailController.productDetail.value.product!.sId) {
+        productDetailController.productDetail.value.product!.inCartCount =
+            quantity;
+        productDetailController.productDetail.refresh();
+      }
+      await Get.find<AddToCartController>()
+          .addToCart(productId: product.productId!.id!, quantity: quantity)
+          .then((value) => cartController.getCart());
+    }
   }
 }
 
@@ -277,20 +232,6 @@ class PaymentSummarySection extends StatelessWidget {
               ],
             ),
             const Divider(),
-            /* Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Items Discount',
-                    style: SolhTextStyles.QS_body_semi_1.copyWith(
-                        color: SolhColors.dark_grey)),
-                Text(
-                  '- ${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.discount}',
-                  style: SolhTextStyles.QS_body_semi_1.copyWith(
-                      color: SolhColors.dark_grey),
-                ),
-              ],
-            ),
-            const Divider(), */
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

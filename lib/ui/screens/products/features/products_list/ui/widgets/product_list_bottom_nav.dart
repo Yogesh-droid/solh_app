@@ -108,53 +108,7 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                 const Spacer(),
                 SolhGreenButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.checkoutScreen,
-                          arguments: {
-                            "onDecrease": (index, id, quantity) {
-                              //  Id saved in controller so that we can check on which item we need to show loader//
-                              Get.find<AddToCartController>()
-                                      .indexOfItemToBeUpdated
-                                      .value =
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id!;
-                              //////////////
-
-                              widget.onDecreaseCartCount(
-                                  index,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id!,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].quantity!);
-                            },
-                            "onIncrease": (index, id, quantity) {
-                              if (cartController.cartEntity.value.cartList!
-                                      .items![index].quantity! ==
-                                  cartController
-                                      .cartEntity
-                                      .value
-                                      .cartList!
-                                      .items![index]
-                                      .productId!
-                                      .stockAvailable!) {
-                                Utility.showToast("No More Item in Stock");
-                                return;
-                              }
-                              //  Id saved in controller so that we can check on which item we need to show loader//
-                              Get.find<AddToCartController>()
-                                      .indexOfItemToBeUpdated
-                                      .value =
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id!;
-                              //////////////
-
-                              widget.onIncreaseCartCount(
-                                  index,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id!,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].quantity!);
-                            }
-                          });
+                      Navigator.pushNamed(context, AppRoutes.checkoutScreen);
                     },
                     height: 30,
                     width: 100,

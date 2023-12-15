@@ -35,13 +35,9 @@ import '../widgets/deactivated_cart_btn.dart';
 class ProductDetailScreen extends StatefulWidget {
   ProductDetailScreen({required Map<dynamic, dynamic> args})
       : _id = args['id'],
-        _onDecreaseCartCount = args['onDecrease'],
-        _onIncreaseCartCount = args['onIncrease'],
         super(key: args['key']);
 
   final String _id;
-  final Function(int index, String id, int quantity) _onIncreaseCartCount;
-  final Function(int index, String id, int quantity) _onDecreaseCartCount;
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
@@ -117,68 +113,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   onNextPressed() {
-    Navigator.pushNamed(context, AppRoutes.checkoutScreen, arguments: {
-      "onDecrease": (index, id, quantity) async {
-        final List<Products> products =
-            Get.find<ProductsListController>().productList;
-        if (products.isNotEmpty) {
-          for (var element in products) {
-            if (element.id == widget._id) {
-              element.inCartCount = quantity - 1;
-              Get.find<ProductsListController>().productList.refresh();
-            }
-          }
-        }
-
-        await Get.find<AddToCartController>()
-            .addToCart(productId: widget._id, quantity: quantity - 1)
-            .then((value) => cartController.getCart());
-        /*  //  Id saved in controller so that we can check on which item we need to show loader//
-        Get.find<AddToCartController>().indexOfItemToBeUpdated.value =
-            cartController
-                .cartEntity.value.cartList!.items![index].productId!.id!;
-        //////////////
-
-        widget._onDecreaseCartCount(
-            index,
-            cartController
-                .cartEntity.value.cartList!.items![index].productId!.id!,
-            cartController.cartEntity.value.cartList!.items![index].quantity!); */
-      },
-      "onIncrease": (index, id, quantity) async {
-        final List<Products> products =
-            Get.find<ProductsListController>().productList;
-        if (products.isNotEmpty) {
-          for (var element in products) {
-            if (element.id == widget._id) {
-              element.inCartCount = quantity + 1;
-              Get.find<ProductsListController>().productList.refresh();
-            }
-          }
-        }
-
-        await Get.find<AddToCartController>()
-            .addToCart(productId: widget._id, quantity: quantity + 1)
-            .then((value) => cartController.getCart());
-        /*  if (cartController.cartEntity.value.cartList!.items![index].quantity! ==
-            cartController.cartEntity.value.cartList!.items![index].productId!
-                .stockAvailable!) {
-          Utility.showToast("No More Item in Stock");
-          return;
-        }
-        //  Id saved in controller so that we can check on which item we need to show loader//
-        Get.find<AddToCartController>().indexOfItemToBeUpdated.value =
-            cartController
-                .cartEntity.value.cartList!.items![index].productId!.id!;
-        //////////////
-
-        widget._onIncreaseCartCount(
-            index,
-            cartController
-                .cartEntity.value.cartList!.items![index].productId!.id!,
-            cartController.cartEntity.value.cartList!.items![index].quantity!); */
-      }
-    });
+    Navigator.pushNamed(context, AppRoutes.checkoutScreen);
   }
 }
 
@@ -556,54 +491,6 @@ class ProductDetails extends StatelessWidget {
   }
 }
 
-class AddToCartBuyNowButton extends StatelessWidget {
-  AddToCartBuyNowButton({super.key, required this.productId});
-  final String productId;
-
-  final ProductDetailController productDetailController = Get.find();
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: <BoxShadow>[
-            BoxShadow(blurRadius: 2, spreadRadius: 2, color: Colors.black26)
-          ]),
-      width: double.infinity,
-      height: 80,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          AddRemoveProductButtoon(
-            buttonTitle: productDetailController
-                        .productDetail.value.product!.stockAvailable ==
-                    0
-                ? "Out of stock"
-                : 'Add to cart',
-            productId: productId,
-            productsInCart: productDetailController
-                    .productDetail.value.product!.inCartCount ??
-                0,
-            buttonWidth: 200,
-            isEnabled: productDetailController
-                    .productDetail.value.product!.stockAvailable !=
-                0,
-            stockLimit: productDetailController
-                .productDetail.value.product!.stockAvailable,
-          ),
-          // SolhGreenMiniButton(
-          //   backgroundColor: SolhColors.primaryRed,
-          //   child: Text(
-          //     'Buy Now',
-          //     style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-          //   ),
-          // )
-        ],
-      ),
-    );
-  }
-}
-
 class GetProductImages extends StatefulWidget {
   const GetProductImages({
     super.key,
@@ -762,58 +649,6 @@ class _GetProductImagesState extends State<GetProductImages> {
     );
   }
 }
-
-// ignore: must_be_immutable
-/* class GetProductDeatilAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
-  const GetProductDeatilAppBar({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      elevation: 0.5,
-      leading: IconButton(
-        icon: const Icon(
-          CupertinoIcons.back,
-          size: 30,
-        ),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      backgroundColor: SolhColors.white,
-      iconTheme: const IconThemeData(color: SolhColors.black),
-      /* actions: [
-        Obx(() {
-          return CartButton(
-            itemsInCart: cartController.cartEntity.value.cartList != null
-                ? cartController.cartEntity.value.cartList!.items!.length
-                : 0,
-            id: id,
-          );
-        }),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Obx(() {
-            return AnimatedAddToWishlistButton(
-              onClick: () async {
-                await addDeleteWishlistItemController.addDeleteWhishlist({
-                  "productId":
-                      productDetailController.productDetail.value.product!.sId
-                });
-
-                await productWishlistController.getWishlistProducts();
-              },
-              isSelected: productDetailController
-                      .productDetail.value.product!.isWishlisted ??
-                  false,
-            );
-          }),
-        )
-      ], */
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size(0, 50);
-}*/
 
 String getStockString(int itemInStock) {
   if (itemInStock == 0) {

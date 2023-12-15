@@ -25,6 +25,7 @@ class CourseHomePage extends StatelessWidget {
 
   getAppBar() {
     return ProductsAppBar(
+        isLandingScreen: true,
         title: const ProfileIcon(),
         popupMenu: PopupMenuButton(
             child: const Icon(Icons.more_vert, color: SolhColors.primary_green),
