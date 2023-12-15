@@ -30,6 +30,7 @@ import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart'
 import 'package:solh/ui/screens/my-profile/appointments/profile_transfer.dart';
 import 'package:solh/ui/screens/my-profile/appointments/profile_transfer_detail.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/change_mpin_screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/language_setting_page.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/add_org.dart';
@@ -48,6 +49,7 @@ import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/phone-authV2/create_mpin/create_mpin_screen.dart';
 import 'package:solh/ui/screens/phone-authV2/enter_mpin/enter_mpin.dart';
+import 'package:solh/ui/screens/phone-authV2/forgot_mpin/forgot_mpin_screen.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/get_started.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/phonenumber-field/loginSignup/login_signup.dart';
 import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_screen.dart';
@@ -128,6 +130,7 @@ class AppRoutes {
   static const String otpVerification = '/otpVerification';
   static const String enterMpinScreen = '/enterMpinScreen';
   static const String createMpinScreen = '/createMpinScreen';
+  static const String forgotMpinScreen = '/forgotMpinScreen';
 
   /// Group related  ///
   ///
@@ -190,6 +193,7 @@ class AppRoutes {
   static const String languageSettingPage = '/languageSettingPage';
   static const String OrgSetting = '/OrgSetting';
   static const String addOrg = '/addOrg';
+  static const String changeMpinScreen = '/changeMpinScreen';
 
   //products
   static const String productsHome = '/productsHome';
@@ -555,11 +559,16 @@ class RouteGenerator {
             settings: const RouteSettings(name: AppRoutes.cancelOrderPage));
       case AppRoutes.createMpinScreen:
         return MaterialPageRoute(
-            builder: ((context) => CreateMpinScren(
-                  args: args as Map<String, dynamic>,
-                )),
-            settings: RouteSettings(
-                name: AppRoutes.createMpinScreen, arguments: args));
+            builder: ((context) => CreateMpinScren()),
+            settings: const RouteSettings(name: AppRoutes.createMpinScreen));
+      case AppRoutes.changeMpinScreen:
+        return MaterialPageRoute(
+            builder: ((context) => ChangeMpinScreen()),
+            settings: const RouteSettings(name: AppRoutes.changeMpinScreen));
+      case AppRoutes.forgotMpinScreen:
+        return MaterialPageRoute(
+            builder: ((context) => ForgotMpinScreen()),
+            settings: const RouteSettings(name: AppRoutes.forgotMpinScreen));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

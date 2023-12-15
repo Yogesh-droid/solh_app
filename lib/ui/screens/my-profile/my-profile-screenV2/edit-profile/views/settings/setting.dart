@@ -132,6 +132,20 @@ class Setting extends StatelessWidget {
                 'Organization'.tr,
                 null),
           ),
+          const SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () =>
+                Navigator.pushNamed(context, AppRoutes.changeMpinScreen),
+            child: getSettingOptions(
+                const Icon(
+                  Icons.visibility,
+                  color: SolhColors.primary_green,
+                ),
+                'Change mPIN'.tr,
+                null),
+          ),
 
           // SizedBox(
           //   height: 15,
@@ -262,7 +276,7 @@ class GetLogoutButton extends StatelessWidget {
           Get.delete<DiscoverGroupController>();
           Get.delete<CreateGroupController>();
           Get.delete<BottomNavigatorController>();
-          Get.delete<ProfileController>();
+          // Get.delete<ProfileController>();
 
           // ignore: use_build_context_synchronously
           Navigator.pushNamedAndRemoveUntil(
@@ -297,7 +311,7 @@ void logOut() async {
     Get.delete<DiscoverGroupController>();
     Get.delete<CreateGroupController>();
     Get.delete<BottomNavigatorController>();
-    Get.delete<ProfileController>();
+    // Get.delete<ProfileController>();
 
     globalNavigatorKey.currentState!
         .pushNamedAndRemoveUntil(AppRoutes.getStarted, (route) => false);

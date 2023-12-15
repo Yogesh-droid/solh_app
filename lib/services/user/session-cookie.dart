@@ -48,7 +48,7 @@ class SessionCookie {
             "utm_source": utm_source ?? '',
             "utm_medium": utm_medium ?? ''
           });
-      print("Running${response["userStatus"]}");
+      print("Running${response}");
       if (response["success"] != null) {
         return response['success'];
       }

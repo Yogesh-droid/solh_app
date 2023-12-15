@@ -29,7 +29,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
 
   final FirebaseNetwork firebaseNetwork = FirebaseNetwork();
   String? _countryCode = '+91';
-  String? country = 'IN';
+  // String? country = 'IN';
 
   final isLogin;
 
@@ -68,7 +68,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                 SolhCountryCodePicker(onCountryChange: ((countryCode) {
                   print(countryCode.dialCode);
                   _countryCode = countryCode.dialCode;
-                  country = countryCode.code;
+                  phoneAuthController.country = countryCode.code ?? 'IN';
                   phoneAuthController.countryCode = countryCode.dialCode!;
                 }))
               ],
@@ -154,7 +154,8 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                               }
                             } else {
                               if (context.mounted) {
-                                signInWithPhoneNumber(context, country ?? 'IN');
+                                signInWithPhoneNumber(context,
+                                    phoneAuthController.country ?? 'IN');
                               }
                             }
                           }
