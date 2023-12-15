@@ -410,8 +410,9 @@ class GetProductStatsAndImage extends StatelessWidget {
   onChangeCartCount(bool isIncrease) async {
     final List<Products> products =
         Get.find<ProductsListController>().productList;
-    if (productDetailController.productDetail.value.product!.stockAvailable! <
-        productDetailController.productDetail.value.product!.inCartCount! + 1) {
+    if (isIncrease &&
+        productDetailController.productDetail.value.product!.stockAvailable! <=
+            productDetailController.productDetail.value.product!.inCartCount!) {
       Utility.showToast("Quantity more than stock cannot be added");
       return;
     }
