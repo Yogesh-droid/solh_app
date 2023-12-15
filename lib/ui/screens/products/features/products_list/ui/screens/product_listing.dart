@@ -132,7 +132,38 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
                                   AppRoutes.productDetailScreen,
                                   arguments: {
                                     "id": productsListController
-                                        .productList[index].id
+                                        .productList[index].id,
+                                    "onDecrease": (index, id, quantity) {
+                                      onDecreaseCartCount(
+                                          productsListController.productList
+                                              .indexWhere((element) =>
+                                                  element.id ==
+                                                  cartController
+                                                      .cartEntity
+                                                      .value
+                                                      .cartList!
+                                                      .items![index]
+                                                      .productId!
+                                                      .id),
+                                          id,
+                                          quantity);
+                                    },
+                                    "onIncrease": (index, id, quantity) {
+                                      onIncreaseCartCount(
+                                          productsListController.productList
+                                              .indexWhere((element) =>
+                                                  element.id ==
+                                                  cartController
+                                                      .cartEntity
+                                                      .value
+                                                      .cartList!
+                                                      .items![index]
+                                                      .productId!
+                                                      .id),
+                                          id,
+                                          quantity,
+                                          0);
+                                    },
                                   });
                             },
                             child: ItemWidget(

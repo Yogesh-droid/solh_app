@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bottom-navigation/profile_icon.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/model/goal-setting/personal_goal_model.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -214,8 +215,10 @@ class _MyGoalPageState extends State<MyGoalPage> {
 
   SolhAppBar getAppBar() {
     return SolhAppBar(
-      title: const Text("My Goals", style: SolhTextStyles.QS_body_1_bold),
-      isLandingScreen: false,
+      title: const ProfileIcon(),
+      isLandingScreen: true,
+      /* title: const Text("My Goals", style: SolhTextStyles.QS_body_1_bold),
+      isLandingScreen: false, */
     );
   }
 }

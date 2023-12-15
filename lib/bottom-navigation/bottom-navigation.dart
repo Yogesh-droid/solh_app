@@ -16,7 +16,6 @@ import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
-import 'package:solh/features/lms/display/course_home/ui/screens/course_homepage.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/network/network.dart';
@@ -43,6 +42,7 @@ import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
 import '../routes/routes.dart';
+import '../ui/screens/my-goals/my-goals-screen.dart';
 import '../widgets_constants/constants/org_only_setting.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
@@ -150,7 +150,8 @@ class _MasterScreen2State extends State<MasterScreen2>
       const HomeScreen(),
       const Journaling(),
       GetHelpScreen(),
-      const CourseHomePage(),
+      // const CourseHomePage(),
+      const MyGoalsScreen(),
       // MyProfileScreenV2()
     ]);
     super.initState();
@@ -572,15 +573,21 @@ class _MasterScreen2State extends State<MasterScreen2>
                     id: 'my_goal',
                     title: 'Courses',
                     child: Obx(() => SvgPicture.asset(
-                        'assets/images/course_icon.svg',
+                          'assets/images/groal tab vector.svg',
+                          color:
+                              bottomNavigatorController.activeIndex.value == 3
+                                  ? SolhColors.primary_green
+                                  : Colors.grey.shade600,
+                          /* 'assets/images/course_icon.svg',
                         height: 20,
                         colorFilter: ColorFilter.mode(
                             bottomNavigatorController.activeIndex.value == 3
                                 ? SolhColors.primary_green
                                 : Colors.grey.shade600,
-                            BlendMode.srcIn))),
+                            BlendMode.srcIn) */
+                        )),
                   ),
-                  label: "Courses".tr,
+                  label: "My Goals".tr,
                 ),
               ],
             ),
@@ -862,7 +869,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ],
                         ),
                       ),
-                      InkWell(
+                      /* InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.myGoalScreen);
                         },
@@ -877,7 +884,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                             )
                           ],
                         ),
-                      ),
+                      ), */
                       InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.productsHome);

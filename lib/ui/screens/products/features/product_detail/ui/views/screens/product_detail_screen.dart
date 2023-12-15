@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,11 +15,13 @@ import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_contr
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/model/product_details_model.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
+import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_detail_bottom_nav.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/ui/screens/products/features/products_list/data/models/product_list_model.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
+import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -34,15 +35,20 @@ import '../widgets/deactivated_cart_btn.dart';
 class ProductDetailScreen extends StatefulWidget {
   ProductDetailScreen({required Map<dynamic, dynamic> args})
       : _id = args['id'],
+        _onDecreaseCartCount = args['onDecrease'],
+        _onIncreaseCartCount = args['onIncrease'],
         super(key: args['key']);
 
   final String _id;
+  final Function(int index, String id, int quantity) _onIncreaseCartCount;
+  final Function(int index, String id, int quantity) _onDecreaseCartCount;
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   ProductDetailController productDetailController = Get.find();
+  CartController cartController = Get.find();
   ProductDetailsModel? productDetailsModel;
   bool isLoading = true;
 
@@ -58,7 +64,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: widget.key,
-        appBar: const GetProductDeatilAppBar(),
+        // appBar: const GetProductDeatilAppBar(),
+        appBar: SolhAppBar(
+            isLandingScreen: false,
+            isVideoCallScreen: true,
+            title: const Text("Details", style: SolhTextStyles.QS_body_1_bold)),
+        bottomNavigationBar: Obx(
+            () => cartController.cartEntity.value.cartList!.items!.isNotEmpty
+                ? ProductDetailBottomNav(onNextPressed: () {
+                    onNextPressed();
+                  })
+                : const SizedBox()),
         body: isLoading
             ? Center(
                 child: MyLoader(),
@@ -98,6 +114,71 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     productDetailsModel = productDetailController.productDetail.value;
     isLoading = false;
     setState(() {});
+  }
+
+  onNextPressed() {
+    Navigator.pushNamed(context, AppRoutes.checkoutScreen, arguments: {
+      "onDecrease": (index, id, quantity) async {
+        final List<Products> products =
+            Get.find<ProductsListController>().productList;
+        if (products.isNotEmpty) {
+          for (var element in products) {
+            if (element.id == widget._id) {
+              element.inCartCount = quantity - 1;
+              Get.find<ProductsListController>().productList.refresh();
+            }
+          }
+        }
+
+        await Get.find<AddToCartController>()
+            .addToCart(productId: widget._id, quantity: quantity - 1)
+            .then((value) => cartController.getCart());
+        /*  //  Id saved in controller so that we can check on which item we need to show loader//
+        Get.find<AddToCartController>().indexOfItemToBeUpdated.value =
+            cartController
+                .cartEntity.value.cartList!.items![index].productId!.id!;
+        //////////////
+
+        widget._onDecreaseCartCount(
+            index,
+            cartController
+                .cartEntity.value.cartList!.items![index].productId!.id!,
+            cartController.cartEntity.value.cartList!.items![index].quantity!); */
+      },
+      "onIncrease": (index, id, quantity) async {
+        final List<Products> products =
+            Get.find<ProductsListController>().productList;
+        if (products.isNotEmpty) {
+          for (var element in products) {
+            if (element.id == widget._id) {
+              element.inCartCount = quantity + 1;
+              Get.find<ProductsListController>().productList.refresh();
+            }
+          }
+        }
+
+        await Get.find<AddToCartController>()
+            .addToCart(productId: widget._id, quantity: quantity + 1)
+            .then((value) => cartController.getCart());
+        /*  if (cartController.cartEntity.value.cartList!.items![index].quantity! ==
+            cartController.cartEntity.value.cartList!.items![index].productId!
+                .stockAvailable!) {
+          Utility.showToast("No More Item in Stock");
+          return;
+        }
+        //  Id saved in controller so that we can check on which item we need to show loader//
+        Get.find<AddToCartController>().indexOfItemToBeUpdated.value =
+            cartController
+                .cartEntity.value.cartList!.items![index].productId!.id!;
+        //////////////
+
+        widget._onIncreaseCartCount(
+            index,
+            cartController
+                .cartEntity.value.cartList!.items![index].productId!.id!,
+            cartController.cartEntity.value.cartList!.items![index].quantity!); */
+      }
+    });
   }
 }
 
@@ -683,7 +764,7 @@ class _GetProductImagesState extends State<GetProductImages> {
 }
 
 // ignore: must_be_immutable
-class GetProductDeatilAppBar extends StatelessWidget
+/* class GetProductDeatilAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const GetProductDeatilAppBar({super.key});
   @override
@@ -732,7 +813,7 @@ class GetProductDeatilAppBar extends StatelessWidget
 
   @override
   Size get preferredSize => const Size(0, 50);
-}
+}*/
 
 String getStockString(int itemInStock) {
   if (itemInStock == 0) {

@@ -345,7 +345,6 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
 
   @override
   void initState() {
-    print("Running Init in AddRemoveButton");
     poductNumber = ValueNotifier(widget.productsInCart);
 
     super.initState();
@@ -357,7 +356,6 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
     return ValueListenableBuilder(
         valueListenable: poductNumber,
         builder: (context, value, child) {
-          print("Rebuilding AddRemoveProductButton $value");
           return value == 0
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,

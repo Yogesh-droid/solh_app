@@ -54,6 +54,8 @@ class _ProductsHomeState extends State<ProductsHome> {
     return Scaffold(
         appBar: ProductsAppBar(
           // title: const ProfileIcon(),
+          title: const Text("Products", style: SolhTextStyles.QS_body_1_bold),
+          isLandingScreen: false,
           popupMenu: getMorePopMenu(),
         ),
         bottomNavigationBar: Obx(() =>
