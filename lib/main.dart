@@ -23,7 +23,6 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
-import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/languages_constant.dart';
@@ -37,7 +36,6 @@ import 'firebase_options.dart';
 import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'ui/screens/products/core/di/produts_di_imports.dart';
-import 'widgets_constants/constants/textstyles.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -133,7 +131,7 @@ class _SolhAppState extends State<SolhApp> {
             useMaterial3: false,
             progressIndicatorTheme: const ProgressIndicatorThemeData(
                 color: SolhColors.primary_green),
-            textTheme: const TextTheme(
+            /* textTheme: const TextTheme(
                 bodyMedium: TextStyle(
                   color: SolhColors.black666,
                   fontSize: 14,
@@ -154,7 +152,7 @@ class _SolhAppState extends State<SolhApp> {
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
                 ),
-                displaySmall: SolhTextStyles.QS_body_1_bold),
+                displaySmall: SolhTextStyles.QS_body_1_bold), */
             switchTheme: SwitchThemeData(
               thumbColor:
                   MaterialStateProperty.all<Color>(SolhColors.primary_green),

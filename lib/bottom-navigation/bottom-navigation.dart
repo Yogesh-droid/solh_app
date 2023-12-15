@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +16,7 @@ import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/features/lms/display/course_home/ui/screens/course_homepage.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/network/network.dart';
@@ -25,7 +27,6 @@ import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
-import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -149,7 +150,7 @@ class _MasterScreen2State extends State<MasterScreen2>
       const HomeScreen(),
       const Journaling(),
       GetHelpScreen(),
-      const ProductsHome(),
+      const CourseHomePage(),
       // MyProfileScreenV2()
     ]);
     super.initState();
@@ -569,9 +570,9 @@ class _MasterScreen2State extends State<MasterScreen2>
                     icon:
                         SvgPicture.asset('assets/images/groal tab vector.svg'),
                     id: 'my_goal',
-                    title: 'PRODUCTS',
+                    title: 'Courses',
                     child: Obx(() => SvgPicture.asset(
-                        'assets/images/product_icon.svg',
+                        'assets/images/course_icon.svg',
                         height: 20,
                         colorFilter: ColorFilter.mode(
                             bottomNavigatorController.activeIndex.value == 3
@@ -579,7 +580,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                                 : Colors.grey.shade600,
                             BlendMode.srcIn))),
                   ),
-                  label: "Products".tr,
+                  label: "Courses".tr,
                 ),
               ],
             ),
@@ -620,7 +621,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                         ? Text(
                             "More".tr,
                             style: GoogleFonts.quicksand(
-                                textStyle: TextStyle(fontSize: 12)),
+                                textStyle: const TextStyle(fontSize: 12)),
                           )
                         : const LiveBlink();
                   }),
@@ -872,6 +873,22 @@ class _MasterScreen2State extends State<MasterScreen2>
                                 icon: 'assets/images/goals_icon.svg'),
                             Text(
                               'My Goals'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.productsHome);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/product_svg_red.svg'),
+                            Text(
+                              "Products".tr,
                               style: SolhTextStyles.QS_cap_semi,
                             )
                           ],

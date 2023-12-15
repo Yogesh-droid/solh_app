@@ -2,8 +2,6 @@ import 'package:get/get_navigation/src/root/internacionalization.dart';
 
 class Languages extends Translations {
   @override
-  // TODO: implement keys
-  @override
   Map<String, Map<String, String>> get keys => {
         "hi_IN": {
           "Do you want to exit app?":
