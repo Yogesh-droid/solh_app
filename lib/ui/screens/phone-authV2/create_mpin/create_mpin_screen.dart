@@ -6,6 +6,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -113,29 +114,35 @@ class CreateMpinScren extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SolhGreenButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          bool response = await phoneAuthController.createMpin(
-                              phoneAuthController.countryCode +
-                                  phoneAuthController.phoneNumber.text,
-                              pin1Controller.text);
+                  Obx(() {
+                    return phoneAuthController.isCreatingPin.value
+                        ? const ButtonLoadingAnimation()
+                        : SolhGreenButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                bool response =
+                                    await phoneAuthController.createMpin(
+                                        phoneAuthController.countryCode +
+                                            phoneAuthController
+                                                .phoneNumber.text,
+                                        pin1Controller.text);
 
-                          if (response) {
-                            if (context.mounted) {
-                              Navigator.of(context)
-                                  .pushReplacementNamed(AppRoutes.master);
-                            } else {
-                              SolhSnackbar.error(
-                                  'Error', "unable to create pin");
-                            }
-                          }
-                        }
-                      },
-                      width: 70.w,
-                      child: Text('Create mPIN',
-                          style: SolhTextStyles.CTA
-                              .copyWith(color: SolhColors.white))),
+                                if (response) {
+                                  if (context.mounted) {
+                                    Navigator.of(context)
+                                        .pushReplacementNamed(AppRoutes.master);
+                                  } else {
+                                    SolhSnackbar.error(
+                                        'Error', "unable to create pin");
+                                  }
+                                }
+                              }
+                            },
+                            width: 70.w,
+                            child: Text('Create mPIN',
+                                style: SolhTextStyles.CTA
+                                    .copyWith(color: SolhColors.white)));
+                  }),
                 ],
               )
             ],
