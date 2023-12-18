@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -23,7 +22,6 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
   AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       productWishlistController.getWishlistProducts();
     });
@@ -36,7 +34,8 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
       appBar: SolhAppBar(
         isLandingScreen: false,
         isVideoCallScreen: true,
-        title: Text('Your Wishlist', style: SolhTextStyles.QS_body_1_bold),
+        title:
+            const Text('Your Wishlist', style: SolhTextStyles.QS_body_1_bold),
       ),
       body: Obx(() {
         return productWishlistController.isLoading.value ||
@@ -44,8 +43,8 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
             ? Center(
                 child: MyLoader(),
               )
-            : (productWishlistController.wishlistItems.length == 0
-                ? EmptyWishListWidget()
+            : (productWishlistController.wishlistItems.isEmpty
+                ? const EmptyWishListWidget()
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: ListView(
@@ -59,16 +58,16 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         ListView.separated(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount:
                               productWishlistController.wishlistItems.length,
                           shrinkWrap: true,
                           separatorBuilder: (context, index) =>
-                              GetHelpDivider(),
+                              const GetHelpDivider(),
                           itemBuilder: (context, index) {
                             return WishlistCard(
                               currency: productWishlistController
@@ -120,21 +119,21 @@ class EmptyWishListWidget extends StatelessWidget {
           Image.asset(
             'assets/images/empty_wishlist.png',
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Text(
+          const Text(
             'Oops! Your Wishlist is Empty',
             style: SolhTextStyles.QS_body_1_bold,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Text(
+          const Text(
             'Explore more and shortlist some items',
             style: SolhTextStyles.QS_caption,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           SolhGreenMiniButton(

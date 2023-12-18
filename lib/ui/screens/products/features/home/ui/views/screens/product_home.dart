@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bottom-navigation/profile_icon.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
@@ -54,7 +53,9 @@ class _ProductsHomeState extends State<ProductsHome> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: ProductsAppBar(
-          title: const ProfileIcon(),
+          // title: const ProfileIcon(),
+          title: const Text("Products", style: SolhTextStyles.QS_body_1_bold),
+          isLandingScreen: false,
           popupMenu: getMorePopMenu(),
         ),
         bottomNavigationBar: Obx(() =>

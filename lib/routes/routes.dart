@@ -517,8 +517,7 @@ class RouteGenerator {
             settings: const RouteSettings(name: AppRoutes.productDetailScreen));
       case AppRoutes.checkoutScreen:
         return MaterialPageRoute(
-            builder: ((context) =>
-                CheckoutScreen(args: args as Map<String, dynamic>)),
+            builder: ((context) => const CheckoutScreen()),
             settings: const RouteSettings(name: AppRoutes.checkoutScreen));
       case AppRoutes.productList:
         return MaterialPageRoute(

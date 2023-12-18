@@ -388,10 +388,15 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
 
 class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ProductsAppBar(
-      {super.key, this.enableWishlist = true, this.title, this.popupMenu});
+      {super.key,
+      this.enableWishlist = true,
+      this.title,
+      this.popupMenu,
+      required this.isLandingScreen});
   final bool enableWishlist;
   final Widget? popupMenu;
   final Widget? title;
+  final bool isLandingScreen;
   @override
   Widget build(BuildContext context) {
     final CartController cartController = Get.find<CartController>();
@@ -425,20 +430,23 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
       elevation: 0.5,
       foregroundColor: Colors.white,
-      leading: Row(
+      title: Row(
         children: [
-          const SizedBox(width: 15),
-          title ??
-              IconButton(
-                icon: const Icon(
-                  CupertinoIcons.back,
-                  color: SolhColors.black,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-          const SizedBox()
+          title!,
+          const SizedBox(),
         ],
       ),
+      leadingWidth: isLandingScreen ? 0 : 60,
+      leading: !isLandingScreen
+          ? InkWell(
+              onTap: () => Navigator.pop(context),
+              child: const Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: SolhColors.black,
+                size: 24,
+              ),
+            )
+          : null,
     );
   }
 

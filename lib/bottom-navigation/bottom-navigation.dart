@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,7 +26,6 @@ import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
-import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -42,6 +42,7 @@ import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
 import '../routes/routes.dart';
+import '../ui/screens/my-goals/my-goals-screen.dart';
 import '../widgets_constants/constants/org_only_setting.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
@@ -149,7 +150,8 @@ class _MasterScreen2State extends State<MasterScreen2>
       const HomeScreen(),
       const Journaling(),
       GetHelpScreen(),
-      const ProductsHome(),
+      // const CourseHomePage(),
+      const MyGoalsScreen(),
       // MyProfileScreenV2()
     ]);
     super.initState();
@@ -569,17 +571,23 @@ class _MasterScreen2State extends State<MasterScreen2>
                     icon:
                         SvgPicture.asset('assets/images/groal tab vector.svg'),
                     id: 'my_goal',
-                    title: 'PRODUCTS',
+                    title: 'Courses',
                     child: Obx(() => SvgPicture.asset(
-                        'assets/images/product_icon.svg',
+                          'assets/images/groal tab vector.svg',
+                          color:
+                              bottomNavigatorController.activeIndex.value == 3
+                                  ? SolhColors.primary_green
+                                  : Colors.grey.shade600,
+                          /* 'assets/images/course_icon.svg',
                         height: 20,
                         colorFilter: ColorFilter.mode(
                             bottomNavigatorController.activeIndex.value == 3
                                 ? SolhColors.primary_green
                                 : Colors.grey.shade600,
-                            BlendMode.srcIn))),
+                            BlendMode.srcIn) */
+                        )),
                   ),
-                  label: "Products".tr,
+                  label: "My Goals".tr,
                 ),
               ],
             ),
@@ -620,7 +628,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                         ? Text(
                             "More".tr,
                             style: GoogleFonts.quicksand(
-                                textStyle: TextStyle(fontSize: 12)),
+                                textStyle: const TextStyle(fontSize: 12)),
                           )
                         : const LiveBlink();
                   }),
@@ -861,7 +869,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ],
                         ),
                       ),
-                      InkWell(
+                      /* InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.myGoalScreen);
                         },
@@ -872,6 +880,22 @@ class _MasterScreen2State extends State<MasterScreen2>
                                 icon: 'assets/images/goals_icon.svg'),
                             Text(
                               'My Goals'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ), */
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.productsHome);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/product_svg_red.svg'),
+                            Text(
+                              "Products".tr,
                               style: SolhTextStyles.QS_cap_semi,
                             )
                           ],
