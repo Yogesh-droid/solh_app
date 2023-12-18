@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
@@ -35,6 +37,7 @@ class ProfileController extends GetxController {
             orgColor3.value = myProfileModel.value.body!.userOrganisations!
                 .first.organisation!.themeColors![2];
           }
+          log('orgColor1 ${orgColor1.value}, orgColor2 ${orgColor2.value}, orgColor3 ${orgColor3.value} ');
           DefaultOrg.setDefaultOrg(myProfileModel
               .value.body!.userOrganisations!.first.organisation!.sId!);
         } else {

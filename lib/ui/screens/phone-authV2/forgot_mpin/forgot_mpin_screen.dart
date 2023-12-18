@@ -103,30 +103,45 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                     Obx(() {
                       return phoneAuthController.isVerifyingOtp.value
                           ? const ButtonLoadingAnimation()
-                          : SolhGreenButton(
-                              onPressed: () async {
-                                if (otpController.text.trim() != '') {
-                                  Map<String, dynamic> response =
-                                      await phoneAuthController.verifyCode(
-                                          phoneAuthController.countryCode,
-                                          phoneAuthController.countryCode +
-                                              phoneAuthController
-                                                  .phoneNumber.text,
-                                          otpController.text);
+                          : (phoneAuthController.isOtpVerified.value
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Verified',
+                                      style: SolhTextStyles.CTA.copyWith(
+                                          color: SolhColors.primary_green),
+                                    ),
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      color: SolhColors.primary_green,
+                                    )
+                                  ],
+                                )
+                              : SolhGreenButton(
+                                  onPressed: () async {
+                                    if (otpController.text.trim() != '') {
+                                      Map<String, dynamic> response =
+                                          await phoneAuthController.verifyCode(
+                                              phoneAuthController.countryCode,
+                                              phoneAuthController.countryCode +
+                                                  phoneAuthController
+                                                      .phoneNumber.text,
+                                              otpController.text);
 
-                                  phoneAuthController.isOtpVerified.value =
-                                      response['success'];
-                                  Utility.showToast(
-                                      response['message'].toString());
-                                } else {
-                                  Utility.showToast(
-                                      'OTP field can\'t be empty');
-                                }
-                              },
-                              width: 70.w,
-                              child: Text('Verify OTP',
-                                  style: SolhTextStyles.CTA
-                                      .copyWith(color: SolhColors.white)));
+                                      phoneAuthController.isOtpVerified.value =
+                                          response['success'];
+                                      Utility.showToast(
+                                          response['message'].toString());
+                                    } else {
+                                      Utility.showToast(
+                                          'OTP field can\'t be empty');
+                                    }
+                                  },
+                                  width: 70.w,
+                                  child: Text('Verify OTP',
+                                      style: SolhTextStyles.CTA
+                                          .copyWith(color: SolhColors.white))));
                     }),
                   ],
                 ),
@@ -142,6 +157,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 ),
                 Obx(() {
                   return PinCodeTextField(
+                    obscureText: true,
                     enabled: phoneAuthController.isOtpVerified.value,
                     controller: newPinController,
                     mainAxisAlignment: MainAxisAlignment.start,

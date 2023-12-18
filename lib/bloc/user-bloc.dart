@@ -83,10 +83,9 @@ class UserBlocNetwork {
     var response = await Network.makeGetRequestWithToken(
             "${APIConstants.api}/api/is-profile-created")
         .onError((error, stackTrace) {
-      print("error: " + error.toString());
       return {"isProfileCreated": false};
     });
-    print("is user profile created: " + response.toString());
+
     if (response.isNotEmpty) {
       if (response['success'] != null) {
         return response['success'];

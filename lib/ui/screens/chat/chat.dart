@@ -164,22 +164,19 @@ class _ChatScreenState extends State<ChatScreen> {
       },
       child: SafeArea(
         child: ScaffoldWithBackgroundArt(
-          body: Container(
+          body: SizedBox(
             height: MediaQuery.of(context).size.height,
             width: double.maxFinite,
             child: Column(
               children: [
-                InkWell(
-                  onTap: () {},
-                  child: ChatAppbar(
-                    imageUrl: widget._imageUrl,
-                    name: widget._name,
-                    sId: widget._sId,
-                    nowchat: widget._nowChat,
-                    isAnonChat: widget._isAnonChat,
-                  ),
+                ChatAppbar(
+                  imageUrl: widget._imageUrl,
+                  name: widget._name,
+                  sId: widget._sId,
+                  nowchat: widget._nowChat,
+                  isAnonChat: widget._isAnonChat,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 widget._isAnonChat &&
@@ -210,7 +207,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                           )
                         : Container()),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Expanded(
@@ -220,7 +217,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 Stack(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
                     Obx(() {
@@ -228,8 +225,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           _controller.istyping == true
-                              ? Padding(
-                                  padding: const EdgeInsets.symmetric(
+                              ? const Padding(
+                                  padding: EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 0),
                                   child: TypingIndicator(),
                                 )
@@ -289,7 +286,7 @@ class ChatAppbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+      decoration: const BoxDecoration(color: Colors.white, boxShadow: [
         BoxShadow(
             offset: Offset(0, 2),
             blurRadius: 2,
@@ -305,6 +302,8 @@ class ChatAppbar extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (() async {
+                    print(
+                        'fromIDontKnow ${Get.find<ChatListController>().fromIDontKnow} ,firstMsgSent ${_controller.firstMsgSent} _nowChat $_nowChat,_isAnonChat $_isAnonChat, ');
                     if (Get.find<ChatListController>().fromIDontKnow &&
                         _controller.firstMsgSent == false) {
                       Navigator.of(context).pop();
@@ -324,16 +323,18 @@ class ChatAppbar extends StatelessWidget {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       }
+                      Navigator.of(context).pop();
                       // Navigator.of(context).pop();
                     }
+
                     _controller.firstMsgSent = false;
                   }),
-                  child: Container(
+                  child: const SizedBox(
                     width: 50,
                     child: Icon(Icons.arrow_back_ios_new),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 CircleAvatar(
@@ -342,7 +343,7 @@ class ChatAppbar extends StatelessWidget {
                       ? 'https://180dc.org/wp-content/uploads/2016/08/default-profile.png'
                       : _imageUrl),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 6,
                 ),
                 SizedBox(
@@ -382,8 +383,8 @@ class ChatAppbar extends StatelessWidget {
                 ? Container()
                 : Obx(
                     () => _controller.isVideoConnecting.value
-                        ? Padding(
-                            padding: const EdgeInsets.only(right: 24),
+                        ? const Padding(
+                            padding: EdgeInsets.only(right: 24),
                             child: Icon(
                               Icons.video_call,
                               size: 34,
@@ -421,8 +422,8 @@ class ChatAppbar extends StatelessWidget {
                                         ))));
                               }
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.only(right: 24),
+                            child: const Padding(
+                              padding: EdgeInsets.only(right: 24),
                               child: Icon(
                                 Icons.video_call_outlined,
                                 size: 34,
@@ -475,7 +476,7 @@ class _MessageBoxState extends State<MessageBox> {
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
-      margin: EdgeInsets.only(bottom: 5),
+      margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
           color: SolhColors.white,
           border: Border.all(
@@ -499,7 +500,7 @@ class _MessageBoxState extends State<MessageBox> {
                   _controller.isTypingEpochTime.value =
                       DateTime.now().millisecondsSinceEpoch;
 
-                  Future.delayed(Duration(seconds: 2), (() {
+                  Future.delayed(const Duration(seconds: 2), (() {
                     if (DateTime.now().millisecondsSinceEpoch -
                             _controller.isTypingEpochTime.value >=
                         2000) {
@@ -511,13 +512,15 @@ class _MessageBoxState extends State<MessageBox> {
                 controller: _controller.messageEditingController,
                 decoration: InputDecoration(
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: SolhColors.primary_green)),
+                      borderSide:
+                          const BorderSide(color: SolhColors.primary_green)),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide(color: SolhColors.primary_green)),
+                      borderSide:
+                          const BorderSide(color: SolhColors.primary_green)),
                   // border: InputBorder.none,
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -543,7 +546,7 @@ class _MessageBoxState extends State<MessageBox> {
                       }
                       chatListController.chatListController(1);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.send,
                       color: SolhColors.primary_green,
                     ),
@@ -611,7 +614,7 @@ class _MessageListState extends State<MessageList> {
             )
           : Align(
               alignment: Alignment.bottomCenter,
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
                     shrinkWrap: true,
@@ -665,7 +668,7 @@ class MessageTile extends StatelessWidget {
         '_author ${profileController.myProfileModel.value.body!.user!.sId!} ${_authorId} ${_message}');
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.7,
         child: Row(
           mainAxisAlignment: _authorId ==
@@ -674,13 +677,13 @@ class MessageTile extends StatelessWidget {
               : MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: _authorId ==
                         profileController.myProfileModel.value.body!.user!.sId!
                     ? Colors.grey.shade200
-                    : Color(0xFFEFF9F6),
+                    : const Color(0xFFEFF9F6),
               ),
               child: Container(
                 constraints: BoxConstraints(
@@ -709,17 +712,18 @@ class MessageTile extends StatelessWidget {
                       },
                       child: ReadMoreText(
                         _message,
-                        style: GoogleFonts.signika(color: Color(0xff666666)),
+                        style:
+                            GoogleFonts.signika(color: const Color(0xff666666)),
                         trimLines: 8,
                         colorClickableText: Colors.pink,
                         trimCollapsedText: 'Show more',
                         trimExpandedText: 'Show less',
                         trimMode: TrimMode.Line,
-                        moreStyle: TextStyle(
+                        moreStyle: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: SolhColors.primary_green),
-                        lessStyle: TextStyle(
+                        lessStyle: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: SolhColors.primary_green),
@@ -770,7 +774,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return PageView(
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       controller: chatController.pageController,
       children: [
         RatingBottomSheetChild1(
@@ -793,10 +797,10 @@ class RatingBottomSheetChild1 extends StatelessWidget {
   final ChatAnonController chatAnonController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 100.w,
       child: DecoratedBox(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
@@ -817,7 +821,7 @@ class RatingBottomSheetChild1 extends StatelessWidget {
           SizedBox(
             height: 2.h,
           ),
-          Divider(
+          const Divider(
             color: SolhColors.white,
           ),
           SizedBox(
@@ -848,7 +852,7 @@ class RatingBottomSheetChild1 extends StatelessWidget {
               ),
               Obx(() {
                 return chatAnonController.isPostingFeedback.value
-                    ? ButtonLoadingAnimation(
+                    ? const ButtonLoadingAnimation(
                         ballColor: SolhColors.white,
                         ballSizeLowerBound: 3,
                         ballSizeUpperBound: 8,
@@ -856,9 +860,9 @@ class RatingBottomSheetChild1 extends StatelessWidget {
                     : InkWell(
                         onTap: () => chatController.pageController
                             .animateToPage(1,
-                                duration: Duration(milliseconds: 300),
+                                duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeIn),
-                        child: Container(
+                        child: SizedBox(
                           height: 48,
                           width: 120,
                           child: Center(
@@ -914,7 +918,7 @@ class RatingStars extends StatelessWidget {
                             SolhSnackbar.success(
                                 '', 'Thank you. Rating recorded successfully');
                             chatController.pageController.animateToPage(2,
-                                duration: Duration(milliseconds: 300),
+                                duration: const Duration(milliseconds: 300),
                                 curve: Curves.easeIn);
                           } else {
                             SolhSnackbar.error('Error', 'Something went wrong');
@@ -933,13 +937,13 @@ class RatingStars extends StatelessWidget {
 Widget getStart(
     {required ChatController chatController, required int starvalue}) {
   return Container(
-    padding: EdgeInsets.all(6),
-    decoration:
-        BoxDecoration(color: SolhColors.greenShade1, shape: BoxShape.circle),
+    padding: const EdgeInsets.all(6),
+    decoration: const BoxDecoration(
+        color: SolhColors.greenShade1, shape: BoxShape.circle),
     child: Icon(
       chatController.selectedStar < starvalue ? Icons.star_border : Icons.star,
       size: 10.w,
-      color: Color(0xfff0ba00),
+      color: const Color(0xfff0ba00),
     ),
   );
 }
@@ -972,7 +976,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
           SizedBox(
             height: 2.h,
           ),
-          Divider(
+          const Divider(
             color: SolhColors.grey_3,
           ),
           Padding(
@@ -1003,7 +1007,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                     hintText: 'Write here'.tr,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: SolhColors.grey_3,
                         width: 1.0,
                       ),
@@ -1042,7 +1046,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                   },
                   child: Obx(() {
                     return chatAnonController.isPostingFeedback.value
-                        ? ButtonLoadingAnimation(
+                        ? const ButtonLoadingAnimation(
                             ballColor: SolhColors.white,
                             ballSizeLowerBound: 3,
                             ballSizeUpperBound: 8,
@@ -1066,7 +1070,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                         Navigator.pushNamedAndRemoveUntil(
                             context, AppRoutes.master, (route) => false);
                       },
-                      child: Container(
+                      child: SizedBox(
                         height: 40,
                         width: 120,
                         child: Center(
@@ -1094,7 +1098,7 @@ Future<bool> _onWillPop(context, sId) async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          actionsPadding: EdgeInsets.all(8.0),
+          actionsPadding: const EdgeInsets.all(8.0),
           content: Text(
             'Do you want to end the chat?'.tr,
             style: SolhTextStyles.JournalingDescriptionText,

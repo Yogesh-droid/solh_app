@@ -288,19 +288,21 @@ Widget getOtherOrgs(
                           Get.find<DiscoverGroupController>()
                               .disableNextPageSetting = true;
 
-                          Get.find<DiscoverGroupController>().getJoinedGroups();
+                          await Get.find<DiscoverGroupController>()
+                              .getJoinedGroups();
                           Get.find<DiscoverGroupController>()
                               .disableNextPageSetting = false;
                           print('###' * 30);
 
-                          Get.find<DiscoverGroupController>()
+                          await Get.find<DiscoverGroupController>()
                               .getHomePageGroup();
-                          Get.find<DiscoverGroupController>()
+                          await Get.find<DiscoverGroupController>()
                               .getDiscoverGroups();
 
-                          Get.find<DiscoverGroupController>()
+                          await Get.find<DiscoverGroupController>()
                               .getCreatedGroups();
-                          Get.find<PsychologyTestController>().getTestList();
+                          await Get.find<PsychologyTestController>()
+                              .getTestList();
 
                           WidgetsBinding.instance
                               .addPostFrameCallback((timeStamp) {
