@@ -358,43 +358,54 @@ class GetProductStatsAndImage extends StatelessWidget {
                 height: 5,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Html(
-                      data: productDetailsModel.product!.shortDescription ??
-                          productDetailsModel.product!.description,
-                      shrinkWrap: true,
-                      style: {
-                        "body": Style(
-                            padding: HtmlPaddings.zero, margin: Margins.zero),
-                        "p": Style(
-                          maxLines: 1,
-                          textOverflow: TextOverflow.ellipsis,
-                          fontSize: FontSize(12),
-                        )
-                      }),
+                  Expanded(
+                    flex: 2,
+                    child: Html(
+                        data: productDetailsModel.product!.shortDescription ??
+                            productDetailsModel.product!.description,
+                        shrinkWrap: true,
+                        style: {
+                          "body": Style(
+                              padding: HtmlPaddings.zero, margin: Margins.zero),
+                          "p": Style(
+                            maxLines: 1,
+                            textOverflow: TextOverflow.ellipsis,
+                            fontSize: FontSize(12),
+                          )
+                        }),
+                  ),
                   const Spacer(),
-                  Obx(() => cartController.isCartLoading.value ||
-                          addToCartController.addingToCart.value
-                      ? const DeactivatedCartBtn()
-                      : productDetailController
-                                  .productDetail.value.product!.inCartCount! >
-                              0
-                          ? CartCountBtn(
-                              decreaseCartCount: () => onChangeCartCount(false),
-                              increaseCartCount: () => onChangeCartCount(true),
-                              itemInCart: productDetailController.productDetail
-                                      .value.product!.inCartCount ??
-                                  0)
-                          : SolhGreenButton(
-                              height: 30,
-                              width: 50,
-                              onPressed: () => onChangeCartCount(true),
-                              child: Text(
-                                'Add',
-                                style: GoogleFonts.quicksand(
-                                    textStyle: SolhTextStyles.CTA,
-                                    color: SolhColors.white),
-                              )))
+                  Expanded(
+                      flex: 1,
+                      child: Obx(() => cartController.isCartLoading.value ||
+                              addToCartController.addingToCart.value
+                          ? const DeactivatedCartBtn()
+                          : productDetailController.productDetail.value.product!
+                                      .inCartCount! >
+                                  0
+                              ? CartCountBtn(
+                                  decreaseCartCount: () =>
+                                      onChangeCartCount(false),
+                                  increaseCartCount: () =>
+                                      onChangeCartCount(true),
+                                  itemInCart: productDetailController
+                                          .productDetail
+                                          .value
+                                          .product!
+                                          .inCartCount ??
+                                      0)
+                              : SolhGreenButton(
+                                  height: 30,
+                                  width: 50,
+                                  onPressed: () => onChangeCartCount(true),
+                                  child: Text(
+                                    'Add',
+                                    style: GoogleFonts.quicksand(
+                                        textStyle: SolhTextStyles.CTA,
+                                        color: SolhColors.white),
+                                  ))))
                 ],
               ),
               const SizedBox(
