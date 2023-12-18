@@ -40,40 +40,34 @@ import 'ui/screens/products/core/di/produts_di_imports.dart';
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   Stripe.publishableKey = dotenv.env['STRIPE_PK'] ?? '';
   setup();
 
-  productControllerSetup();
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // productControllerSetup();
+
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  LocalNotification.initOneSignal();
+  // SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // LocalNotification.initOneSignal();
 
-  Prefs.init();
-  await FirebaseAnalytics.instance.logBeginCheckout();
-  Get.put(SearchMarketController());
-  Get.put(ProfileController());
-  Get.put(AlliedController());
-  Get.put(HomeController());
-  Get.put(BottomNavigatorController());
-  Get.put(LiveStreamController());
-  Get.put(ConsultantController());
-  Get.put(BookAppointmentController());
+  // Prefs.init();
+  // await FirebaseAnalytics.instance.logBeginCheckout();
 
-  bool? newUser = await isNewUser();
-  Map<String, dynamic> initialAppData = await initApp();
-  bool isProfileCreated = await initialAppData["isProfileCreated"] && !newUser;
+  // bool? newUser = await isNewUser();
+  // Map<String, dynamic> initialAppData = await initApp();
+  bool isProfileCreated = false;
+  // await initialAppData["isProfileCreated"] && !newUser;
 
-  await DefaultOrg.getDefaultOrg();
-  await OrgOnlySetting.getOrgOnly();
+  // await DefaultOrg.getDefaultOrg();
+  // await OrgOnlySetting.getOrgOnly();
 
-  runApp(RestartWidget(child: SolhApp(isProfileCreated: isProfileCreated)));
+  runApp(SolhApp(isProfileCreated: isProfileCreated));
 
-  FlutterNativeSplash.remove();
+  // FlutterNativeSplash.remove();
 }
 
 // ignore: must_be_immutable
@@ -89,6 +83,14 @@ class _SolhAppState extends State<SolhApp> {
   @override
   void initState() {
     //checkConnectivity();
+    Get.put(SearchMarketController());
+    Get.put(ProfileController());
+    Get.put(AlliedController());
+    Get.put(HomeController());
+    Get.put(BottomNavigatorController());
+    Get.put(LiveStreamController());
+    Get.put(ConsultantController());
+    Get.put(BookAppointmentController());
     super.initState();
   }
 

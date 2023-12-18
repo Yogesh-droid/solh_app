@@ -21,21 +21,21 @@ class SessionCookie {
     Map<String, dynamic>? cachedJson =
         await SolhCacheManager.instance.readJsonCache(key: "sessionCookie");
     print("createSessionCookie running $cachedJson");
-    if (cachedJson != null && cachedJson["newProfile"] == false) {
+    if (false) {
       response = cachedJson;
       userBlocNetwork.updateSessionCookie =
           response["details"]["sessionCookie"];
       print('Cached json used');
     } else {
-      debugPrint("createSessionCookieeee ${{
-        "deviceId": fcmToken ?? '',
-        "onesignal_device_id": onesignalId,
-        "deviceType": deviceType,
-        "user_country": coutry ?? '',
-        "utm_compaign": utm_compaign ?? '',
-        "utm_source": utm_source ?? '',
-        "utm_medium": utm_medium ?? ''
-      }}");
+      // debugPrint("createSessionCookieeee ${{
+      //   "deviceId": fcmToken ?? '',
+      //   "onesignal_device_id": onesignalId,
+      //   "deviceType": deviceType,
+      //   "user_country": coutry ?? '',
+      //   "utm_compaign": utm_compaign ?? '',
+      //   "utm_source": utm_source ?? '',
+      //   "utm_medium": utm_medium ?? ''
+      // }}");
       response = await Network.makeHttpPostRequest(
           url: "${APIConstants.api}/api/create-session-cookie-v2",
           body: {
@@ -46,7 +46,7 @@ class SessionCookie {
             "user_country": coutry ?? '',
             "utm_compaign": utm_compaign ?? '',
             "utm_source": utm_source ?? '',
-            "utm_medium": utm_medium ?? ''
+            "utm_medium": utm_medium ?? '',
           });
       print("Running${response}");
       if (response["success"] != null) {
