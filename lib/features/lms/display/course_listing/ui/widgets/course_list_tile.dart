@@ -66,9 +66,13 @@ class CourseListTile extends StatelessWidget {
                   const SizedBox(height: 5),
                   // Instructor Name
                   Row(children: [
-                    const Icon(
-                      Icons.person_2_outlined,
-                      color: SolhColors.red_shade_2,
+                    const Padding(
+                      padding: EdgeInsets.only(right: 3, bottom: 3, top: 3),
+                      child: Icon(
+                        Icons.person_2_outlined,
+                        size: 12,
+                        color: SolhColors.red_shade_2,
+                      ),
                     ),
                     Text(
                       instructorName ?? '',
@@ -84,7 +88,8 @@ class CourseListTile extends StatelessWidget {
                       if (timeLength != null)
                         Row(children: [
                           const Padding(
-                            padding: EdgeInsets.all(3),
+                            padding:
+                                EdgeInsets.only(right: 3, top: 3, bottom: 3),
                             child: Icon(Icons.access_time,
                                 color: SolhColors.primary_green, size: 12),
                           ),
