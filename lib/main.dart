@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -12,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart' as sizer;
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
@@ -20,6 +22,7 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/core/di/get_it_imports.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/cache_manager/cache_manager.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
@@ -45,29 +48,36 @@ void main() async {
   Stripe.publishableKey = dotenv.env['STRIPE_PK'] ?? '';
   setup();
 
-  // productControllerSetup();
+  productControllerSetup();
 
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // SystemChrome.setPreferredOrientations(
-  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  // LocalNotification.initOneSignal();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  LocalNotification.initOneSignal();
 
-  // Prefs.init();
+  await Prefs.init();
   // await FirebaseAnalytics.instance.logBeginCheckout();
+  var instance = await SharedPreferences.getInstance();
+  String? cachedJson = await instance.getString('sessionCookie');
 
   // bool? newUser = await isNewUser();
   // Map<String, dynamic> initialAppData = await initApp();
-  bool isProfileCreated = false;
-  // await initialAppData["isProfileCreated"] && !newUser;
+  bool isProfileCreated = cachedJson != null ? true : false;
 
-  // await DefaultOrg.getDefaultOrg();
-  // await OrgOnlySetting.getOrgOnly();
+  // await initialAppData["isProfileCreated"] && !newUser;
+  if (isProfileCreated) {
+    userBlocNetwork.updateSessionCookie =
+        jsonDecode(cachedJson)['details']['sessionCookie'];
+  }
+  log('$isProfileCreated ,${cachedJson}', name: 'isProfileCreated');
+  await DefaultOrg.getDefaultOrg();
+  await OrgOnlySetting.getOrgOnly();
 
   runApp(SolhApp(isProfileCreated: isProfileCreated));
 
-  // FlutterNativeSplash.remove();
+  FlutterNativeSplash.remove();
 }
 
 // ignore: must_be_immutable
