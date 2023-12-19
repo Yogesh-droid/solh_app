@@ -67,6 +67,7 @@ class EnterMpinScreen extends StatelessWidget {
                   width: 20,
                 );
               },
+              keyboardType: TextInputType.number,
               length: 4,
               pinTheme: PinTheme(
                   inactiveColor: SolhColors.grey_2,
