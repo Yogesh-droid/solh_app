@@ -47,6 +47,7 @@ import '../widgets_constants/constants/org_only_setting.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
 import 'bottom_navigator_controller.dart';
+import '../features/lms/display/course_home/ui/screens/course_homepage.dart';
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({super.key});
@@ -150,8 +151,8 @@ class _MasterScreen2State extends State<MasterScreen2>
       const HomeScreen(),
       const Journaling(),
       GetHelpScreen(),
-      // const CourseHomePage(),
-      const MyGoalsScreen(),
+      const CourseHomePage(),
+      // const MyGoalsScreen(),
       // MyProfileScreenV2()
     ]);
     super.initState();
@@ -565,30 +566,29 @@ class _MasterScreen2State extends State<MasterScreen2>
                 ),
                 getHelpItem(),
                 BottomNavigationBarItem(
-                  icon: GuideToorWidget(
-                    description:
-                        'Set Goals, manage them, and accomplish what you always wanted to. Celebrate milestones, and stay locked onto your goals for a more fulfilling life.',
-                    icon:
-                        SvgPicture.asset('assets/images/groal tab vector.svg'),
-                    id: 'my_goal',
-                    title: 'Courses',
-                    child: Obx(() => SvgPicture.asset(
-                          'assets/images/groal tab vector.svg',
+                    icon: GuideToorWidget(
+                      description:
+                          'Set Goals, manage them, and accomplish what you always wanted to. Celebrate milestones, and stay locked onto your goals for a more fulfilling life.',
+                      icon: SvgPicture.asset(
+                          'assets/images/groal tab vector.svg'),
+                      id: 'my_goal',
+                      title: 'Courses',
+                      child: Obx(() => SvgPicture.asset(
+                          /* 'assets/images/groal tab vector.svg',
                           color:
                               bottomNavigatorController.activeIndex.value == 3
                                   ? SolhColors.primary_green
+                                  : Colors.grey.shade600, */
+                          'assets/images/course_icon.svg',
+                          height: 20,
+                          colorFilter: ColorFilter.mode(
+                              bottomNavigatorController.activeIndex.value == 3
+                                  ? SolhColors.primary_green
                                   : Colors.grey.shade600,
-                          /* 'assets/images/course_icon.svg',
-                        height: 20,
-                        colorFilter: ColorFilter.mode(
-                            bottomNavigatorController.activeIndex.value == 3
-                                ? SolhColors.primary_green
-                                : Colors.grey.shade600,
-                            BlendMode.srcIn) */
-                        )),
-                  ),
-                  label: "My Goals".tr,
-                ),
+                              BlendMode.srcIn))),
+                    ),
+                    // label: "My Goals".tr,
+                    label: "Courses".tr),
               ],
             ),
           )),

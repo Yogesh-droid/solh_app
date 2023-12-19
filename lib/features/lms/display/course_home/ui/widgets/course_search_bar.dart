@@ -7,13 +7,20 @@ class CourseSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 44,
+      height: 54,
+      padding: const EdgeInsets.all(8),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
           color: SolhColors.light_Bg, borderRadius: BorderRadius.circular(22)),
-      child: Row(children: [
-        Text('Search for mental wellness courses'),
-      ]),
+      child: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Search for mental wellness courses'),
+            Icon(
+              Icons.search,
+              color: SolhColors.primary_green,
+            )
+          ]),
     );
   }
 }

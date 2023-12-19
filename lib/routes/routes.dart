@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
@@ -131,6 +132,7 @@ class AppRoutes {
   static const String enterMpinScreen = '/enterMpinScreen';
   static const String createMpinScreen = '/createMpinScreen';
   static const String forgotMpinScreen = '/forgotMpinScreen';
+  static const String courseListScreen = '/courseListScree';
 
   /// Group related  ///
   ///
@@ -567,8 +569,15 @@ class RouteGenerator {
             settings: const RouteSettings(name: AppRoutes.changeMpinScreen));
       case AppRoutes.forgotMpinScreen:
         return MaterialPageRoute(
-            builder: ((context) => ForgotMpinScreen()),
+            builder: ((context) => const ForgotMpinScreen()),
             settings: const RouteSettings(name: AppRoutes.forgotMpinScreen));
+
+      case AppRoutes.courseListScreen:
+        return MaterialPageRoute(
+            builder: ((context) => CourseListScreen(
+                  args: args as Map<String, dynamic>,
+                )),
+            settings: const RouteSettings(name: AppRoutes.courseListScreen));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

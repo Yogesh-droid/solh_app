@@ -14,7 +14,6 @@ class FeatureProductsRepoImpl extends FeatureProductsRepo {
           await Network.makeGetRequestWithToken(requestParams.url);
       if (response['success']) {
         final value = FeatureProductsModel.fromJson(response);
-        print(value);
         return DataSuccess(data: value.products);
       } else {
         return DataError(
