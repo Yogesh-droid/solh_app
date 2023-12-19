@@ -145,6 +145,7 @@ class _OtpFieldState extends State<OtpField> {
       pinTheme: PinTheme(
           inactiveColor: SolhColors.grey_2,
           borderWidth: 1,
+          borderRadius: BorderRadius.circular(8),
           activeColor: SolhColors.primary_green,
           shape: PinCodeFieldShape.box,
           selectedColor: SolhColors.primary_green),
@@ -189,9 +190,10 @@ class _OtpFieldState extends State<OtpField> {
           log(isSessionCookieCreated.toString(),
               name: "isSessionCookieCreatedxxxx");
           ProfileController profileController = Get.put(ProfileController());
-          await profileController.getMyProfile();
+
           var x = await userBlocNetwork.isProfileCreated();
-          log(x.toString(), name: 'userBlocNetwork.isProfileCreated()');
+
+          log(x.toString(), name: 'userBlocNetwork  isProfileCreated');
           bool isProfileCreated = isSessionCookieCreated != null
               ? await userBlocNetwork.isProfileCreated() &&
                   !isSessionCookieCreated
@@ -199,8 +201,10 @@ class _OtpFieldState extends State<OtpField> {
 
           if (isProfileCreated) {
             bool response = await phoneAuthController.isMpinSet(widget.phone);
-            log(context.mounted.toString());
+            log(response.toString(), name: 'isPinSet');
             if (response) {
+              // await profileController.getMyProfile();
+              log('got the profile');
               if (context.mounted) {
                 Navigator.pushNamed(
                   context,
@@ -227,8 +231,10 @@ class _OtpFieldState extends State<OtpField> {
             Navigator.pushNamed(context, AppRoutes.nameField);
           }
         } else {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(map['message'])));
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(map['message'])));
+          }
         }
 
         /*  await FirebaseNetwork.signInWithPhoneCredential(_phoneAuthCredential)

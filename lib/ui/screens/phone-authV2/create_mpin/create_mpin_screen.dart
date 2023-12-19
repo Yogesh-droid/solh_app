@@ -23,6 +23,9 @@ class CreateMpinScren extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScaffoldWithBackgroundArt(
       appBar: SolhAppBarTanasparentOnlyBackButton(
+        onSkip: () => Navigator.of(context).pushNamed(AppRoutes.master),
+        skipButtonStyle:
+            SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
         onBackButton: () => Navigator.of(context).pop(),
       ),
       body: Padding(
@@ -85,6 +88,7 @@ class CreateMpinScren extends StatelessWidget {
                 height: 10,
               ),
               PinCodeTextField(
+                obscureText: true,
                 controller: pin2Controller,
                 mainAxisAlignment: MainAxisAlignment.start,
                 validator: (value) {

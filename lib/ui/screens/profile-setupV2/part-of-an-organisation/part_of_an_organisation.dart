@@ -45,7 +45,9 @@ class PartOfAnOrganisationPage extends StatelessWidget {
                     .toList())
               });
               if (response) {
-                Navigator.pushNamed(context, AppRoutes.createMpinScreen);
+                if (context.mounted) {
+                  Navigator.pushNamed(context, AppRoutes.createMpinScreen);
+                }
               }
             } else {
               SolhSnackbar.error(
@@ -57,7 +59,8 @@ class PartOfAnOrganisationPage extends StatelessWidget {
       appBar: SolhAppBarTanasparentOnlyBackButton(
           backButtonColor: SolhColors.white,
           skipButtonStyle: SolhTextStyles.NormalTextWhiteS14W6,
-          onSkip: () => Navigator.pushNamed(context, AppRoutes.master),
+          onSkip: () =>
+              Navigator.pushNamed(context, AppRoutes.createMpinScreen),
           onBackButton: () => Navigator.of(context).pop()),
       body: Padding(
         padding: const EdgeInsets.symmetric(

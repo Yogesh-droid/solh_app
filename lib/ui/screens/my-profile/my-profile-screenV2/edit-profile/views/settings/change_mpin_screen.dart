@@ -188,7 +188,6 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                   return null;
                 },
                 appContext: context,
-                obscureText: true,
                 length: 4,
                 keyboardType: TextInputType.number,
                 pinTheme: PinTheme(

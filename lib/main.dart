@@ -71,7 +71,7 @@ void main() async {
     userBlocNetwork.updateSessionCookie =
         jsonDecode(cachedJson)['details']['sessionCookie'];
   }
-  log('$isProfileCreated ,${cachedJson}', name: 'isProfileCreated');
+
   await DefaultOrg.getDefaultOrg();
   await OrgOnlySetting.getOrgOnly();
 
