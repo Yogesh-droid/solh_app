@@ -40,7 +40,7 @@ class EnterMpinScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Login With mPIN',
+              'Login with mPIN',
               style: SolhTextStyles.Large2BlackTextS24W7,
             ),
             Text(
