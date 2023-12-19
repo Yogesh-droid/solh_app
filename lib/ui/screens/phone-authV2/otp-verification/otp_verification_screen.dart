@@ -17,6 +17,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/services/user/session-cookie.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -360,6 +361,8 @@ class TimerWidget extends StatefulWidget {
 class _TimerWidgetState extends State<TimerWidget> {
   int time = 60;
 
+  PhoneAuthController phoneAuthController = Get.find();
+
   int timeManager() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       time--;
@@ -386,9 +389,22 @@ class _TimerWidgetState extends State<TimerWidget> {
           widget.phoneNo ?? '',
         );
       },
-      child: Text(
-        time == 0 ? 'Resend code' : time.toString(),
-        style: SolhTextStyles.SmallTextGreen1S12W5,
+      child: InkWell(
+        onTap: () async {
+          (bool, String) response = await phoneAuthController.login(
+              phoneAuthController.countryCode,
+              phoneAuthController.phoneNumber.text);
+
+          if (response.$1) {
+            Utility.showToast('OTP resend');
+          } else {
+            Utility.showToast(response.$2);
+          }
+        },
+        child: Text(
+          time == 0 ? 'Resend code' : time.toString(),
+          style: SolhTextStyles.SmallTextGreen1S12W5,
+        ),
       ),
     );
   }

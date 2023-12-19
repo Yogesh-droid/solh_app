@@ -7,6 +7,7 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_screen.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -93,6 +94,12 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                       borderRadius: BorderRadius.circular(8),
                       shape: PinCodeFieldShape.box,
                       selectedColor: SolhColors.primary_green),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ResendButton(),
+                  ],
                 ),
                 const SizedBox(
                   height: 32,

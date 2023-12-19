@@ -89,14 +89,14 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Change MPIN',
+                'Change mPin',
                 style: SolhTextStyles.Large2BlackTextS24W7,
               ),
               const SizedBox(
                 height: 32,
               ),
               const Text(
-                'Enter Current mPIN',
+                'Enter current mPIN',
                 style: SolhTextStyles.QS_body_2_semi,
               ),
               const SizedBox(
