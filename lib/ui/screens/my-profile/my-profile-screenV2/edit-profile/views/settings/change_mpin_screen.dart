@@ -89,7 +89,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Change mPin',
+                'Set Your PIN',
                 style: SolhTextStyles.Large2BlackTextS24W7,
               ),
               const SizedBox(
@@ -129,7 +129,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                     selectedColor: SolhColors.primary_green),
               ),
               const Text(
-                'Set new mPIN',
+                'New PIN',
                 style: SolhTextStyles.QS_body_2_semi,
               ),
               const SizedBox(
@@ -162,7 +162,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                     selectedColor: SolhColors.primary_green),
               ),
               const Text(
-                'Confirm mPIN',
+                'Confirm new PIN ',
                 style: SolhTextStyles.QS_body_2_semi,
               ),
               const SizedBox(
@@ -226,7 +226,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                               }
                             },
                             width: 70.w,
-                            child: Text('Change mPIN',
+                            child: Text('Done',
                                 style: SolhTextStyles.CTA
                                     .copyWith(color: SolhColors.white)));
                   }),

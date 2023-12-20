@@ -149,12 +149,15 @@ class EnterMpinScreen extends StatelessWidget {
                             }
                           },
                           width: 70.w,
-                          child: Text('Continue',
-                              style: SolhTextStyles.CTA
-                                  .copyWith(color: SolhColors.white)));
+                          child: Text(
+                            'Continue',
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.white),
+                          ),
+                        );
                 }),
               ],
-            )
+            ),
           ],
         ),
       ),
