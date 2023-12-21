@@ -22,8 +22,7 @@ class CourseDetailsModel extends CourseDetailsEntity {
 class Sections {
   String? id;
   String? title;
-  String? name;
-  String? description;
+  String? content;
   String? course;
   String? status;
   String? createdAt;
@@ -34,8 +33,7 @@ class Sections {
   Sections(
       {this.id,
       this.title,
-      this.name,
-      this.description,
+      this.content,
       this.course,
       this.status,
       this.createdAt,
@@ -46,8 +44,7 @@ class Sections {
   Sections.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
     title = json["title"];
-    name = json["name"];
-    description = json["description"];
+    content = json["content"];
     course = json["course"];
     status = json["status"];
     createdAt = json["createdAt"];
@@ -63,9 +60,11 @@ class Lectures {
   String? id;
   List<Quiz>? quiz;
   String? title;
+  TotalDuration? totalDuration;
   String? contentType;
 
-  Lectures({this.id, this.quiz, this.title, this.contentType});
+  Lectures(
+      {this.id, this.quiz, this.title, this.contentType, this.totalDuration});
 
   Lectures.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
@@ -74,6 +73,9 @@ class Lectures {
         : (json["quiz"] as List).map((e) => Quiz.fromJson(e)).toList();
     title = json["title"];
     contentType = json["contentType"];
+    totalDuration = json["duration"] == null
+        ? null
+        : TotalDuration.fromJson(json["duration"]);
   }
 }
 
