@@ -32,111 +32,114 @@ class CourseListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          height: 130,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: SolhColors.grey_2)),
-          child: Row(children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10)),
-              child: CachedNetworkImage(
-                imageUrl: image!,
-                width: 130,
-                height: 140,
-                fit: BoxFit.fill,
+    return InkWell(
+      onTap: onTap,
+      child: Stack(
+        children: [
+          Container(
+            height: 130,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: SolhColors.grey_2)),
+            child: Row(children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10)),
+                child: CachedNetworkImage(
+                  imageUrl: image!,
+                  width: 130,
+                  height: 140,
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-            const SizedBox(width: 5),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(children: [
-                  Text(
-                    title ?? '',
-                    style: SolhTextStyles.QS_cap_semi.copyWith(
-                        color: Colors.black),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 5),
-                  // Instructor Name
-                  Row(children: [
-                    const Padding(
-                      padding: EdgeInsets.only(right: 3, bottom: 3, top: 3),
-                      child: Icon(
-                        Icons.person_2_outlined,
-                        size: 12,
-                        color: SolhColors.red_shade_2,
-                      ),
-                    ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(children: [
                     Text(
-                      instructorName ?? '',
-                      style: SolhTextStyles.QS_cap_2,
-                      maxLines: 1,
-                    )
-                  ]),
-                  const SizedBox(height: 5),
-                  // Time And Rating
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      if (timeLength != null)
-                        Row(children: [
-                          const Padding(
-                            padding:
-                                EdgeInsets.only(right: 3, top: 3, bottom: 3),
-                            child: Icon(Icons.access_time,
-                                color: SolhColors.primary_green, size: 12),
-                          ),
-                          if (timeLength != null)
+                      title ?? '',
+                      style: SolhTextStyles.QS_cap_semi.copyWith(
+                          color: Colors.black),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 5),
+                    // Instructor Name
+                    Row(children: [
+                      const Padding(
+                        padding: EdgeInsets.only(right: 3, bottom: 3, top: 3),
+                        child: Icon(
+                          Icons.person_2_outlined,
+                          size: 12,
+                          color: SolhColors.red_shade_2,
+                        ),
+                      ),
+                      Text(
+                        instructorName ?? '',
+                        style: SolhTextStyles.QS_cap_2,
+                        maxLines: 1,
+                      )
+                    ]),
+                    const SizedBox(height: 5),
+                    // Time And Rating
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (timeLength != null)
+                          Row(children: [
+                            const Padding(
+                              padding:
+                                  EdgeInsets.only(right: 3, top: 3, bottom: 3),
+                              child: Icon(Icons.access_time,
+                                  color: SolhColors.primary_green, size: 12),
+                            ),
+                            if (timeLength != null)
+                              Text(
+                                timeLength ?? '',
+                                style: SolhTextStyles.QS_cap_2,
+                              )
+                          ]),
+                        if (rating != null)
+                          Row(children: [
+                            const Padding(
+                              padding: EdgeInsets.all(3.0),
+                              child: Icon(Icons.star_half_outlined,
+                                  color: Color(0xFFFFCC4D), size: 12),
+                            ),
                             Text(
-                              timeLength ?? '',
+                              "$rating",
                               style: SolhTextStyles.QS_cap_2,
                             )
-                        ]),
-                      if (rating != null)
-                        Row(children: [
-                          const Padding(
-                            padding: EdgeInsets.all(3.0),
-                            child: Icon(Icons.star_half_outlined,
-                                color: Color(0xFFFFCC4D), size: 12),
-                          ),
-                          Text(
-                            "$rating",
-                            style: SolhTextStyles.QS_cap_2,
-                          )
-                        ]),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  // Price and discounted price
-                  Row(
-                    children: [
-                      Text(
-                        "$currency $price",
-                        style: SolhTextStyles.QS_body_semi_1,
-                      ),
-                      const SizedBox(width: 5),
-                      if (discountedPrice != null)
+                          ]),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    // Price and discounted price
+                    Row(
+                      children: [
                         Text(
-                          "$currency $discountedPrice",
-                          style: SolhTextStyles.QS_body_2.copyWith(
-                              decoration: TextDecoration.lineThrough),
-                        )
-                    ],
-                  )
-                ]),
-              ),
-            )
-          ]),
-        ),
-        Positioned(right: 0, bottom: 0, child: WishListIcon(onTap: () {})),
-      ],
+                          "$currency $price",
+                          style: SolhTextStyles.QS_body_semi_1,
+                        ),
+                        const SizedBox(width: 5),
+                        if (discountedPrice != null)
+                          Text(
+                            "$currency $discountedPrice",
+                            style: SolhTextStyles.QS_body_2.copyWith(
+                                decoration: TextDecoration.lineThrough),
+                          )
+                      ],
+                    )
+                  ]),
+                ),
+              )
+            ]),
+          ),
+          Positioned(right: 0, bottom: 0, child: WishListIcon(onTap: () {})),
+        ],
+      ),
     );
   }
 }

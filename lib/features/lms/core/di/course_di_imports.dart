@@ -1,4 +1,8 @@
 import 'package:get/instance_manager.dart';
+import 'package:solh/features/lms/display/course_detail/data/repo/course_detail_repo_impl.dart';
+import 'package:solh/features/lms/display/course_detail/domain/repo/course_detail_repo.dart';
+import 'package:solh/features/lms/display/course_detail/domain/usecases/course_detail_usecase.dart';
+import 'package:solh/features/lms/display/course_detail/ui/controllers/course_detail_controller.dart';
 import 'package:solh/features/lms/display/course_home/data/repo/course_banner_repo_impl.dart';
 import 'package:solh/features/lms/display/course_home/data/repo/course_cat_repo_impl.dart';
 import 'package:solh/features/lms/display/course_home/data/repo/featured_course_repo_impl.dart';

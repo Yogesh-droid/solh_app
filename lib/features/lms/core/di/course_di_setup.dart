@@ -26,4 +26,10 @@ void courseControllerSetup() {
   Get.put(CourseListUsecase(courseListRepo: Get.find<CourseListRepo>()));
   Get.put(
       CourseListController(courseListUsecase: Get.find<CourseListUsecase>()));
+
+  // Course Details
+  Get.put<CourseDetailRepo>(CourseDetailRepoImpl());
+  Get.put(CourseDetailUsecase(courseDetailRepo: Get.find<CourseDetailRepo>()));
+  Get.put(CourseDetailController(
+      courseDetailUsecase: Get.find<CourseDetailUsecase>()));
 }

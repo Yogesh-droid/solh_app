@@ -2,7 +2,7 @@ name: solh
 description: Solh App by OMLogic
 
 
-version: 1.1.41+84
+version: 1.1.42+85
 
 
 environment:
@@ -65,6 +65,7 @@ dependencies:
   feature_discovery: ^0.14.1
   share_plus: ^6.3.4
   charts_painter: ^3.1.1
+  chewie: ^1.5.0
 
   #alt_sms_autofill: ^1.0.0
 

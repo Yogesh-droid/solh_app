@@ -86,18 +86,20 @@ class _CourseHomePageState extends State<CourseHomePage> {
             ),
             SizedBox(
               height: 250,
-              child: Obx(() => ListView.builder(
+              child: Obx(() => ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
+                  separatorBuilder: (_, __) => const SizedBox(width: 12),
                   itemCount: featuredCourseController.featuredCourseList.length,
                   itemBuilder: (_, index) {
                     final course =
                         featuredCourseController.featuredCourseList[index];
                     return RecommendedCourseContainer(
                       title: course.title,
-                      timeLength:
-                          "${course.totalDuration!.hours} hrs ${course.totalDuration!.minutes} mins",
+                      timeLength: course.totalDuration != null
+                          ? "${course.totalDuration!.hours} hrs ${course.totalDuration!.minutes} mins"
+                          : null,
                       price: course.price,
                       discountedPrice: course.afterDiscountPrice,
                       instructionName: course.instructor!.name,
