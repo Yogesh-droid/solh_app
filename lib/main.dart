@@ -29,6 +29,7 @@ import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/languages_constant.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/org_only_setting.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
@@ -133,7 +134,7 @@ class _SolhAppState extends State<SolhApp> {
             useMaterial3: false,
             progressIndicatorTheme: const ProgressIndicatorThemeData(
                 color: SolhColors.primary_green),
-            /* textTheme: const TextTheme(
+            textTheme: const TextTheme(
                 bodyMedium: TextStyle(
                   color: SolhColors.black666,
                   fontSize: 14,
@@ -154,7 +155,7 @@ class _SolhAppState extends State<SolhApp> {
                   fontSize: 14,
                   fontWeight: FontWeight.w800,
                 ),
-                displaySmall: SolhTextStyles.QS_body_1_bold), */
+                displaySmall: SolhTextStyles.QS_body_1_bold),
             switchTheme: SwitchThemeData(
               thumbColor:
                   MaterialStateProperty.all<Color>(SolhColors.primary_green),

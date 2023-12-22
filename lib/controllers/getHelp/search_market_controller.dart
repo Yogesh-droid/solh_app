@@ -103,7 +103,6 @@ class SearchMarketController extends GetxController {
       String profession = ''}) async {
     isLoading(true);
 
-    print("function ran getIssueList ");
     try {
       log("it ran2 $page");
       page > 1 ? isLoadingMoreClinician(true) : isSearchingDoctors.value = true;
