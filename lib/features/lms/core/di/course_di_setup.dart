@@ -32,4 +32,11 @@ void courseControllerSetup() {
   Get.put(CourseDetailUsecase(courseDetailRepo: Get.find<CourseDetailRepo>()));
   Get.put(CourseDetailController(
       courseDetailUsecase: Get.find<CourseDetailUsecase>()));
+  // Course wishlist
+
+  Get.put<CourseWishlistRepo>(CourseWishlistRepoImpl());
+  Get.put(CourseWishlistUseCase(
+      courseWishlistRepo: Get.find<CourseWishlistRepo>()));
+  Get.put(CourseWishlistController(
+      courseWishlistUseCase: Get.find<CourseWishlistUseCase>()));
 }

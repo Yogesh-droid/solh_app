@@ -413,7 +413,7 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
         enableWishlist
             ? InkWell(
                 onTap: () => Navigator.of(context)
-                    .pushNamed(AppRoutes.productWishlistScreen),
+                    .pushNamed(AppRoutes.courseProductTabParent),
                 child: const Icon(
                   CupertinoIcons.heart_fill,
                   color: SolhColors.primaryRed,

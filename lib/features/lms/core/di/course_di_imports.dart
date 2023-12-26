@@ -19,5 +19,10 @@ import 'package:solh/features/lms/display/course_listing/data/repo/course_list_r
 import 'package:solh/features/lms/display/course_listing/domain/repo/course_list_repo.dart';
 import 'package:solh/features/lms/display/course_listing/domain/usecases/course_list_usecase.dart';
 import 'package:solh/features/lms/display/course_listing/ui/controllers/course_list_controller.dart';
+import 'package:solh/features/lms/display/course_wishlist/data/repo/course_wishlist_repo_impl.dart';
+import 'package:solh/features/lms/display/course_wishlist/domain/repo/course_wishlist_repo.dart';
+import 'package:solh/features/lms/display/course_wishlist/domain/usecases/course_wishlist_usecase.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/controllers/course_wishlist_controller.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/widgets/course_wishlist.dart';
 
 part 'course_di_setup.dart';

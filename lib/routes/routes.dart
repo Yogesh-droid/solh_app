@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/features/lms/display/course_detail/ui/screens/course_detail_screen.dart';
 import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
@@ -133,8 +134,11 @@ class AppRoutes {
   static const String enterMpinScreen = '/enterMpinScreen';
   static const String createMpinScreen = '/createMpinScreen';
   static const String forgotMpinScreen = '/forgotMpinScreen';
+
+  /// course related ///
   static const String courseListScreen = '/courseListScree';
   static const String courseDetailScreen = '/courseDetailScreen';
+  static const String courseProductTabParent = '/courseProductTabParent';
 
   /// Group related  ///
   ///
@@ -573,6 +577,11 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) => const ForgotMpinScreen()),
             settings: const RouteSettings(name: AppRoutes.forgotMpinScreen));
+      case AppRoutes.courseProductTabParent:
+        return MaterialPageRoute(
+            builder: ((context) => const CourseProductTabParent()),
+            settings:
+                const RouteSettings(name: AppRoutes.courseProductTabParent));
 
       case AppRoutes.courseListScreen:
         return MaterialPageRoute(
