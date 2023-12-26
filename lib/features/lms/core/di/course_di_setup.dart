@@ -32,4 +32,11 @@ void courseControllerSetup() {
   Get.put(CourseDetailUsecase(courseDetailRepo: Get.find<CourseDetailRepo>()));
   Get.put(CourseDetailController(
       courseDetailUsecase: Get.find<CourseDetailUsecase>()));
+
+  // Add TO CART
+  Get.put<AddCourseToCartRepo>(AddCourseToCartRepoImpl());
+  Get.put(AddCourseToCartUsecase(
+      addCourseToCartRepo: Get.find<AddCourseToCartRepo>()));
+  Get.put(AddCourseToCartController(
+      addCourseToCartUsecase: Get.find<AddCourseToCartUsecase>()));
 }

@@ -95,57 +95,62 @@ class ExpandedWidget extends StatelessWidget {
                       border: Border.all(color: SolhColors.greyS200),
                       color: const Color(0xFFF8F8F8),
                       borderRadius: BorderRadius.circular(5)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  child: e1.contentType == 'quiz'
+                      ? const Row(
+                          children: [Icon(Icons.live_help), Text("Quiz")])
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              e1.title ?? '',
-                              style: SolhTextStyles.QS_caption,
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(height: 5),
-                            // Duration And resources
-                            Row(
-                              children: [
-                                Row(children: [
-                                  const Icon(
-                                    Icons.play_arrow,
-                                    size: 12,
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 250,
+                                    child: Text(
+                                      e1.title ?? '',
+                                      style: SolhTextStyles.QS_caption,
+                                      textAlign: TextAlign.left,
+                                    ),
                                   ),
-                                  Text(
-                                    "${e1.totalDuration!.hours} hrs ${e1.totalDuration!.minutes} mins",
-                                    style: SolhTextStyles.QS_cap_2_semi,
+                                  const SizedBox(height: 5),
+                                  // Duration And resources
+                                  Row(
+                                    children: [
+                                      Row(children: [
+                                        const Icon(
+                                          Icons.play_arrow,
+                                          size: 12,
+                                        ),
+                                        Text(
+                                          "${e1.totalDuration!.hours} hrs ${e1.totalDuration!.minutes} mins",
+                                          style: SolhTextStyles.QS_cap_2_semi,
+                                        )
+                                      ]),
+                                      // Resources
+                                      const SizedBox(width: 30),
+                                      const Row(children: [
+                                        Icon(
+                                          Icons.cloud_download_rounded,
+                                          size: 12,
+                                        ),
+                                        Text(
+                                          " Resources",
+                                          style: SolhTextStyles.QS_cap_2_semi,
+                                        )
+                                      ]),
+                                    ],
                                   )
                                 ]),
-                                // Resources
-                                const SizedBox(width: 30),
-                                InkWell(
-                                  onTap: () {},
-                                  child: const Row(children: [
-                                    Icon(
-                                      Icons.cloud_download_rounded,
-                                      size: 12,
-                                    ),
-                                    Text(
-                                      " Resources",
-                                      style: SolhTextStyles.QS_cap_2_semi,
-                                    )
-                                  ]),
-                                ),
-                              ],
-                            )
-                          ]),
-                      const CircleAvatar(
-                          backgroundColor: SolhColors.grey239,
-                          child: Icon(
-                            Icons.play_arrow,
-                            color: Colors.black,
-                          ))
-                    ],
-                  ),
+                            CircleAvatar(
+                                backgroundColor: SolhColors.grey239,
+                                child: Icon(
+                                  e1.contentType != "video"
+                                      ? Icons.book_outlined
+                                      : Icons.play_arrow,
+                                  color: Colors.black,
+                                ))
+                          ],
+                        ),
                 ))
           ],
         ),

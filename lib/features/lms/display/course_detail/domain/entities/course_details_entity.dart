@@ -5,7 +5,14 @@ class CourseDetailsEntity {
   final CourseDetail? courseDetail;
   final List<Sections>? sections;
   final int? totalSections;
+  final List<Reviews>? reviews;
+  final int? totalReviews;
 
   CourseDetailsEntity(
-      {this.success, this.courseDetail, this.sections, this.totalSections});
+      {this.success,
+      this.courseDetail,
+      this.sections,
+      this.totalSections,
+      this.totalReviews,
+      this.reviews});
 }
