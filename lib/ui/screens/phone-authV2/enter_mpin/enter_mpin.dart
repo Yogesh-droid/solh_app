@@ -136,6 +136,13 @@ class EnterMpinScreen extends StatelessWidget {
 
                               if (response.$2) {
                                 await Prefs.setString("phone", _phoneNumber);
+                                SharedPreferences sharedPreferences =
+                                    await SharedPreferences.getInstance();
+                                await sharedPreferences.setString(
+                                    'userCountry', phoneAuthController.country);
+                                var response = await sharedPreferences
+                                    .getString('userCountry');
+                                log(response.toString(), name: 'userCountry');
                                 await isNewUser();
 
                                 if (context.mounted) {

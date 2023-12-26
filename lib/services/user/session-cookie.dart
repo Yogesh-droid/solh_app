@@ -27,15 +27,6 @@ class SessionCookie {
           response["details"]["sessionCookie"];
       print('Cached json used');
     } else {
-      debugPrint("createSessionCookieeee ${{
-        "deviceId": fcmToken ?? '',
-        "onesignal_device_id": onesignalId,
-        "deviceType": deviceType,
-        "user_country": coutry ?? '',
-        "utm_compaign": utm_compaign ?? '',
-        "utm_source": utm_source ?? '',
-        "utm_medium": utm_medium ?? ''
-      }}");
       response = await Network.makeHttpPostRequest(
           url: "${APIConstants.api}/api/create-session-cookie-v2",
           body: {
