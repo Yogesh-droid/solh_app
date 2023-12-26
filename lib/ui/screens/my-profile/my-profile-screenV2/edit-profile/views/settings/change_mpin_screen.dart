@@ -116,7 +116,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                 length: 4,
                 keyboardType: TextInputType.number,
                 separatorBuilder: (a, b) {
-                  return SizedBox(
+                  return const SizedBox(
                     width: 20,
                   );
                 },
@@ -140,7 +140,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                 controller: newPinController,
                 mainAxisAlignment: MainAxisAlignment.start,
                 separatorBuilder: (a, b) {
-                  return SizedBox(
+                  return const SizedBox(
                     width: 20,
                   );
                 },
@@ -172,7 +172,7 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
                 controller: confirmPinController,
                 mainAxisAlignment: MainAxisAlignment.start,
                 separatorBuilder: (a, b) {
-                  return SizedBox(
+                  return const SizedBox(
                     width: 20,
                   );
                 },
