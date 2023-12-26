@@ -54,6 +54,7 @@ class ExpandedWidget extends StatelessWidget {
     return InkWell(
       onTap: () => onTapped(e.id ?? ''),
       child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             border: Border.all(color: SolhColors.greyS200),

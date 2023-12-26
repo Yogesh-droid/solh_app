@@ -13,16 +13,18 @@ class CourseBanner extends StatelessWidget {
     final CourseBannerController courseBannerController = Get.find();
     return Column(
       children: [
-        Obx(() => CarouselSlider.builder(
-            itemCount: courseBannerController.bannerList.length,
-            itemBuilder: (context, index, index2) => ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: CachedNetworkImage(
-                    imageUrl:
-                        courseBannerController.bannerList[index].bannerImage ??
+        Obx(() => courseBannerController.bannerList.isEmpty
+            ? const SizedBox()
+            : CarouselSlider.builder(
+                itemCount: courseBannerController.bannerList.length,
+                itemBuilder: (context, index, index2) => ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: CachedNetworkImage(
+                        imageUrl: courseBannerController
+                                .bannerList[index].bannerImage ??
                             '')),
-            options: CarouselOptions(
-                autoPlay: true, enlargeFactor: 0.7, height: 200)))
+                options: CarouselOptions(
+                    autoPlay: true, enlargeFactor: 0.7, height: 200)))
       ],
     );
   }

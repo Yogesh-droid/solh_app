@@ -48,6 +48,16 @@ class SessionCookie {
             "utm_source": utm_source ?? '',
             "utm_medium": utm_medium ?? ''
           });
+      log({
+        "phone": phone,
+        "deviceId": fcmToken ?? '',
+        "onesignal_device_id": onesignalId,
+        "deviceType": deviceType,
+        "user_country": coutry ?? '',
+        "utm_compaign": utm_compaign ?? '',
+        "utm_source": utm_source ?? '',
+        "utm_medium": utm_medium ?? ''
+      }.toString());
       print("Running${response}");
       if (response["success"] != null) {
         return response['success'];
