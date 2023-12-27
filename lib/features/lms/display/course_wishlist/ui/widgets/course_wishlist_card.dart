@@ -44,7 +44,7 @@ class CourseWishlistCard extends StatelessWidget {
 
   final AddCourseToCartController addCourseToCartController = Get.find();
 
-  CourseWishlistController courseWishlistController = Get.find();
+  final CourseWishlistController courseWishlistController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +108,7 @@ class CourseWishlistCard extends StatelessWidget {
                             width: 3,
                           ),
                           Text(
-                              "${courseDurationHours}hrs ${courseDurationMinutes}mins",
+                              "${courseDurationHours == 0 ? '' : ("${courseDurationHours}hrs")} ${courseDurationMinutes}mins",
                               style: SolhTextStyles.QS_cap_2),
                         ],
                       ),
