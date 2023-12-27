@@ -23,6 +23,9 @@ class CreateMpinScren extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScaffoldWithBackgroundArt(
       appBar: SolhAppBarTanasparentOnlyBackButton(
+        onSkip: () => Navigator.of(context).pushNamed(AppRoutes.master),
+        skipButtonStyle:
+            SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
         onBackButton: () => Navigator.of(context).pop(),
       ),
       body: Padding(
@@ -33,11 +36,11 @@ class CreateMpinScren extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Set Up mPIN',
+                'Set Your PIN',
                 style: SolhTextStyles.Large2BlackTextS24W7,
               ),
               Text(
-                'Please enter your 4 digit pin',
+                'Create a 4 digit PIN for quick login',
                 style:
                     SolhTextStyles.QS_body_2.copyWith(color: SolhColors.grey),
               ),
@@ -45,7 +48,7 @@ class CreateMpinScren extends StatelessWidget {
                 height: 32,
               ),
               const Text(
-                'Enter mPIN',
+                'Enter PIN',
                 style: SolhTextStyles.QS_body_2_semi,
               ),
               const SizedBox(
@@ -56,7 +59,7 @@ class CreateMpinScren extends StatelessWidget {
                 controller: pin1Controller,
                 mainAxisAlignment: MainAxisAlignment.start,
                 separatorBuilder: (a, b) {
-                  return SizedBox(
+                  return const SizedBox(
                     width: 20,
                   );
                 },
@@ -78,13 +81,14 @@ class CreateMpinScren extends StatelessWidget {
                     selectedColor: SolhColors.primary_green),
               ),
               const Text(
-                'Confirm mPIN',
+                'Confirm',
                 style: SolhTextStyles.QS_body_2_semi,
               ),
               const SizedBox(
                 height: 10,
               ),
               PinCodeTextField(
+                obscureText: true,
                 controller: pin2Controller,
                 mainAxisAlignment: MainAxisAlignment.start,
                 validator: (value) {
@@ -140,7 +144,7 @@ class CreateMpinScren extends StatelessWidget {
                               }
                             },
                             width: 70.w,
-                            child: Text('Create mPIN',
+                            child: Text('Done',
                                 style: SolhTextStyles.CTA
                                     .copyWith(color: SolhColors.white)));
                   }),

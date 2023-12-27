@@ -77,8 +77,11 @@ class Courses {
   Instructor? instructor;
   int? price;
   String? currency;
+  double? rating;
   int? salePrice;
   bool? inCart;
+  String? thumbnail;
+  TotalDuration? totalDuration;
 
   Courses(
       {this.sId,
@@ -87,6 +90,8 @@ class Courses {
       this.price,
       this.currency,
       this.salePrice,
+      this.thumbnail,
+      this.totalDuration,
       this.inCart});
 
   Courses.fromJson(Map<String, dynamic> json) {
@@ -98,7 +103,12 @@ class Courses {
     price = json['price'];
     currency = json['currency'];
     salePrice = json['salePrice'];
+    rating = json['rating'].toDouble() ?? 0.0;
     inCart = json['inCart'];
+    thumbnail = json['thumbnail'];
+    totalDuration = json['totalDuration'] != null
+        ? TotalDuration.fromJson(json['totalDuration'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -131,6 +141,25 @@ class Instructor {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['name'] = name;
+    return data;
+  }
+}
+
+class TotalDuration {
+  int? hours;
+  int? minutes;
+
+  TotalDuration({this.hours, this.minutes});
+
+  TotalDuration.fromJson(Map<String, dynamic> json) {
+    hours = json['hours'];
+    minutes = json['minutes'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['hours'] = this.hours;
+    data['minutes'] = this.minutes;
     return data;
   }
 }
