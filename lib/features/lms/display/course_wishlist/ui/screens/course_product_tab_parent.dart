@@ -55,7 +55,7 @@ class CourseProductTabParent extends StatelessWidget {
                   ]),
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [CourseWishlist(), ProductWishlistScreen()],
           )),
     );

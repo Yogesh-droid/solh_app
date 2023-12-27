@@ -25,6 +25,7 @@ class _CourseWishlistState extends State<CourseWishlist>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Obx(() {
       return courseWishlistController.isLoading.value
           ? MyLoader()
@@ -41,6 +42,12 @@ class _CourseWishlistState extends State<CourseWishlist>
                 itemCount: courseWishlistController
                     .courseWishlist.value.courses!.length,
                 itemBuilder: (context, index) => CourseWishlistCard(
+                  inCart: courseWishlistController
+                          .courseWishlist.value.courses![index].inCart ??
+                      true,
+                  courseId: courseWishlistController
+                          .courseWishlist.value.courses![index].sId ??
+                      '',
                   imageUrl: courseWishlistController
                           .courseWishlist.value.courses![index].thumbnail ??
                       '',

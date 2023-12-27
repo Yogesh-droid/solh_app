@@ -1,12 +1,21 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:solh/features/lms/display/course_cart/ui/controllers/add_course_to_cart_controller.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/controllers/course_wishlist_controller.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class CourseWishlistCard extends StatelessWidget {
-  const CourseWishlistCard({
+  CourseWishlistCard({
     super.key,
+    required this.courseId,
     required this.imageUrl,
     required this.courseDurationHours,
     required this.courseDurationMinutes,
@@ -16,8 +25,9 @@ class CourseWishlistCard extends StatelessWidget {
     required this.price,
     required this.rating,
     required this.salePrice,
+    required this.inCart,
   });
-
+  final String courseId;
   final String imageUrl;
   final String courseTitle;
   final String instructorName;
@@ -27,6 +37,14 @@ class CourseWishlistCard extends StatelessWidget {
   final String currency;
   final int price;
   final int salePrice;
+  final bool inCart;
+
+  final AddRemoveCourseWishlistItemController
+      addRemoveCourseWishlistItemController = Get.find();
+
+  final AddCourseToCartController addCourseToCartController = Get.find();
+
+  CourseWishlistController courseWishlistController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +58,8 @@ class CourseWishlistCard extends StatelessWidget {
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
             child: CachedNetworkImage(
+              placeholder: (context, url) =>
+                  Image.asset('assets/images/opening_link.gif'),
               imageUrl: imageUrl,
               width: 130,
               height: 140,
@@ -136,29 +156,102 @@ class CourseWishlistCard extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: SolhColors.org_color.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(4)),
-                            child: const Icon(
-                              Icons.delete_forever,
-                              color: SolhColors.primaryRed,
-                            ),
+                          InkWell(
+                            onTap: () async {
+                              addRemoveCourseWishlistItemController
+                                  .currentCourseRemoval = courseId;
+                              (bool, String) res =
+                                  await addRemoveCourseWishlistItemController
+                                      .addRemoveCourseWishlistItem(courseId);
+
+                              if (res.$1) {
+                                courseWishlistController
+                                    .courseWishlist.value.courses!
+                                    .removeWhere((element) {
+                                  log('$courseId, ${element.sId}');
+                                  return courseId == element.sId;
+                                });
+                              }
+                              courseWishlistController.courseWishlist.refresh();
+                              Utility.showToast(res.$2);
+                            },
+                            child: Obx(() {
+                              return addRemoveCourseWishlistItemController
+                                          .isLoading.value &&
+                                      addRemoveCourseWishlistItemController
+                                              .currentCourseRemoval ==
+                                          courseId
+                                  ? MyLoader(
+                                      strokeWidth: 1,
+                                      radius: 10,
+                                    )
+                                  : Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                          color: SolhColors.org_color
+                                              .withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      child: const Icon(
+                                        Icons.delete_forever,
+                                        color: SolhColors.primaryRed,
+                                      ),
+                                    );
+                            }),
                           ),
                           const SizedBox(
                             width: 16,
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: SolhColors.greenShade3.withOpacity(0.8),
-                                borderRadius: BorderRadius.circular(4)),
-                            child: const Icon(Icons.add_shopping_cart_rounded,
-                                color: SolhColors.primary_green),
-                          )
+                          inCart
+                              ? const SizedBox(
+                                  width: 38,
+                                )
+                              : Obx(() {
+                                  return addCourseToCartController
+                                              .isAddingToCart.value &&
+                                          addCourseToCartController
+                                                  .currentUpdatingCourse ==
+                                              courseId
+                                      ? MyLoader(
+                                          strokeWidth: 1,
+                                          radius: 10,
+                                        )
+                                      : InkWell(
+                                          onTap: () async {
+                                            addCourseToCartController
+                                                    .currentUpdatingCourse =
+                                                courseId;
+                                            await addCourseToCartController
+                                                .addToCart(courseId);
+                                            int index = courseWishlistController
+                                                .courseWishlist.value.courses!
+                                                .indexWhere((element) =>
+                                                    element.sId == courseId);
+                                            courseWishlistController
+                                                .courseWishlist
+                                                .value
+                                                .courses![index]
+                                                .inCart = true;
+                                            courseWishlistController
+                                                .courseWishlist
+                                                .refresh();
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                                color: SolhColors.greenShade3
+                                                    .withOpacity(0.8),
+                                                borderRadius:
+                                                    BorderRadius.circular(4)),
+                                            child: const Icon(
+                                                Icons.add_shopping_cart_rounded,
+                                                color:
+                                                    SolhColors.primary_green),
+                                          ),
+                                        );
+                                }),
                         ],
-                      )
+                      ),
                     ],
                   )
                 ],

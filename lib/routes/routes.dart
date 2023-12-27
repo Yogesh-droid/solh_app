@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+import 'package:solh/features/lms/display/course_cart/ui/screens/course_checkout_page.dart';
 import 'package:solh/features/lms/display/course_detail/ui/screens/course_detail_screen.dart';
 import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
@@ -139,6 +140,7 @@ class AppRoutes {
   static const String courseListScreen = '/courseListScree';
   static const String courseDetailScreen = '/courseDetailScreen';
   static const String courseProductTabParent = '/courseProductTabParent';
+  static const String courseCheckoutScreen = '/courseCheckoutScreen';
 
   /// Group related  ///
   ///
@@ -594,6 +596,12 @@ class RouteGenerator {
             builder: ((context) =>
                 CourseDetailScreen(args: args as Map<String, dynamic>)),
             settings: const RouteSettings(name: AppRoutes.courseDetailScreen));
+
+      case AppRoutes.courseCheckoutScreen:
+        return MaterialPageRoute(
+            builder: ((context) => const CourseCheckoutPage()),
+            settings:
+                const RouteSettings(name: AppRoutes.courseCheckoutScreen));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

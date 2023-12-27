@@ -39,4 +39,28 @@ void courseControllerSetup() {
       courseWishlistRepo: Get.find<CourseWishlistRepo>()));
   Get.put(CourseWishlistController(
       courseWishlistUseCase: Get.find<CourseWishlistUseCase>()));
+
+  Get.put<AddRemoveCourseWishlistItemRepo>(
+      AddRemoveCourseWishlistItemRepoImpl());
+  Get.put(AddRemoveCourseWishlistItemUsecase(
+      addRemoveCourseWishlistItemRepo:
+          Get.find<AddRemoveCourseWishlistItemRepo>()));
+
+  Get.put(AddRemoveCourseWishlistItemController(
+      addRemoveCourseWishlistItemUsecase:
+          Get.find<AddRemoveCourseWishlistItemUsecase>()));
+
+  // Add COURSE TO CART
+  Get.put<AddCourseToCartRepo>(AddCourseToCartRepoImpl());
+  Get.put(AddCourseToCartUsecase(
+      addCourseToCartRepo: Get.find<AddCourseToCartRepo>()));
+  Get.put(AddCourseToCartController(
+      addCourseToCartUsecase: Get.find<AddCourseToCartUsecase>()));
+
+  // GET COURSE CART
+  Get.put<GetCourseCartRepo>(GetCourseCartRepoImpl());
+  Get.put(
+      GetCourseCartUsecase(getCourseCartRepo: Get.find<GetCourseCartRepo>()));
+  Get.put(GetCourseCartController(
+      getCourseCartUsecase: Get.find<GetCourseCartUsecase>()));
 }

@@ -2,7 +2,12 @@ import 'package:solh/features/lms/display/course_detail/domain/entities/course_d
 
 class CourseDetailsModel extends CourseDetailsEntity {
   CourseDetailsModel(
-      {super.success, super.courseDetail, super.sections, super.totalSections});
+      {super.success,
+      super.courseDetail,
+      super.sections,
+      super.totalSections,
+      super.totalReviews,
+      super.reviews});
 
   factory CourseDetailsModel.fromJson(Map<String, dynamic> json) {
     return CourseDetailsModel(
@@ -15,7 +20,13 @@ class CourseDetailsModel extends CourseDetailsEntity {
             : (json["sections"] as List)
                 .map((e) => Sections.fromJson(e))
                 .toList(),
-        totalSections: json["totalSections"]);
+        reviews: json["reviews"] == null
+            ? null
+            : (json["reviews"] as List)
+                .map((e) => Reviews.fromJson(e))
+                .toList(),
+        totalSections: json["totalSections"],
+        totalReviews: json["totalReviews"]);
   }
 }
 
@@ -129,6 +140,9 @@ class CourseDetail {
   String? currency;
   Category? category;
   String? language;
+  bool? isWishlisted;
+  bool? isInCart;
+  bool? isEnrolled;
   int? v;
 
   CourseDetail(
@@ -150,6 +164,9 @@ class CourseDetail {
       this.salePrice,
       this.currency,
       this.category,
+      this.isInCart,
+      this.isWishlisted,
+      this.isEnrolled,
       this.language,
       this.v});
 
@@ -186,6 +203,9 @@ class CourseDetail {
     category =
         json["category"] == null ? null : Category.fromJson(json["category"]);
     language = json["language"];
+    isInCart = json['inCart'];
+    isWishlisted = json['isWishlisted'];
+    isEnrolled = json['isEnrolled'];
     v = json["__v"];
   }
 }
@@ -272,5 +292,37 @@ class TotalDuration {
   TotalDuration.fromJson(Map<String, dynamic> json) {
     hours = json["hours"];
     minutes = json["minutes"];
+  }
+}
+
+class Reviews {
+  String? sId;
+  String? review;
+  int? rating;
+  UserId? userId;
+
+  Reviews({this.sId, this.review, this.rating, this.userId});
+
+  Reviews.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    review = json['review'];
+    rating = json['rating'];
+    userId = json['userId'] != null ? UserId.fromJson(json['userId']) : null;
+  }
+}
+
+class UserId {
+  String? sId;
+  String? name;
+  String? profilePicture;
+  String? id;
+
+  UserId({this.sId, this.name, this.profilePicture, this.id});
+
+  UserId.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    profilePicture = json['profilePicture'];
+    id = json['id'];
   }
 }
