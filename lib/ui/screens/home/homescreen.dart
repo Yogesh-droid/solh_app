@@ -24,6 +24,7 @@ import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/homepage/offer_carousel_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/features/lms/display/course_cart/ui/controllers/get_course_cart_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
@@ -122,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
         homeController.getNotificationCount();
         Get.find<CartController>().getCart();
+        Get.find<GetCourseCartController>().getCourseCart();
         Get.find<BottomNavigatorController>().getFeedbackStatus();
       }
     });
@@ -204,7 +206,7 @@ class _HomePageState extends State<HomePage> {
 
   checkForUserActive() async {
     var response = userBlocNetwork.getSessionCookie;
-    if (response != '' && response != null) {
+    if (response != null && response != '') {
       var response = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/checkUserProfile");
       if (response["success"] == false) {

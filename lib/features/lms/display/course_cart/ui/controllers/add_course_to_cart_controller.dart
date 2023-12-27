@@ -11,17 +11,24 @@ class AddCourseToCartController extends GetxController {
   var isAddingToCart = false.obs;
   var err = ''.obs;
   var message = ''.obs;
+  var isAddedToCart = false.obs;
 
   AddCourseToCartController({required this.addCourseToCartUsecase});
 
   Future<void> addToCart(String id) async {
     isAddingToCart.value = true;
+    isAddedToCart.value = false;
     try {
       final DataState<Map<String, dynamic>> res =
           await addCourseToCartUsecase.call(RequestParams(
               url: "${APIConstants.api}/api/lms/user/add-to-cart",
               body: {"courseId": id}));
       if (res.data != null) {
+        if (res.data!['code'] == 201) {
+          isAddedToCart.value = true;
+        } else {
+          isAddedToCart.value = false;
+        }
         message.value = res.data!['message'];
         Utility.showToast(res.data!['message']);
         isAddingToCart.value = false;

@@ -12,6 +12,7 @@ import 'package:solh/features/lms/display/course_detail/ui/widgets/instructor_de
 import 'package:solh/features/lms/display/course_detail/ui/widgets/instructor_rating.dart';
 import 'package:solh/features/lms/display/course_detail/ui/widgets/price_discount.dart';
 import 'package:solh/features/lms/display/course_detail/ui/widgets/video_preview_widget.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -40,11 +41,34 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: AddToCartBottomNav(onTap: () {
-          addCourseToCartController.addToCart(courseDetailController
-                  .courseDetailEntity.value.courseDetail!.id ??
-              '');
-        }),
+        bottomNavigationBar: Obx(() => courseDetailController.isLoading.value
+            ? const SizedBox.shrink()
+            : AddToCartBottomNav(
+                title: courseDetailController
+                        .courseDetailEntity.value.courseDetail!.isInCart!
+                    ? "Go To Checkout"
+                    : "Add To Cart",
+                onTap: courseDetailController
+                        .courseDetailEntity.value.courseDetail!.isInCart!
+                    ? () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.courseCheckoutScreen);
+                      }
+                    : () async {
+                        await addCourseToCartController.addToCart(
+                            courseDetailController.courseDetailEntity.value
+                                    .courseDetail!.id ??
+                                '');
+                        if (addCourseToCartController.isAddedToCart.value) {
+                          courseDetailController.courseDetailEntity.value
+                              .courseDetail!.isInCart = true;
+                          courseDetailController.courseDetailEntity.refresh();
+                        } else {
+                          courseDetailController.courseDetailEntity.value
+                              .courseDetail!.isInCart = false;
+                          courseDetailController.courseDetailEntity.refresh();
+                        }
+                      })),
         appBar: SolhAppBar(
             title: SizedBox(
               width: MediaQuery.of(context).size.width - 100,
@@ -175,7 +199,7 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: GetHelpDivider(),
                           ),
-                          // Instrauctor details
+                          // Instructor details
                           const SizedBox(height: 10),
                           Text(
                             "Instructor",

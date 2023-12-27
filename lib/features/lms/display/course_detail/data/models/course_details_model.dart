@@ -140,6 +140,9 @@ class CourseDetail {
   String? currency;
   Category? category;
   String? language;
+  bool? isWishlisted;
+  bool? isInCart;
+  bool? isEnrolled;
   int? v;
 
   CourseDetail(
@@ -161,6 +164,9 @@ class CourseDetail {
       this.salePrice,
       this.currency,
       this.category,
+      this.isInCart,
+      this.isWishlisted,
+      this.isEnrolled,
       this.language,
       this.v});
 
@@ -197,6 +203,9 @@ class CourseDetail {
     category =
         json["category"] == null ? null : Category.fromJson(json["category"]);
     language = json["language"];
+    isInCart = json['inCart'];
+    isWishlisted = json['isWishlisted'];
+    isEnrolled = json['isEnrolled'];
     v = json["__v"];
   }
 }
