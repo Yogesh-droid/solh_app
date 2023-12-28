@@ -81,159 +81,162 @@ class _ChangeMpinScreenState extends State<ChangeMpinScreen> {
     return ScaffoldWithBackgroundArt(
       appBar: SolhAppBarTanasparentOnlyBackButton(
           onBackButton: () => Navigator.pop(context)),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Change MPIN',
-                style: SolhTextStyles.Large2BlackTextS24W7,
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              const Text(
-                'Enter Current mPIN',
-                style: SolhTextStyles.QS_body_2_semi,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              PinCodeTextField(
-                obscureText: true,
-                controller: currentPinController,
-                mainAxisAlignment: MainAxisAlignment.start,
-                validator: (value) {
-                  if (value?.trim() == '') {
-                    return "Field can't be empty";
-                  }
-                  return null;
-                },
-                appContext: context,
-                length: 4,
-                keyboardType: TextInputType.number,
-                separatorBuilder: (a, b) {
-                  return const SizedBox(
-                    width: 20,
-                  );
-                },
-                pinTheme: PinTheme(
-                    inactiveColor: SolhColors.grey_2,
-                    borderWidth: 1,
-                    borderRadius: BorderRadius.circular(8),
-                    activeColor: SolhColors.primary_green,
-                    shape: PinCodeFieldShape.box,
-                    selectedColor: SolhColors.primary_green),
-              ),
-              const Text(
-                'Set new mPIN',
-                style: SolhTextStyles.QS_body_2_semi,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              PinCodeTextField(
-                obscureText: true,
-                controller: newPinController,
-                mainAxisAlignment: MainAxisAlignment.start,
-                separatorBuilder: (a, b) {
-                  return const SizedBox(
-                    width: 20,
-                  );
-                },
-                validator: (value) {
-                  if (newPinController.text.trim().isEmpty) {
-                    return 'Field can\'t be empty';
-                  }
-                  return null;
-                },
-                appContext: context,
-                length: 4,
-                keyboardType: TextInputType.number,
-                pinTheme: PinTheme(
-                    inactiveColor: SolhColors.grey_2,
-                    borderWidth: 1,
-                    borderRadius: BorderRadius.circular(8),
-                    activeColor: SolhColors.primary_green,
-                    shape: PinCodeFieldShape.box,
-                    selectedColor: SolhColors.primary_green),
-              ),
-              const Text(
-                'Confirm mPIN',
-                style: SolhTextStyles.QS_body_2_semi,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              PinCodeTextField(
-                controller: confirmPinController,
-                mainAxisAlignment: MainAxisAlignment.start,
-                separatorBuilder: (a, b) {
-                  return const SizedBox(
-                    width: 20,
-                  );
-                },
-                validator: (value) {
-                  if (confirmPinController.text.trim().isEmpty) {
-                    return 'Field can\'t be empty';
-                  }
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Set Your PIN',
+                  style: SolhTextStyles.Large2BlackTextS24W7,
+                ),
+                const SizedBox(
+                  height: 32,
+                ),
+                const Text(
+                  'Enter current mPIN',
+                  style: SolhTextStyles.QS_body_2_semi,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                PinCodeTextField(
+                  obscureText: true,
+                  controller: currentPinController,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  validator: (value) {
+                    if (value?.trim() == '') {
+                      return "Field can't be empty";
+                    }
+                    return null;
+                  },
+                  appContext: context,
+                  length: 4,
+                  keyboardType: TextInputType.number,
+                  separatorBuilder: (a, b) {
+                    return const SizedBox(
+                      width: 20,
+                    );
+                  },
+                  pinTheme: PinTheme(
+                      inactiveColor: SolhColors.grey_2,
+                      borderWidth: 1,
+                      borderRadius: BorderRadius.circular(8),
+                      activeColor: SolhColors.primary_green,
+                      shape: PinCodeFieldShape.box,
+                      selectedColor: SolhColors.primary_green),
+                ),
+                const Text(
+                  'New PIN',
+                  style: SolhTextStyles.QS_body_2_semi,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                PinCodeTextField(
+                  obscureText: true,
+                  controller: newPinController,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  separatorBuilder: (a, b) {
+                    return const SizedBox(
+                      width: 20,
+                    );
+                  },
+                  validator: (value) {
+                    if (newPinController.text.trim().isEmpty) {
+                      return 'Field can\'t be empty';
+                    }
+                    return null;
+                  },
+                  appContext: context,
+                  length: 4,
+                  keyboardType: TextInputType.number,
+                  pinTheme: PinTheme(
+                      inactiveColor: SolhColors.grey_2,
+                      borderWidth: 1,
+                      borderRadius: BorderRadius.circular(8),
+                      activeColor: SolhColors.primary_green,
+                      shape: PinCodeFieldShape.box,
+                      selectedColor: SolhColors.primary_green),
+                ),
+                const Text(
+                  'Confirm new PIN ',
+                  style: SolhTextStyles.QS_body_2_semi,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                PinCodeTextField(
+                  controller: confirmPinController,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  separatorBuilder: (a, b) {
+                    return const SizedBox(
+                      width: 20,
+                    );
+                  },
+                  validator: (value) {
+                    if (confirmPinController.text.trim().isEmpty) {
+                      return 'Field can\'t be empty';
+                    }
 
-                  if (newPinController.text.trim() !=
-                      confirmPinController.text.trim()) {
-                    return '';
-                  }
-                  return null;
-                },
-                appContext: context,
-                obscureText: true,
-                length: 4,
-                keyboardType: TextInputType.number,
-                pinTheme: PinTheme(
-                    inactiveColor: SolhColors.grey_2,
-                    borderWidth: 1,
-                    activeColor: SolhColors.primary_green,
-                    borderRadius: BorderRadius.circular(8),
-                    shape: PinCodeFieldShape.box,
-                    selectedColor: SolhColors.primary_green),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Obx(() {
-                    return settingController.isChangingPin.value
-                        ? const ButtonLoadingAnimation()
-                        : SolhGreenButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                (bool, String) response =
-                                    await settingController.changeMpin(
-                                        currentPinController.text.trim(),
-                                        newPinController.text.trim());
+                    if (newPinController.text.trim() !=
+                        confirmPinController.text.trim()) {
+                      return '';
+                    }
+                    return null;
+                  },
+                  appContext: context,
+                  length: 4,
+                  keyboardType: TextInputType.number,
+                  obscureText: true,
+                  pinTheme: PinTheme(
+                      inactiveColor: SolhColors.grey_2,
+                      borderWidth: 1,
+                      activeColor: SolhColors.primary_green,
+                      borderRadius: BorderRadius.circular(8),
+                      shape: PinCodeFieldShape.box,
+                      selectedColor: SolhColors.primary_green),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(() {
+                      return settingController.isChangingPin.value
+                          ? const ButtonLoadingAnimation()
+                          : SolhGreenButton(
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  (bool, String) response =
+                                      await settingController.changeMpin(
+                                          currentPinController.text.trim(),
+                                          newPinController.text.trim());
 
-                                if (response.$1) {
-                                  SolhSnackbar.success('Success', response.$2);
-                                  if (context.mounted) {
-                                    Navigator.pop(context);
+                                  if (response.$1) {
+                                    SolhSnackbar.success(
+                                        'Success', response.$2);
+                                    if (context.mounted) {
+                                      Navigator.pop(context);
+                                    }
+                                  } else {
+                                    SolhSnackbar.error('Error', response.$2);
                                   }
-                                } else {
-                                  SolhSnackbar.error('Error', response.$2);
                                 }
-                              }
-                            },
-                            width: 70.w,
-                            child: Text('Change mPIN',
-                                style: SolhTextStyles.CTA
-                                    .copyWith(color: SolhColors.white)));
-                  }),
-                ],
-              )
-            ],
+                              },
+                              width: 70.w,
+                              child: Text('Done',
+                                  style: SolhTextStyles.CTA
+                                      .copyWith(color: SolhColors.white)));
+                    }),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -17,6 +17,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/services/user/session-cookie.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -145,6 +146,7 @@ class _OtpFieldState extends State<OtpField> {
       pinTheme: PinTheme(
           inactiveColor: SolhColors.grey_2,
           borderWidth: 1,
+          borderRadius: BorderRadius.circular(8),
           activeColor: SolhColors.primary_green,
           shape: PinCodeFieldShape.box,
           selectedColor: SolhColors.primary_green),
@@ -189,9 +191,10 @@ class _OtpFieldState extends State<OtpField> {
           log(isSessionCookieCreated.toString(),
               name: "isSessionCookieCreatedxxxx");
           ProfileController profileController = Get.put(ProfileController());
-          await profileController.getMyProfile();
+
           var x = await userBlocNetwork.isProfileCreated();
-          log(x.toString(), name: 'userBlocNetwork.isProfileCreated()');
+
+          log(x.toString(), name: 'userBlocNetwork  isProfileCreated');
           bool isProfileCreated = isSessionCookieCreated != null
               ? await userBlocNetwork.isProfileCreated() &&
                   !isSessionCookieCreated
@@ -199,8 +202,10 @@ class _OtpFieldState extends State<OtpField> {
 
           if (isProfileCreated) {
             bool response = await phoneAuthController.isMpinSet(widget.phone);
-            log(context.mounted.toString());
+            log(response.toString(), name: 'isPinSet');
             if (response) {
+              // await profileController.getMyProfile();
+              log('got the profile');
               if (context.mounted) {
                 Navigator.pushNamed(
                   context,
@@ -227,8 +232,10 @@ class _OtpFieldState extends State<OtpField> {
             Navigator.pushNamed(context, AppRoutes.nameField);
           }
         } else {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(map['message'])));
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(map['message'])));
+          }
         }
 
         /*  await FirebaseNetwork.signInWithPhoneCredential(_phoneAuthCredential)
@@ -354,6 +361,8 @@ class TimerWidget extends StatefulWidget {
 class _TimerWidgetState extends State<TimerWidget> {
   int time = 60;
 
+  PhoneAuthController phoneAuthController = Get.find();
+
   int timeManager() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       time--;
@@ -380,9 +389,22 @@ class _TimerWidgetState extends State<TimerWidget> {
           widget.phoneNo ?? '',
         );
       },
-      child: Text(
-        time == 0 ? 'Resend code' : time.toString(),
-        style: SolhTextStyles.SmallTextGreen1S12W5,
+      child: InkWell(
+        onTap: () async {
+          (bool, String) response = await phoneAuthController.login(
+              phoneAuthController.countryCode,
+              phoneAuthController.phoneNumber.text);
+
+          if (response.$1) {
+            Utility.showToast('OTP resend');
+          } else {
+            Utility.showToast(response.$2);
+          }
+        },
+        child: Text(
+          time == 0 ? 'Resend code' : time.toString(),
+          style: SolhTextStyles.SmallTextGreen1S12W5,
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
@@ -17,9 +18,11 @@ class ProductWishlistScreen extends StatefulWidget {
   State<ProductWishlistScreen> createState() => _ProductWishlistScreenState();
 }
 
-class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
+class _ProductWishlistScreenState extends State<ProductWishlistScreen>
+    with AutomaticKeepAliveClientMixin {
   ProductWishlistController productWishlistController = Get.find();
   AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
+  RefreshController _refreshController = RefreshController();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -30,23 +33,20 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SolhAppBar(
-        isLandingScreen: false,
-        isVideoCallScreen: true,
-        title:
-            const Text('Your Wishlist', style: SolhTextStyles.QS_body_1_bold),
-      ),
-      body: Obx(() {
-        return productWishlistController.isLoading.value ||
-                addDeleteWishlistItemController.isLoading.value
-            ? Center(
-                child: MyLoader(),
-              )
-            : (productWishlistController.wishlistItems.isEmpty
-                ? const EmptyWishListWidget()
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
+    return Obx(() {
+      return productWishlistController.isLoading.value ||
+              addDeleteWishlistItemController.isLoading.value
+          ? Center(
+              child: MyLoader(),
+            )
+          : (productWishlistController.wishlistItems.isEmpty
+              ? const EmptyWishListWidget()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: SmartRefresher(
+                    controller: _refreshController,
+                    onRefresh: () async =>
+                        await productWishlistController.getWishlistProducts(),
                     child: ListView(
                       children: [
                         Row(
@@ -100,10 +100,14 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                         )
                       ],
                     ),
-                  ));
-      }),
-    );
+                  ),
+                ));
+    });
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class EmptyWishListWidget extends StatelessWidget {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/features/lms/display/course_cart/ui/screens/course_checkout_page.dart';
+import 'package:solh/features/lms/display/course_cart/ui/screens/product_course_cart_parent_tab.dart';
 import 'package:solh/features/lms/display/course_detail/ui/screens/course_detail_screen.dart';
 import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
@@ -134,8 +136,11 @@ class AppRoutes {
   static const String enterMpinScreen = '/enterMpinScreen';
   static const String createMpinScreen = '/createMpinScreen';
   static const String forgotMpinScreen = '/forgotMpinScreen';
+
+  /// course related ///
   static const String courseListScreen = '/courseListScree';
   static const String courseDetailScreen = '/courseDetailScreen';
+
   static const String courseCheckoutScreen = '/courseCheckoutScreen';
 
   /// Group related  ///
@@ -214,6 +219,12 @@ class AppRoutes {
   static const String orderdetails = '/orderDetails';
   static const String cancelOrderPage = '/cancelOrderPage';
   static const String myGoalsScreen = '/myGoalScreen';
+
+  // wishlist_cart common routes
+
+  static const String productCourseCartParentTab =
+      '/courseProductCartTabParent';
+  static const String courseProductTabParent = '/courseProductTabParent';
 }
 
 class RouteGenerator {
@@ -575,6 +586,11 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) => const ForgotMpinScreen()),
             settings: const RouteSettings(name: AppRoutes.forgotMpinScreen));
+      case AppRoutes.courseProductTabParent:
+        return MaterialPageRoute(
+            builder: ((context) => const CourseProductTabParent()),
+            settings:
+                const RouteSettings(name: AppRoutes.courseProductTabParent));
 
       case AppRoutes.courseListScreen:
         return MaterialPageRoute(
@@ -593,6 +609,11 @@ class RouteGenerator {
             builder: ((context) => const CourseCheckoutPage()),
             settings:
                 const RouteSettings(name: AppRoutes.courseCheckoutScreen));
+      case AppRoutes.productCourseCartParentTab:
+        return MaterialPageRoute(
+            builder: ((context) => const ProductCourseCartParentTab()),
+            settings: const RouteSettings(
+                name: AppRoutes.productCourseCartParentTab));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

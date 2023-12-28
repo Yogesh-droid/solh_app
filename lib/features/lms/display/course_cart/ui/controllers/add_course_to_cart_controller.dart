@@ -12,6 +12,7 @@ class AddCourseToCartController extends GetxController {
   var err = ''.obs;
   var message = ''.obs;
   var isAddedToCart = false.obs;
+  var currentUpdatingCourse = '';
 
   AddCourseToCartController({required this.addCourseToCartUsecase});
 

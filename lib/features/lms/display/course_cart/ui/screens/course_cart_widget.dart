@@ -8,9 +8,15 @@ import 'package:solh/ui/screens/products/features/product_payment/ui/widgets/pay
 import 'package:solh/ui/screens/products/features/product_payment/ui/widgets/payment_options_tile.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
-class CourseCartWidget extends StatelessWidget {
+class CourseCartWidget extends StatefulWidget {
   const CourseCartWidget({super.key});
 
+  @override
+  State<CourseCartWidget> createState() => _CourseCartWidgetState();
+}
+
+class _CourseCartWidgetState extends State<CourseCartWidget>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     final GetCourseCartController getCourseCartController = Get.find();
@@ -33,4 +39,8 @@ class CourseCartWidget extends StatelessWidget {
             ]),
           ));
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

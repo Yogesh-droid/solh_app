@@ -139,7 +139,8 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                     image: cartController.cartEntity.value.cartList!
                             .items![index].productId!.defaultImage ??
                         '',
-                    currency: "Rs",
+                    currency: cartController.cartEntity.value.cartList!
+                        .items![index].productId!.currency,
                     discountedPrice: cartController.cartEntity.value.cartList!
                         .items![index].productId!.afterDiscountPrice,
                     itemPrice: cartController.cartEntity.value.cartList!

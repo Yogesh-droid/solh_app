@@ -7,6 +7,7 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_screen.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -94,6 +95,12 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                       shape: PinCodeFieldShape.box,
                       selectedColor: SolhColors.primary_green),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ResendButton(),
+                  ],
+                ),
                 const SizedBox(
                   height: 32,
                 ),
@@ -103,30 +110,45 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                     Obx(() {
                       return phoneAuthController.isVerifyingOtp.value
                           ? const ButtonLoadingAnimation()
-                          : SolhGreenButton(
-                              onPressed: () async {
-                                if (otpController.text.trim() != '') {
-                                  Map<String, dynamic> response =
-                                      await phoneAuthController.verifyCode(
-                                          phoneAuthController.countryCode,
-                                          phoneAuthController.countryCode +
-                                              phoneAuthController
-                                                  .phoneNumber.text,
-                                          otpController.text);
+                          : (phoneAuthController.isOtpVerified.value
+                              ? Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Verified',
+                                      style: SolhTextStyles.CTA.copyWith(
+                                          color: SolhColors.primary_green),
+                                    ),
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      color: SolhColors.primary_green,
+                                    )
+                                  ],
+                                )
+                              : SolhGreenButton(
+                                  onPressed: () async {
+                                    if (otpController.text.trim() != '') {
+                                      Map<String, dynamic> response =
+                                          await phoneAuthController.verifyCode(
+                                              phoneAuthController.countryCode,
+                                              phoneAuthController.countryCode +
+                                                  phoneAuthController
+                                                      .phoneNumber.text,
+                                              otpController.text);
 
-                                  phoneAuthController.isOtpVerified.value =
-                                      response['success'];
-                                  Utility.showToast(
-                                      response['message'].toString());
-                                } else {
-                                  Utility.showToast(
-                                      'OTP field can\'t be empty');
-                                }
-                              },
-                              width: 70.w,
-                              child: Text('Verify OTP',
-                                  style: SolhTextStyles.CTA
-                                      .copyWith(color: SolhColors.white)));
+                                      phoneAuthController.isOtpVerified.value =
+                                          response['success'];
+                                      Utility.showToast(
+                                          response['message'].toString());
+                                    } else {
+                                      Utility.showToast(
+                                          'OTP field can\'t be empty');
+                                    }
+                                  },
+                                  width: 70.w,
+                                  child: Text('Verify OTP',
+                                      style: SolhTextStyles.CTA
+                                          .copyWith(color: SolhColors.white))));
                     }),
                   ],
                 ),
@@ -142,6 +164,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 ),
                 Obx(() {
                   return PinCodeTextField(
+                    obscureText: true,
                     enabled: phoneAuthController.isOtpVerified.value,
                     controller: newPinController,
                     mainAxisAlignment: MainAxisAlignment.start,

@@ -40,7 +40,7 @@ class EnterMpinScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Login With mPIN',
+              'Login with mPIN',
               style: SolhTextStyles.Large2BlackTextS24W7,
             ),
             Text(
@@ -67,6 +67,7 @@ class EnterMpinScreen extends StatelessWidget {
                   width: 20,
                 );
               },
+              keyboardType: TextInputType.number,
               length: 4,
               pinTheme: PinTheme(
                   inactiveColor: SolhColors.grey_2,
@@ -136,6 +137,13 @@ class EnterMpinScreen extends StatelessWidget {
 
                               if (response.$2) {
                                 await Prefs.setString("phone", _phoneNumber);
+                                // SharedPreferences sharedPreferences =
+                                //     await SharedPreferences.getInstance();
+                                // await sharedPreferences.setString(
+                                //     'userCountry', phoneAuthController.country);
+                                // var response = await sharedPreferences
+                                //     .getString('userCountry');
+                                log(response.toString(), name: 'userCountry');
                                 await isNewUser();
 
                                 if (context.mounted) {
@@ -148,12 +156,15 @@ class EnterMpinScreen extends StatelessWidget {
                             }
                           },
                           width: 70.w,
-                          child: Text('Continue',
-                              style: SolhTextStyles.CTA
-                                  .copyWith(color: SolhColors.white)));
+                          child: Text(
+                            'Continue',
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.white),
+                          ),
+                        );
                 }),
               ],
-            )
+            ),
           ],
         ),
       ),

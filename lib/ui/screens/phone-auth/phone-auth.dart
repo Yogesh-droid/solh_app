@@ -24,7 +24,6 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   bool _hintShown = false;
 
   Future<void> _signInWithPhone(String phoneNo, String country) async {
-    print(phoneNo);
     setState(() {});
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('userCountry', country);
@@ -47,7 +46,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AuthAppBar(
+      appBar: const AuthAppBar(
         primaryTitle: 'Signup/Login',
         secondaryTitle: 'Please enter your phone number',
       ),
@@ -61,16 +60,13 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Image.asset(AssetPaths.introNumonic),
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height / 6.5,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SolhCountryCodePicker(
                             onCountryChange: (CountryCode countryCode) async {
-                          print(countryCode.dialCode);
-                          print(countryCode.name);
-                          print(countryCode.code);
                           _countryCode = countryCode.dialCode;
                           country = countryCode.code;
                         }),
@@ -78,7 +74,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                           alignment: Alignment.center,
                           height: MediaQuery.of(context).size.height / 15,
                           child: TextField(
-                            scrollPadding: EdgeInsets.only(bottom: 150),
+                            scrollPadding: const EdgeInsets.only(bottom: 150),
                             focusNode: _focusNode,
                             autofillHints: [AutofillHints.telephoneNumber],
                             textAlignVertical: TextAlignVertical.bottom,
@@ -88,7 +84,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                               _signInWithPhone(
                                   '$_countryCode$value', country ?? '');
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: SolhColors.primary_green)),
@@ -111,18 +107,14 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Container(
+                        SizedBox(
                           height: 5.8.h,
                           width: 80.w,
                           child: TextButton(
                             onPressed: () async {
-                              print(country);
-                              print("Phone no: " +
-                                  _countryCode! +
-                                  _phoneController.text);
                               if (_phoneController.text.trim() == '') {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
+                                    const SnackBar(
                                         content:
                                             Text('Enter a valid phone No.')));
                               } else {
@@ -131,7 +123,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                     country ?? '');
                               }
                             },
-                            child: Text(
+                            child: const Text(
                               "Continue",
                               style: TextStyle(color: Colors.white),
                             ),
@@ -171,7 +163,7 @@ class SolhCountryCodePicker extends StatelessWidget {
           height: MediaQuery.of(context).size.height / 15,
           decoration: BoxDecoration(
               border: Border.all(color: SolhColors.black166),
-              borderRadius: BorderRadius.all(Radius.circular(4))),
+              borderRadius: const BorderRadius.all(Radius.circular(4))),
           padding: EdgeInsets.symmetric(
               horizontal: MediaQuery.of(context).size.height / 60),
           child: Row(
@@ -179,9 +171,9 @@ class SolhCountryCodePicker extends StatelessWidget {
             children: [
               Text(
                 '${countryCode!.dialCode}(${countryCode.name})',
-                style: TextStyle(color: SolhColors.primary_green),
+                style: const TextStyle(color: SolhColors.primary_green),
               ),
-              Icon(
+              const Icon(
                 Icons.arrow_drop_down,
                 color: SolhColors.primary_green,
               )

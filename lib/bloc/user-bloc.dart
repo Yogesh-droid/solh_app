@@ -80,20 +80,24 @@ class UserBlocNetwork {
 
   Future<bool> isProfileCreated() async {
     log(_sessionCookie, name: '_session');
-    var response = await Network.makeGetRequestWithToken(
-            "${APIConstants.api}/api/is-profile-created")
-        .onError((error, stackTrace) {
-      print("error: " + error.toString());
-      return {"isProfileCreated": false};
-    });
-    print("is user profile created: " + response.toString());
-    if (response.isNotEmpty) {
-      if (response['success'] != null) {
-        return response['success'];
+    try {
+      var response = await Network.makeGetRequestWithToken(
+              "${APIConstants.api}/api/is-profile-created")
+          .onError((error, stackTrace) {
+        log(error.toString());
+        return {"isProfileCreated": false};
+      });
+      log('$response', name: 'profile response');
+      if (response.isNotEmpty) {
+        if (response['success'] != null) {
+          return response['success'];
+        }
+        return response["isCreated"];
+      } else {
+        return false;
       }
-      return response["isCreated"];
-    } else {
-      return false;
+    } on Exception catch (e) {
+      throw (e);
     }
   }
 
