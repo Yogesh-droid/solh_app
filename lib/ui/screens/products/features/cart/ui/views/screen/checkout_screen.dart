@@ -28,7 +28,8 @@ class CheckoutScreen extends StatefulWidget {
   State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
-class _CheckoutScreenState extends State<CheckoutScreen> {
+class _CheckoutScreenState extends State<CheckoutScreen>
+    with AutomaticKeepAliveClientMixin {
   final CartController cartController = Get.find();
   final AddToCartController addToCartController = Get.find();
   final ProductDetailController productDetailController = Get.find();
@@ -40,14 +41,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SolhAppBar(
-          isLandingScreen: false,
-          isVideoCallScreen: true,
-          title: const Text(
-            'Your Cart',
-            style: SolhTextStyles.QS_body_1_bold,
-          ),
-        ),
         body: Obx(() => cartController.cartEntity.value.cartList != null
             ? cartController.cartEntity.value.cartList!.items!.isNotEmpty
                 ? Stack(
@@ -167,6 +160,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           .then((value) => cartController.getCart());
     }
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class PaymentSummarySection extends StatelessWidget {

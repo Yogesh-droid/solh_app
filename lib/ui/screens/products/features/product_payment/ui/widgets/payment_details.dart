@@ -8,19 +8,20 @@ class PaymentDetails extends StatelessWidget {
       {super.key,
       required this.total,
       required this.discount,
-      required this.shipping,
-      required this.currency,
-      required this.currencySymbol});
+      this.shipping,
+      required this.currencySymbol,
+      this.horizontalPadding});
   final double total;
   final double discount;
-  final double shipping;
-  final String currency;
+  final double? shipping;
   final String currencySymbol;
+  final double? horizontalPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding ?? 24, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -86,18 +87,19 @@ class PaymentDetails extends StatelessWidget {
               ),
             ],
           ), */
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Shipping Charges',
-                  style: SolhTextStyles.QS_body_semi_1.copyWith(
-                      color: SolhColors.dark_grey)),
-              Text('$currencySymbol $shipping',
-                  style: SolhTextStyles.QS_body_semi_1.copyWith(
-                      color: SolhColors.dark_grey)),
-            ],
-          ),
+          if (shipping != null) const Divider(),
+          if (shipping != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Shipping Charges',
+                    style: SolhTextStyles.QS_body_semi_1.copyWith(
+                        color: SolhColors.dark_grey)),
+                Text('$currencySymbol $shipping',
+                    style: SolhTextStyles.QS_body_semi_1.copyWith(
+                        color: SolhColors.dark_grey)),
+              ],
+            ),
           const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,7 +110,9 @@ class PaymentDetails extends StatelessWidget {
                     color: SolhColors.black),
               ),
               Text(
-                '$currencySymbol ${total + shipping - discount}',
+                shipping != null
+                    ? '$currencySymbol ${total + shipping! - discount}'
+                    : '$currencySymbol ${total - discount}',
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.black),
               ),
@@ -131,7 +135,7 @@ class PaymentDetails extends StatelessWidget {
                     colorFilter: const ColorFilter.mode(
                         SolhColors.primary_green, BlendMode.srcIn),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 3,
                   ),
                   Text(

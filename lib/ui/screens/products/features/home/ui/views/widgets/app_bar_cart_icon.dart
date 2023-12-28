@@ -13,7 +13,8 @@ class CartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(AppRoutes.checkoutScreen),
+      onTap: () =>
+          Navigator.of(context).pushNamed(AppRoutes.productCourseCartParentTab),
       child: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

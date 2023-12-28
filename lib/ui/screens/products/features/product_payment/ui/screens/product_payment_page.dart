@@ -47,7 +47,6 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
             total: double.parse(widget.args['totalPrice'].toString()),
             discount: double.parse(widget.args['discount'].toString()),
             shipping: double.parse(widget.args['shipping'].toString()),
-            currency: widget.args['feeCode'],
             currencySymbol: widget.args['currency']),
         const SizedBox(height: 10),
         const GetHelpDivider(),

@@ -4,12 +4,14 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class PaymentOptionsTile extends StatelessWidget {
-  const PaymentOptionsTile({super.key});
+  const PaymentOptionsTile({super.key, this.horizontalPadding});
+  final double? horizontalPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding ?? 24, vertical: 12),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

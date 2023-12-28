@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/features/lms/display/course_cart/ui/screens/course_checkout_page.dart';
+import 'package:solh/features/lms/display/course_cart/ui/screens/product_course_cart_parent_tab.dart';
 import 'package:solh/features/lms/display/course_detail/ui/screens/course_detail_screen.dart';
 import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
@@ -139,7 +140,7 @@ class AppRoutes {
   /// course related ///
   static const String courseListScreen = '/courseListScree';
   static const String courseDetailScreen = '/courseDetailScreen';
-  static const String courseProductTabParent = '/courseProductTabParent';
+
   static const String courseCheckoutScreen = '/courseCheckoutScreen';
 
   /// Group related  ///
@@ -218,6 +219,12 @@ class AppRoutes {
   static const String orderdetails = '/orderDetails';
   static const String cancelOrderPage = '/cancelOrderPage';
   static const String myGoalsScreen = '/myGoalScreen';
+
+  // wishlist_cart common routes
+
+  static const String productCourseCartParentTab =
+      '/courseProductCartTabParent';
+  static const String courseProductTabParent = '/courseProductTabParent';
 }
 
 class RouteGenerator {
@@ -602,6 +609,11 @@ class RouteGenerator {
             builder: ((context) => const CourseCheckoutPage()),
             settings:
                 const RouteSettings(name: AppRoutes.courseCheckoutScreen));
+      case AppRoutes.productCourseCartParentTab:
+        return MaterialPageRoute(
+            builder: ((context) => const ProductCourseCartParentTab()),
+            settings: const RouteSettings(
+                name: AppRoutes.productCourseCartParentTab));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

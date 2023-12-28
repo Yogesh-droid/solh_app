@@ -26,6 +26,9 @@ class GetCourseCartController extends GetxController {
               RequestParams(url: "${APIConstants.api}/api/lms/user/get-cart"));
       if (dataState.data != null) {
         cartList.value = dataState.data!.cartList ?? [];
+        totalSavings.value = dataState.data!.savings ?? 0;
+        totalPrice.value = dataState.data!.totalPrice ?? 0;
+        grandTotal.value = dataState.data!.grandTotal ?? 0;
         isLoading.value = false;
       } else {
         err.value = dataState.exception.toString();
