@@ -1,4 +1,5 @@
 import 'package:solh/features/lms/display/course_cart/domain/entities/get_course_cart_entity.dart';
+import 'package:solh/features/lms/display/course_detail/data/models/course_details_model.dart';
 
 class GetCourseCartModel extends GetCourseCartEntity {
   GetCourseCartModel(
@@ -29,6 +30,7 @@ class CartList {
   int? price;
   String? currency;
   int? salePrice;
+  TotalDuration? totalDuration;
 
   CartList(
       {this.id,
@@ -36,7 +38,8 @@ class CartList {
       this.thumbnail,
       this.price,
       this.currency,
-      this.salePrice});
+      this.salePrice,
+      this.totalDuration});
 
   CartList.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
@@ -45,5 +48,8 @@ class CartList {
     price = json["price"];
     currency = json["currency"];
     salePrice = json["salePrice"];
+    totalDuration = json["totalDuration"] == null
+        ? null
+        : TotalDuration.fromJson(json["totalDuration"]);
   }
 }

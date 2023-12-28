@@ -1,15 +1,16 @@
 import 'dart:developer';
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:solh/constants/api.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/address_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/product_payment/data/payment_service.dart';
+import 'package:solh/ui/screens/products/features/product_payment/ui/controllers/make_order_controller.dart';
 import 'package:solh/ui/screens/products/features/product_payment/ui/widgets/payment_details.dart';
 import 'package:solh/ui/screens/products/features/product_payment/ui/widgets/payment_options_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -29,7 +30,7 @@ class ProductPaymentPage extends StatefulWidget {
 
 class _ProductPaymentPageState extends State<ProductPaymentPage> {
   bool isPaymentStarted = false;
-  bool isCreatingOrder = false;
+  final MakeOrderController makeOrderController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,44 +56,45 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         Padding(
           padding: const EdgeInsets.all(24),
           child: SolhGreenButton(
-            onPressed: () async {
-              // launchUrl(Uri.parse(
-              // 'upi://pay?pa=dinesh@dlanzer&pn=Dinesh&am=1&tn=Test Payment&cu=INR'));
+              onPressed: () async {
+                // launchUrl(Uri.parse(
+                // 'upi://pay?pa=dinesh@dlanzer&pn=Dinesh&am=1&tn=Test Payment&cu=INR'));
 
-              double amount = widget.args['totalPrice'] -
-                  widget.args['discount'] +
-                  widget.args['shipping'];
-              setState(() {
-                isPaymentStarted = true;
-              });
-              await startPayment(
-                      amount: '${amount.toInt()}',
-                      currency: widget.args['feeCode'],
-                      feeCode: widget.args['feeCode'].toString().toLowerCase(),
-                      paymentGateway: "Stripe",
-                      paymentSource: "App")
-                  .onError((error, stackTrace) {
+                double amount = widget.args['totalPrice'] -
+                    widget.args['discount'] +
+                    widget.args['shipping'];
+                setState(() {
+                  isPaymentStarted = true;
+                });
+                await startPayment(
+                        amount: '${amount.toInt()}',
+                        currency: widget.args['feeCode'],
+                        feeCode:
+                            widget.args['feeCode'].toString().toLowerCase(),
+                        paymentGateway: "Stripe",
+                        paymentSource: "App")
+                    .onError((error, stackTrace) {
+                  setState(() {
+                    isPaymentStarted = false;
+                  });
+                });
+
                 setState(() {
                   isPaymentStarted = false;
                 });
-              });
-
-              setState(() {
-                isPaymentStarted = false;
-              });
-            },
-            height: 40,
-            width: MediaQuery.of(context).size.width,
-            child: isPaymentStarted || isCreatingOrder
-                ? MyLoader(
-                    radius: 10,
-                    strokeWidth: 2,
-                  )
-                : Text(
-                    "Make Payment",
-                    style: SolhTextStyles.CTA.copyWith(color: Colors.white),
-                  ),
-          ),
+              },
+              height: 40,
+              width: MediaQuery.of(context).size.width,
+              child: Obx(() => isPaymentStarted ||
+                      Get.find<MakeOrderController>().isCreatingOrder.value
+                  ? MyLoader(
+                      radius: 10,
+                      strokeWidth: 2,
+                    )
+                  : Text(
+                      "Make Payment",
+                      style: SolhTextStyles.CTA.copyWith(color: Colors.white),
+                    ))),
         ),
       ]),
     );
@@ -107,27 +109,22 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
   }) async {
     // paymentController.isgettingPaymentIntent(true);
     try {
-      var paymentIntent = await createPaymentIntent(amount, feeCode);
-      log(paymentIntent.toString());
+      final user =
+          Get.find<ProfileController>().myProfileModel.value.body!.user!;
+      Map<String, dynamic>? paymentIntent =
+          await PaymentService.createPaymentIntent({
+        'amount': "${int.parse(amount) * 100}",
+        'currency': currency,
+        "description": user.sId,
+        "mobileNo": user.mobile,
+        "firstName": user.firstName,
+        "lastName": user.lastName,
+        "email": user.email ?? '',
+      });
 
       final CartController cartController = Get.find();
       final AddressController addressController = Get.find();
 
-      await Stripe.instance.initPaymentSheet(
-          paymentSheetParameters: SetupPaymentSheetParameters(
-              appearance: const PaymentSheetAppearance(
-                  primaryButton: PaymentSheetPrimaryButtonAppearance()),
-              paymentIntentClientSecret: paymentIntent!['client_secret'],
-              style: ThemeMode.dark,
-              billingDetails: const BillingDetails(
-                  address: Address(
-                      city: null,
-                      country: 'IN',
-                      line1: null,
-                      line2: null,
-                      postalCode: null,
-                      state: null)),
-              merchantDisplayName: 'Solh'));
       List<Map<String, dynamic>> items = [];
       for (var e in cartController.cartEntity.value.cartList!.items!) {
         if (!e.isOutOfStock!) {
@@ -189,64 +186,14 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
           "paymentStatus": "Paid"
         }
       };
-      // ignore: use_build_context_synchronously
-      displayPaymentSheet(context, body);
+
+      displayPaymentSheet(body);
     } catch (err) {
       throw Exception(err);
     }
   }
 
-  createPaymentIntent(
-    String amount,
-    String currency,
-  ) async {
-    try {
-      //Request body
-      Map<String, dynamic> body = {
-        'amount': "${int.parse(amount) * 100}",
-        'currency': currency,
-        "description":
-            Get.find<ProfileController>().myProfileModel.value.body!.user!.sId,
-        "mobileNo": Get.find<ProfileController>()
-            .myProfileModel
-            .value
-            .body!
-            .user!
-            .mobile,
-        "firstName": Get.find<ProfileController>()
-            .myProfileModel
-            .value
-            .body!
-            .user!
-            .firstName,
-        "lastName": Get.find<ProfileController>()
-            .myProfileModel
-            .value
-            .body!
-            .user!
-            .lastName,
-        "email": Get.find<ProfileController>()
-                .myProfileModel
-                .value
-                .body!
-                .user!
-                .email ??
-            '',
-      };
-      //Make post request to Stripe
-      var response = await Network.makePostRequestWithToken(
-          url: '${APIConstants.api}/api/custom/payment/createPaymentIntent',
-          body: body);
-
-      return response['data'];
-    } on SocketException {
-      throw Exception("Internet is slow or connection interrupted");
-    } catch (err) {
-      throw Exception(err.toString());
-    }
-  }
-
-  displayPaymentSheet(context, Map<String, dynamic> postBody) async {
+  displayPaymentSheet(Map<String, dynamic> postBody) async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
         //Clear paymentIntent variable after successful payment
@@ -266,31 +213,12 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
   }
 
   Future<void> makeOrderRequest(Map<String, dynamic> postBody) async {
-    setState(() {
-      isCreatingOrder = true;
-    });
-    try {
-      Map<String, dynamic> response = await Network.makePostRequestWithToken(
-              isEncoded: true,
-              url: '${APIConstants.api}/api/product/order-product',
-              body: postBody)
-          .onError((error, stackTrace) {
-        setState(() {
-          isCreatingOrder = false;
-        });
-        throw Exception(error);
-      });
-
-      setState(() {
-        isCreatingOrder = false;
-      });
-
-      if (response["success"]) {
+    await makeOrderController.makeOrderRequest(postBody).then((value) {
+      if (makeOrderController.success.value.isNotEmpty) {
         final cartController = Get.find<CartController>();
         cartController.cartEntity.value.cartList!.items!.clear();
         cartController.cartEntity.refresh();
 
-        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (_) {
@@ -311,7 +239,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                             AssetImage("assets/images/payment_successful.gif")),
                     const SizedBox(height: 10.0),
                     Text(
-                      response['message'],
+                      makeOrderController.success.value,
                       style: SolhTextStyles.QS_body_2_bold,
                     ),
                   ],
@@ -319,16 +247,9 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
               );
             });
       } else {
-        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (_) {
-              // Future.delayed(Duration(seconds: 3), (() {
-              //   Navigator.of(context).pop();
-              //   Navigator.of(context).pop();
-              //   Navigator.of(context).pop();
-              // }));
-
               return AlertDialog(
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -336,7 +257,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                     const Icon(Icons.warning_amber_rounded, size: 40),
                     const SizedBox(height: 10.0),
                     Text(
-                      response['message'],
+                      makeOrderController.err.value,
                       style: SolhTextStyles.QS_body_2_bold,
                     ),
                   ],
@@ -344,10 +265,6 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
               );
             });
       }
-    } on SocketException {
-      Utility.showToast("Something went wrong with your network");
-    } on Exception catch (e) {
-      Utility.showToast(e.toString());
-    }
+    });
   }
 }

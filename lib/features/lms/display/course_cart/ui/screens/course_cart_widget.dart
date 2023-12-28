@@ -14,7 +14,8 @@ class CourseCartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GetCourseCartController getCourseCartController = Get.find();
-    return Obx(() => getCourseCartController.isLoading.value
+    return Obx(() => getCourseCartController.isLoading.value ||
+            getCourseCartController.cartList.isEmpty
         ? MyLoader()
         : SingleChildScrollView(
             child: Column(children: [

@@ -46,4 +46,7 @@ void courseControllerSetup() {
       GetCourseCartUsecase(getCourseCartRepo: Get.find<GetCourseCartRepo>()));
   Get.put(GetCourseCartController(
       getCourseCartUsecase: Get.find<GetCourseCartUsecase>()));
+
+  // Order Controller
+  Get.put(MakeCourseOrderController());
 }
