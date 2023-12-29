@@ -54,11 +54,11 @@ class CourseCartItemsTile extends StatelessWidget {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    Text("$currency $price",
+                    Text("$currency $discountedPrice",
                         style: SolhTextStyles.QS_body_semi_1.copyWith(
                             color: Colors.black)),
                     const SizedBox(width: 10),
-                    Text("$currency $discountedPrice",
+                    Text("$currency $price",
                         style: SolhTextStyles.QS_body_semi_1.copyWith(
                             decoration: TextDecoration.lineThrough))
                   ],
@@ -71,6 +71,7 @@ class CourseCartItemsTile extends StatelessWidget {
         Expanded(
             flex: 1,
             child: Container(
+              margin: const EdgeInsets.only(bottom: 8),
               decoration: BoxDecoration(
                   color: SolhColors.Tertiary_Red,
                   borderRadius: BorderRadius.circular(5)),

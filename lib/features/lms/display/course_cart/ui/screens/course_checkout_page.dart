@@ -15,12 +15,6 @@ class CourseCheckoutPage extends StatelessWidget {
     final GetCourseCartController getCourseCartController =
         Get.find<GetCourseCartController>();
     return Scaffold(
-      bottomNavigationBar: Obx(() => getCourseCartController.isLoading.value ||
-              getCourseCartController.cartList.isEmpty
-          ? const SizedBox.shrink()
-          : CourseCheckoutBottomNav(
-              price: getCourseCartController.grandTotal.value,
-              currency: getCourseCartController.cartList[0].currency)),
       appBar: SolhAppBar(
           title: SizedBox(
             width: MediaQuery.of(context).size.width - 100,

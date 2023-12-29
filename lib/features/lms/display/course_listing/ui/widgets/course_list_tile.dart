@@ -37,6 +37,7 @@ class CourseListTile extends StatelessWidget {
       child: Stack(
         children: [
           Container(
+            margin: const EdgeInsets.only(bottom: 10),
             height: 130,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
@@ -137,7 +138,7 @@ class CourseListTile extends StatelessWidget {
               )
             ]),
           ),
-          Positioned(right: 0, bottom: 0, child: WishListIcon(onTap: () {})),
+          Positioned(right: 0, bottom: 10, child: WishListIcon(onTap: () {})),
         ],
       ),
     );

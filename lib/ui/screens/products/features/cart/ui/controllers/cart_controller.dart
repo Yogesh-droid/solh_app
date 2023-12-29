@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:solh/ui/screens/products/core/data_state/product_data_state.dart';
 import 'package:solh/ui/screens/products/core/request_params/request_params.dart';
 import 'package:solh/ui/screens/products/features/cart/domain/entities/cart_entity.dart';
-
 import '../../../../../../../constants/api.dart';
 import '../../domain/usecases/cart_usecase.dart';
 

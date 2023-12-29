@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/features/lms/display/course_cart/ui/controllers/add_course_to_cart_controller.dart';
+import 'package:solh/features/lms/display/course_cart/ui/controllers/get_course_cart_controller.dart';
 import 'package:solh/features/lms/display/course_detail/ui/controllers/course_detail_controller.dart';
 import 'package:solh/features/lms/display/course_detail/ui/widgets/add_to_cart_bottom_nav.dart';
 import 'package:solh/features/lms/display/course_detail/ui/widgets/course_content.dart';
@@ -63,6 +64,8 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
                           courseDetailController.courseDetailEntity.value
                               .courseDetail!.isInCart = true;
                           courseDetailController.courseDetailEntity.refresh();
+                          await Get.find<GetCourseCartController>()
+                              .getCourseCart();
                         } else {
                           courseDetailController.courseDetailEntity.value
                               .courseDetail!.isInCart = false;
