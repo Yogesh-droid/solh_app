@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/instance_manager.dart';
 import 'package:solh/features/lms/display/course_home/ui/widgets/wish_list_icon.dart';
-import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -23,7 +21,7 @@ class RecommendedCourseContainer extends StatelessWidget {
       this.id});
   final Function()? onTap;
   final bool? isWishListed;
-  final Function(String id)? onWishListTapped;
+  final Function()? onWishListTapped;
   final String? title;
   final String? instructionName;
   final String? timeLength;
@@ -71,6 +69,7 @@ class RecommendedCourseContainer extends StatelessWidget {
                 Row(children: [
                   const Icon(
                     Icons.person_2_outlined,
+                    size: 12,
                     color: SolhColors.primaryRed,
                   ),
                   Text(
@@ -133,10 +132,12 @@ class RecommendedCourseContainer extends StatelessWidget {
         ),
         Positioned(
             right: 0,
-            child: WishListIcon(onTap: () {
-              Get.find<AddRemoveCourseWishlistItemController>()
-                  .addRemoveCourseWishlistItem(id ?? '');
-            })),
+            child: WishListIcon(
+                onTap: onWishListTapped!,
+                iconData: isWishListed!
+                    ? const Icon(Icons.favorite_rounded,
+                        color: SolhColors.primaryRed)
+                    : const Icon(Icons.favorite_outline))),
       ],
     );
   }
