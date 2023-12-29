@@ -105,7 +105,7 @@ class _CourseHomePageState extends State<CourseHomePage> {
                       instructionName: course.instructor!.name,
                       isWishListed: course.isWishlisted,
                       onTap: () {},
-                      onWishListTapped: (id) {},
+                      id: course.id,
                       rating: course.rating,
                       image: course.thumbnail,
                       currency: course.currency,

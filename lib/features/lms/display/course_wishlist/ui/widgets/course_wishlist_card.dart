@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -168,21 +166,20 @@ class CourseWishlistCard extends StatelessWidget {
                               onTap: () async {
                                 addRemoveCourseWishlistItemController
                                     .currentCourseRemoval = courseId;
-                                (bool, String) res =
-                                    await addRemoveCourseWishlistItemController
-                                        .addRemoveCourseWishlistItem(courseId);
+                                await addRemoveCourseWishlistItemController
+                                    .addRemoveCourseWishlistItem(courseId);
 
-                                if (res.$1) {
-                                  courseWishlistController
-                                      .courseWishlist.value.courses!
-                                      .removeWhere((element) {
-                                    log('$courseId, ${element.sId}');
-                                    return courseId == element.sId;
-                                  });
-                                }
+                                courseWishlistController
+                                    .courseWishlist.value.courses!
+                                    .removeWhere((element) {
+                                  return courseId == element.sId;
+                                });
+
                                 courseWishlistController.courseWishlist
                                     .refresh();
-                                Utility.showToast(res.$2);
+                                Utility.showToast(
+                                    addRemoveCourseWishlistItemController
+                                        .message.value);
                               },
                               child: Obx(() {
                                 return addRemoveCourseWishlistItemController

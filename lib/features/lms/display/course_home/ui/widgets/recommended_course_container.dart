@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:solh/features/lms/display/course_home/ui/widgets/wish_list_icon.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -17,7 +19,8 @@ class RecommendedCourseContainer extends StatelessWidget {
       this.price,
       this.discountedPrice,
       this.image,
-      this.currency});
+      this.currency,
+      this.id});
   final Function()? onTap;
   final bool? isWishListed;
   final Function(String id)? onWishListTapped;
@@ -25,6 +28,7 @@ class RecommendedCourseContainer extends StatelessWidget {
   final String? instructionName;
   final String? timeLength;
   final double? rating;
+  final String? id;
   final int? price;
   final int? discountedPrice;
   final String? image;
@@ -127,7 +131,12 @@ class RecommendedCourseContainer extends StatelessWidget {
             )
           ]),
         ),
-        Positioned(right: 0, child: WishListIcon(onTap: () {})),
+        Positioned(
+            right: 0,
+            child: WishListIcon(onTap: () {
+              Get.find<AddRemoveCourseWishlistItemController>()
+                  .addRemoveCourseWishlistItem(id ?? '');
+            })),
       ],
     );
   }

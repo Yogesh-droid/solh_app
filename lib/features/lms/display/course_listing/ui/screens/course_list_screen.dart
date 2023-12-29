@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/features/lms/display/course_listing/ui/controllers/course_list_controller.dart';
 import 'package:solh/features/lms/display/course_listing/ui/widgets/course_list_tile.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -19,6 +20,9 @@ class CourseListScreen extends StatefulWidget {
 
 class _CourseListScreenState extends State<CourseListScreen> {
   final CourseListController courseListController = Get.find();
+  final AddRemoveCourseWishlistItemController
+      addRemoveCourseWishlistItemController =
+      Get.find<AddRemoveCourseWishlistItemController>();
 
   @override
   void initState() {
@@ -48,23 +52,36 @@ class _CourseListScreenState extends State<CourseListScreen> {
                 itemBuilder: (context, index) {
                   final course = courseListController.courseList[index];
                   return CourseListTile(
-                      currency: course.currency,
-                      discountedPrice: course.afterDiscountPrice,
-                      image: course.thumbnail,
-                      instructorName: course.instructor!.name,
-                      isWishListed: course.isWishlisted,
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.courseDetailScreen,
-                            arguments: {"id": course.id, "name": course.title});
-                      },
-                      onWishListTapped: (id) {},
-                      price: course.price,
-                      rating: course.rating,
-                      timeLength: course.totalDuration != null
-                          ? "${course.totalDuration!.hours} hrs ${course.totalDuration!.minutes} mins"
-                          : null,
-                      title: course.title);
+                    currency: course.currency,
+                    discountedPrice: course.afterDiscountPrice,
+                    image: course.thumbnail,
+                    id: course.id,
+                    instructorName: course.instructor!.name,
+                    isWishListed: course.isWishlisted,
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoutes.courseDetailScreen,
+                          arguments: {"id": course.id, "name": course.title});
+                    },
+                    price: course.price,
+                    rating: course.rating,
+                    timeLength: course.totalDuration != null
+                        ? "${course.totalDuration!.hours} hrs ${course.totalDuration!.minutes} mins"
+                        : null,
+                    title: course.title,
+                    onWishListTapped: () async {
+                      await addRemoveCourseWishlistItemController
+                          .addRemoveCourseWishlistItem(course.id ?? '');
+                      if (addRemoveCourseWishlistItemController.isAdded.value) {
+                        courseListController.courseList[index].isWishlisted =
+                            true;
+                        courseListController.courseList.refresh();
+                      } else {
+                        courseListController.courseList[index].isWishlisted =
+                            false;
+                        courseListController.courseList.refresh();
+                      }
+                    },
+                  );
                 })));
   }
 
