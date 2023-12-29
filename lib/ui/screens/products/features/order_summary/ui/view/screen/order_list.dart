@@ -52,7 +52,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
               : (orderListController
                           .orderListModel.value.userOrderList!.isEmpty &&
                       orderListController.orderFilterStatus.value == ''
-                  ? EmptyOrderList()
+                  ? const EmptyOrderList()
                   : Stack(
                       children: [
                         (orderListController.orderListModel.value.userOrderList!
@@ -88,12 +88,12 @@ class EmptyOrderList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image.asset('assets/images/empty_order_list.png'),
-        Text(
+        const Text(
           "No order placed yet.",
           style: SolhTextStyles.QS_body_1_bold,
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
           child: Text(
             'You have not placed an order yet. Please add items to your cart and checkout when you are ready',
             style: SolhTextStyles.QS_caption,

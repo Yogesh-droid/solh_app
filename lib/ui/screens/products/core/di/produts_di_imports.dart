@@ -49,6 +49,7 @@ import 'package:solh/ui/screens/products/features/product_detail/data/repo/produ
 import 'package:solh/ui/screens/products/features/product_detail/domain/repo/product_detail_repo.dart';
 import 'package:solh/ui/screens/products/features/product_detail/domain/usecases/product_detail_usecase.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
+import 'package:solh/ui/screens/products/features/product_payment/ui/controllers/make_order_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/data/repo/filter_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/products_list/data/repo/product_list_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/products_list/data/repo/product_sub_cat_repo_impl.dart';

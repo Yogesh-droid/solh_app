@@ -10,7 +10,6 @@ import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/cart_add
 import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/empty_cart_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet_cart_item.dart';
-import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
@@ -33,13 +32,10 @@ class _CheckoutScreenState extends State<CheckoutScreen>
   final CartController cartController = Get.find();
   final AddToCartController addToCartController = Get.find();
   final ProductDetailController productDetailController = Get.find();
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         body: Obx(() => cartController.cartEntity.value.cartList != null
             ? cartController.cartEntity.value.cartList!.items!.isNotEmpty
@@ -149,11 +145,13 @@ class _CheckoutScreenState extends State<CheckoutScreen>
           }
         }
       }
-      if (product.productId!.id ==
-          productDetailController.productDetail.value.product!.sId) {
-        productDetailController.productDetail.value.product!.inCartCount =
-            quantity;
-        productDetailController.productDetail.refresh();
+      if (productDetailController.productDetail.value.product != null) {
+        if (product.productId!.id ==
+            productDetailController.productDetail.value.product!.sId) {
+          productDetailController.productDetail.value.product!.inCartCount =
+              quantity;
+          productDetailController.productDetail.refresh();
+        }
       }
       await Get.find<AddToCartController>()
           .addToCart(productId: product.productId!.id!, quantity: quantity)

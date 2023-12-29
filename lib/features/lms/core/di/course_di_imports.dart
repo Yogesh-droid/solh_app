@@ -7,6 +7,7 @@ import 'package:solh/features/lms/display/course_cart/domain/usecases/add_course
 import 'package:solh/features/lms/display/course_cart/domain/usecases/get_course_cart_usecase.dart';
 import 'package:solh/features/lms/display/course_cart/ui/controllers/add_course_to_cart_controller.dart';
 import 'package:solh/features/lms/display/course_cart/ui/controllers/get_course_cart_controller.dart';
+import 'package:solh/features/lms/display/course_cart/ui/controllers/make_course_order_controller.dart';
 import 'package:solh/features/lms/display/course_detail/data/repo/course_detail_repo_impl.dart';
 import 'package:solh/features/lms/display/course_detail/domain/repo/course_detail_repo.dart';
 import 'package:solh/features/lms/display/course_detail/domain/usecases/course_detail_usecase.dart';
@@ -36,5 +37,9 @@ import 'package:solh/features/lms/display/course_wishlist/domain/usecases/course
 import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/controllers/course_wishlist_controller.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/widgets/course_wishlist.dart';
+import 'package:solh/features/lms/display/my_courses/data/repo/my_courses_repo_impl.dart';
+import 'package:solh/features/lms/display/my_courses/domain/repo/my_courses_repo.dart';
+import 'package:solh/features/lms/display/my_courses/domain/usecases/my_courses_usecase.dart';
+import 'package:solh/features/lms/display/my_courses/ui/controllers/my_courses_controller.dart';
 
 part 'course_di_setup.dart';

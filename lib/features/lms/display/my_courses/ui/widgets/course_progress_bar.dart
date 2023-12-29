@@ -9,7 +9,7 @@ class CourseProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StepsProgressbar(
-      stepNumber: 50,
+      stepNumber: progress.toDouble(),
       maxStep: 100,
       upperBarcolor: _getUpperBarColor(progress),
       bottomBarcolor: SolhColors.grey_3,

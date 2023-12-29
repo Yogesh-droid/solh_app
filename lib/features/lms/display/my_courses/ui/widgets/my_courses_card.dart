@@ -7,7 +7,19 @@ import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class MyCoursesCard extends StatelessWidget {
-  const MyCoursesCard({super.key});
+  const MyCoursesCard(
+      {super.key,
+      required this.courseId,
+      required this.courseDuration,
+      required this.imageUrl,
+      required this.progressPercent,
+      required this.title});
+
+  final String courseId;
+  final String courseDuration;
+  final String imageUrl;
+  final String progressPercent;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +35,7 @@ class MyCoursesCard extends StatelessWidget {
             child: CachedNetworkImage(
               placeholder: (context, url) =>
                   Image.asset('assets/images/opening_link.gif'),
-              imageUrl: "https://picsum.photos/200",
+              imageUrl: imageUrl,
               width: 130,
               height: 120,
               fit: BoxFit.fill,
@@ -37,11 +49,13 @@ class MyCoursesCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Career counselling for beginners counselling for beginners',
+                  Text(
+                    title,
                     style: SolhTextStyles.QS_body_2_bold,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
@@ -55,7 +69,7 @@ class MyCoursesCard extends StatelessWidget {
                             width: 3,
                           ),
                           Text(
-                            '2 hr 30 mins',
+                            courseDuration,
                             style: SolhTextStyles.QS_cap_semi,
                           )
                         ],
@@ -70,14 +84,14 @@ class MyCoursesCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: CourseProgressBar(
-                          progress: 50,
+                          progress: int.parse(progressPercent),
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 10,
                       ),
-                      const Text(
-                        '30%',
+                      Text(
+                        progressPercent,
                         style: SolhTextStyles.QS_cap_semi,
                       )
                     ],

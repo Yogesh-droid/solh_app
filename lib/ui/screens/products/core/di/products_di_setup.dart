@@ -144,4 +144,6 @@ void productControllerSetup() {
   Get.put(CancelReasonController(
       cancelReasonUsecase: Get.find<CancelReasonUsecase>(),
       cancelOrderUsecase: Get.find<CancelOrderUsecase>()));
+
+  Get.put(MakeOrderController());
 }
