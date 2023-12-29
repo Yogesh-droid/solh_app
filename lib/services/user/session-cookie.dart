@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/cache_manager/cache_manager.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 
 class SessionCookie {

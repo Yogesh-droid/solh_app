@@ -28,7 +28,7 @@ class ConnectScreenController extends GetxController {
       connectScreenModel.value = response;
       isConnectScreenDataLoading(false);
     } catch (e) {
-      debugPrint('error ' + e.toString());
+      debugPrint('error $e');
       // connectionErrorStatus.value = e as int;
     }
   }
@@ -38,13 +38,11 @@ class ConnectScreenController extends GetxController {
       isConnectScreenDataLoading(true);
       var response =
           await connectScreenServices.getProfileDetailsFromUserName(userName);
-      print('it ran');
       connectScreenModel.value = response;
       isConnectScreenDataLoading(false);
     } catch (e) {
-      debugPrint('error ' + e.toString());
+      debugPrint('error $e');
       // connectionErrorStatus.value = e as int;
-
     }
   }
 
@@ -57,21 +55,21 @@ class ConnectScreenController extends GetxController {
   bool checkIfAlreadyInSendConnection(String sId) {
     isInSentRequest.value = false;
 
-    connectionController.sentConnections.value.forEach((element) {
+    for (var element in connectionController.sentConnections) {
       if (sId == element.sId) {
         isInSentRequest.value = true;
       }
-    });
+    }
 
     return isInSentRequest.value;
   }
 
   bool checkIfAlreadyInRecivedConnection(String sId) {
-    connectionController.receivedConnections.value.forEach((element) {
+    for (var element in connectionController.receivedConnections) {
       if (sId == element.sId) {
         isInRecivedRequest.value = true;
       }
-    });
+    }
     return isInRecivedRequest.value;
   }
 
@@ -81,12 +79,11 @@ class ConnectScreenController extends GetxController {
       var response = await connectionServices.addConnectionService(sId);
       Utility.showToast(response['message']);
       isInSentRequest.value = true;
-      print(response["connectionDetails"]);
       connectionController.allConnectionModel.value.connections!
           .add(Connections.fromJson(response["connectionDetails"]));
       sendingConnectionRequest(false);
     } catch (e) {
-      debugPrint('error ' + e.toString());
+      debugPrint('error $e');
       connectionErrorStatus.value = e as int;
     }
   }
@@ -98,18 +95,20 @@ class ConnectScreenController extends GetxController {
 
       if (response["success"] == true) {
         isMyConnection(false);
-        connectionController.allConnectionModel.value.connections!
-            .forEach((element) {
+        for (var element
+            in connectionController.allConnectionModel.value.connections!) {
           if (element.sId == sId) {
             connectionController.allConnectionModel.value.connections!
                 .remove(element);
           }
-        });
+        }
         Utility.showToast('Successfully removed from connection');
       }
 
       sendingRequest(false);
-    } catch (e) {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void removeConnectionRequest(String sId) async {
@@ -126,13 +125,14 @@ class ConnectScreenController extends GetxController {
         Utility.showToast(response["message"]);
       }
       sendingRequest(false);
-    } catch (e) {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void acceptConnectionRequest(String sId) async {
     try {
       sendingRequest(true);
-      print(sId);
       var response = await connectionServices
           .acceptConnectionRequest(getRecivedConnectionIdBySId(sId));
 
@@ -146,30 +146,31 @@ class ConnectScreenController extends GetxController {
         Utility.showToast(response["message"]);
       }
       sendingRequest(false);
-    } catch (e) {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   String getConnectionIdBySId(String sId) {
     String connectionId = '';
-    connectionController.allConnectionModel.value.connections!
-        .forEach((element) {
-      print('${element.sId} $sId');
+    for (var element
+        in connectionController.allConnectionModel.value.connections!) {
       if (element.sId == sId && element.flag == 'sent') {
         connectionId = element.connectionId!;
       }
-    });
+    }
 
     return connectionId;
   }
 
   String getRecivedConnectionIdBySId(String sId) {
     String connectionId = '';
-    connectionController.allConnectionModel.value.connections!
-        .forEach((element) {
+    for (var element
+        in connectionController.allConnectionModel.value.connections!) {
       if (element.sId == sId && element.flag == 'received') {
         connectionId = element.connectionId!;
       }
-    });
+    }
 
     return connectionId;
   }

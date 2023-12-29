@@ -129,6 +129,7 @@ class _CourseHomePageState extends State<CourseHomePage> {
                     );
                   })),
             ),
+            const SizedBox(height: 100)
           ],
         ),
       ),

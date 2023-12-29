@@ -19,7 +19,6 @@ import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -33,7 +32,7 @@ import '../journaling/create-journal.dart';
 
 // ignore: must_be_immutable
 class GroupDetailsPage extends StatefulWidget {
-  GroupDetailsPage({Key? key, Map<dynamic, dynamic>? args})
+  GroupDetailsPage({super.key, Map<dynamic, dynamic>? args})
       : groupId = args!['groupId'],
         isJoined = args['isJoined'];
 
@@ -51,7 +50,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   ConnectionController connectionController = Get.find();
   CreateGroupController createGroupController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
-  BottomNavigatorController _bottomNavigatorController = Get.find();
+  final BottomNavigatorController _bottomNavigatorController = Get.find();
   ProfileController profileController = Get.find();
   ScrollController groupDetailScrollController = ScrollController();
   int pageNo = 1;
@@ -69,6 +68,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         if (widget.isJoined == null) {
           discoverGroupController.joinedGroupModel.value.groupList != null
               ? discoverGroupController.joinedGroupModel.value.groupList!
+                  // ignore: avoid_function_literals_in_foreach_calls
                   .forEach((element) {
                   if (element.sId == widget.groupId) {
                     isJoined = true;
@@ -89,7 +89,6 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               groupDetailScrollController.position.maxScrollExtent &&
           discoverGroupController.groupDetailModel.value.pagesForMember!.next !=
               null) {
-        print('fetching');
         discoverGroupController.isLoadingMoreGroupMembers(true);
         pageNo++;
         discoverGroupController.getGroupDetail(widget.groupId, pageNo);
@@ -132,7 +131,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                                       '')),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Obx(() {
@@ -140,7 +139,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                             ? Container()
                             : getPostButton(context);
                       }),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Obx(() {
@@ -148,7 +147,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                             ? Container()
                             : getGroupDesc();
                       }),
-                      Divider(),
+                      const Divider(),
                       Obx(() {
                         return discoverGroupController.isLoading.value
                             ? Container()
@@ -169,13 +168,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       child: Shimmer.fromColors(
         baseColor: Colors.grey[300]!,
         highlightColor: Colors.grey[100]!,
-        child: Container(
+        child: SizedBox(
           height: 200,
           width: MediaQuery.of(context).size.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
@@ -186,7 +185,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
@@ -194,7 +193,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 width: MediaQuery.of(context).size.width,
                 color: Colors.grey[300],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -212,9 +211,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   SolhAppBar getAppBar(BuildContext context) {
     return SolhAppBar(
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width * 0.55,
-          child: Text(
+          child: const Text(
             'Group Detail',
             style: SolhTextStyles.QS_body_1_bold,
           ),
@@ -251,7 +250,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 10,
-                      offset: Offset(0, 0),
+                      offset: const Offset(0, 0),
                     )
                   ],
                 ),
@@ -272,54 +271,53 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         children: [
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.public,
                                 color: SolhColors.white,
                                 size: 10,
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
                                 discoverGroupController.groupDetailModel.value
                                         .groupList!.groupType ??
                                     '',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: SolhColors.white,
                                   fontSize: 12,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
-                          Text('|', style: TextStyle(color: SolhColors.white)),
-                          SizedBox(
+                          const Text('|',
+                              style: TextStyle(color: SolhColors.white)),
+                          const SizedBox(
                             width: 10,
                           ),
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 CupertinoIcons.person_3_fill,
                                 color: SolhColors.white,
                                 size: 15,
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
-                                  discoverGroupController.groupDetailModel.value
-                                          .totalGroupMembers
-                                          .toString() +
-                                      " members",
-                                  style: TextStyle(
+                                  "${discoverGroupController.groupDetailModel.value.totalGroupMembers} members",
+                                  style: const TextStyle(
                                     color: SolhColors.white,
                                     fontSize: 12,
                                   )),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
-                          Text('|', style: TextStyle(color: SolhColors.white)),
-                          SizedBox(
+                          const Text('|',
+                              style: TextStyle(color: SolhColors.white)),
+                          const SizedBox(
                             width: 10,
                           ),
                           Row(
@@ -328,13 +326,10 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                                 'assets/images/get_help/post.svg',
                                 height: 10,
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               Text(
-                                  discoverGroupController.groupDetailModel.value
-                                          .groupList!.journalCount!
-                                          .toString() +
-                                      ' posts',
-                                  style: TextStyle(
+                                  '${discoverGroupController.groupDetailModel.value.groupList!.journalCount!} posts',
+                                  style: const TextStyle(
                                     color: SolhColors.white,
                                     fontSize: 12,
                                   )),
@@ -356,13 +351,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Group Description',
+          const Text('Group Description',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: SolhColors.primary_green,
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ReadMoreText(
@@ -395,12 +390,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 null ||
             discoverGroupController.groupDetailModel.value.isUserPresent ==
                 false
-        ? Container(
+        ? SizedBox(
             height: 50,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SolhGreenButton(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width,
                   backgroundColor: SolhColors.primary_green,
                   child: Obx(() {
@@ -498,7 +493,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           discoverGroupController.groupsShownOnHome.indexOf(
                               discoverGroupController
                                   .groupDetailModel.value.groupList!.sId!);
-                      Future.delayed(Duration(milliseconds: 500), () async {
+                      Future.delayed(const Duration(milliseconds: 500),
+                          () async {
                         journalPageController.customeScrollController.jumpTo(
                             80 *
                                 discoverGroupController.groupsShownOnHome
@@ -526,24 +522,24 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Members', style: SolhTextStyles.QS_body_1_bold),
-          SizedBox(
+          const Text('Members', style: SolhTextStyles.QS_body_1_bold),
+          const SizedBox(
             height: 10,
           ),
           //getDefaultAdmin(context),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           getDefaultAdmin(context),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(
+            separatorBuilder: (context, index) => const SizedBox(
               height: 10,
             ),
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: discoverGroupController
                 .groupDetailModel.value.groupList!.groupMembers!.length,
             itemBuilder: (context, index) {
@@ -572,30 +568,30 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               .groupList!.groupMembers![index].profilePicture!),
                       backgroundColor: Colors.transparent,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
                               discoverGroupController.groupDetailModel.value
                                       .groupList!.groupMembers![index].name ??
                                   '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w600)),
                         ),
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
                             discoverGroupController.groupDetailModel.value
                                     .groupList!.groupMembers![index].bio ??
                                 '',
                             overflow: TextOverflow.ellipsis,
-                            style:
-                                TextStyle(fontSize: 14, color: SolhColors.grey),
+                            style: const TextStyle(
+                                fontSize: 14, color: SolhColors.grey),
                           ),
                         ),
                       ],
@@ -617,18 +613,17 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(
+            separatorBuilder: (context, index) => const SizedBox(
               height: 10,
             ),
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: discoverGroupController.groupDetailModel.value.groupList!
-                    .anonymousMembers!.length ??
-                0,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: discoverGroupController
+                .groupDetailModel.value.groupList!.anonymousMembers!.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
@@ -655,13 +650,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               ''),
                       backgroundColor: Colors.transparent,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(
                               discoverGroupController
@@ -671,12 +666,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                                       .anonymousMembers![index]
                                       .userName ??
                                   '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.w600)),
                         ),
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
-                          child: Text('',
+                          child: const Text('',
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 14, color: SolhColors.grey)),
@@ -696,7 +691,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   Widget getDefaultAdmin(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       children: discoverGroupController
           .groupDetailModel.value.groupList!.defaultAdmin!
           .map((defaultAdmin) {
@@ -725,7 +720,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                       ),
                       backgroundColor: Colors.transparent,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Column(
@@ -737,11 +732,11 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               child: Text(defaultAdmin.name ?? '',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600)),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Container(
@@ -749,7 +744,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               height: 14,
                               color: Colors.grey,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Text(
@@ -757,7 +752,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               style: GoogleFonts.signika(
                                   color: SolhColors.primary_green),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             SvgPicture.asset(
@@ -765,18 +760,18 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                             )
                           ],
                         ),
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: Text(defaultAdmin.bio ?? '',
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 14, color: SolhColors.grey)),
                         ),
                       ],
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               ],
@@ -790,7 +785,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   Widget getGroupImg() {
     return Hero(
       tag: widget.groupId,
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         height: 300,
         child: discoverGroupController
@@ -809,13 +804,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   Future<void> getGroupDetails(int pageNo) async {
     await discoverGroupController.getGroupDetail(widget.groupId, pageNo);
 
-    discoverGroupController.groupDetailModel.value.groupList!.defaultAdmin!
-        .forEach((element) {
+    for (var element in discoverGroupController
+        .groupDetailModel.value.groupList!.defaultAdmin!) {
       if (element.sId ==
           profileController.myProfileModel.value.body!.user!.sId!) {
         isDefaultAdmin = true;
       }
-    });
+    }
     setState(() {});
   }
 
@@ -828,24 +823,24 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         : SizedBox(
             width: 20,
             child: PopupMenuButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.more_vert,
                 color: SolhColors.primary_green,
               ),
               itemBuilder: (context) {
                 return isDefaultAdmin
                     ? [
-                        PopupMenuItem(
+                        const PopupMenuItem(
                           child: Text('Edit', style: SolhTextStyles.CTA),
                           value: 1,
                         ),
-                        PopupMenuItem(
+                        const PopupMenuItem(
                           child: Text('Delete', style: SolhTextStyles.CTA),
                           value: 2,
                         )
                       ]
                     : [
-                        PopupMenuItem(
+                        const PopupMenuItem(
                           child: Text('Exit group', style: SolhTextStyles.CTA),
                           value: 3,
                         )
@@ -930,7 +925,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       context: context1,
       builder: (BuildContext context2) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             'Do You want to Exit group ?',
             style: SolhTextStyles.QS_body_2_semi,
           ),
@@ -1006,14 +1001,13 @@ class GetShareButton extends StatelessWidget {
                   .sId ??
               ''
         });
-        print(link);
         await Share.share(
             "Hey! Check out the $groupName support group on the Solh App $link");
 
         discoverGroupController.isSharingLink(false);
       },
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: SolhColors.primary_green.withOpacity(0.5)),
@@ -1024,7 +1018,7 @@ class GetShareButton extends StatelessWidget {
                     strokeWidth: 2,
                     radius: 12,
                   )
-                : Icon(
+                : const Icon(
                     Icons.share,
                     color: SolhColors.white,
                   );
@@ -1053,7 +1047,7 @@ getGroupJoinOption({
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Join As',
               style: SolhTextStyles.QS_body_1_bold,
             ),
@@ -1072,10 +1066,8 @@ getGroupJoinOption({
           ],
         ),
       ),
-      Divider(),
+      const Divider(),
       Obx(() {
-        print(createGroupController.joinAsAnon.value);
-
         return InkWell(
           onTap: () => createGroupController.joinAsAnon.value = false,
           child: getUsersTile(
@@ -1161,9 +1153,9 @@ getGroupJoinOption({
 
 Widget getUsersTile({name, image, badge, selected}) {
   return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
     child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: selected
@@ -1176,7 +1168,7 @@ Widget getUsersTile({name, image, badge, selected}) {
               imageUrl: image,
               radius: 50,
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Column(

@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/widgets/course_wishlist.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/view/screen/product_wishlist_screen.dart';
-import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
