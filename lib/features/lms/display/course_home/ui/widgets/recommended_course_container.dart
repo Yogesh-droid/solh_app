@@ -17,14 +17,16 @@ class RecommendedCourseContainer extends StatelessWidget {
       this.price,
       this.discountedPrice,
       this.image,
-      this.currency});
+      this.currency,
+      this.id});
   final Function()? onTap;
   final bool? isWishListed;
-  final Function(String id)? onWishListTapped;
+  final Function()? onWishListTapped;
   final String? title;
   final String? instructionName;
   final String? timeLength;
   final double? rating;
+  final String? id;
   final int? price;
   final int? discountedPrice;
   final String? image;
@@ -67,6 +69,7 @@ class RecommendedCourseContainer extends StatelessWidget {
                 Row(children: [
                   const Icon(
                     Icons.person_2_outlined,
+                    size: 12,
                     color: SolhColors.primaryRed,
                   ),
                   Text(
@@ -127,7 +130,14 @@ class RecommendedCourseContainer extends StatelessWidget {
             )
           ]),
         ),
-        Positioned(right: 0, child: WishListIcon(onTap: () {})),
+        Positioned(
+            right: 0,
+            child: WishListIcon(
+                onTap: onWishListTapped!,
+                iconData: isWishListed!
+                    ? const Icon(Icons.favorite_rounded,
+                        color: SolhColors.primaryRed)
+                    : const Icon(Icons.favorite_outline))),
       ],
     );
   }

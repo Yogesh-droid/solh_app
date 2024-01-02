@@ -9,6 +9,7 @@ import 'package:solh/features/lms/display/course_home/ui/widgets/category_contai
 import 'package:solh/features/lms/display/course_home/ui/widgets/course_banner.dart';
 import 'package:solh/features/lms/display/course_home/ui/widgets/course_search_bar.dart';
 import 'package:solh/features/lms/display/course_home/ui/widgets/recommended_course_container.dart';
+import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -25,6 +26,8 @@ class _CourseHomePageState extends State<CourseHomePage> {
   final FeaturedCourseController featuredCourseController = Get.find();
   final CourseCatController courseCatController = Get.find();
   final CourseBannerController courseBannerController = Get.find();
+  final AddRemoveCourseWishlistItemController
+      addRemoveCourseWishlistItemController = Get.find();
 
   @override
   void initState() {
@@ -104,8 +107,22 @@ class _CourseHomePageState extends State<CourseHomePage> {
                       discountedPrice: course.afterDiscountPrice,
                       instructionName: course.instructor!.name,
                       isWishListed: course.isWishlisted,
+                      onWishListTapped: () async {
+                        await addRemoveCourseWishlistItemController
+                            .addRemoveCourseWishlistItem(course.id ?? '');
+                        if (addRemoveCourseWishlistItemController
+                            .isAdded.value) {
+                          featuredCourseController
+                              .featuredCourseList[index].isWishlisted = true;
+                          featuredCourseController.featuredCourseList.refresh();
+                        } else {
+                          featuredCourseController
+                              .featuredCourseList[index].isWishlisted = false;
+                          featuredCourseController.featuredCourseList.refresh();
+                        }
+                      },
                       onTap: () {},
-                      onWishListTapped: (id) {},
+                      id: course.id,
                       rating: course.rating,
                       image: course.thumbnail,
                       currency: course.currency,

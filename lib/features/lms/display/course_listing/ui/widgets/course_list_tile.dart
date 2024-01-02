@@ -17,10 +17,12 @@ class CourseListTile extends StatelessWidget {
       this.price,
       this.discountedPrice,
       this.image,
-      this.currency});
+      this.currency,
+      this.id});
   final Function()? onTap;
+  final String? id;
   final bool? isWishListed;
-  final Function(String id)? onWishListTapped;
+  final Function()? onWishListTapped;
   final String? title;
   final String? instructorName;
   final String? timeLength;
@@ -138,7 +140,15 @@ class CourseListTile extends StatelessWidget {
               )
             ]),
           ),
-          Positioned(right: 0, bottom: 10, child: WishListIcon(onTap: () {})),
+          Positioned(
+              right: 0,
+              bottom: 10,
+              child: WishListIcon(
+                  onTap: onWishListTapped!,
+                  iconData: isWishListed!
+                      ? const Icon(Icons.favorite_rounded,
+                          color: SolhColors.primaryRed)
+                      : const Icon(Icons.favorite_outline))),
         ],
       ),
     );

@@ -60,12 +60,12 @@ class MyCoursesCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             CupertinoIcons.clock,
                             color: SolhColors.primary_green,
                             size: 12,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 3,
                           ),
                           Text(
@@ -74,7 +74,7 @@ class MyCoursesCard extends StatelessWidget {
                           )
                         ],
                       ),
-                      Icon(
+                      const Icon(
                         Icons.chevron_right_rounded,
                         color: SolhColors.primary_green,
                       )
@@ -87,7 +87,7 @@ class MyCoursesCard extends StatelessWidget {
                           progress: int.parse(progressPercent),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Text(
