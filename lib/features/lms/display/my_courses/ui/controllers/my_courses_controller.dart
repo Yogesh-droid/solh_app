@@ -8,25 +8,35 @@ import 'package:solh/ui/screens/products/core/request_params/request_params.dart
 class MyCoursesController extends GetxController {
   final MyCourseUseCase myCourseUseCase;
   var myCoursesModel = MyCoursesModel().obs;
+  var selectedStatus = 'all'.obs;
   var isEnd = false.obs;
   var isLoading = false.obs;
+  var isMoreLoading = false.obs;
+  int nextPage = 1;
+
   var err = ''.obs;
 
   MyCoursesController({required this.myCourseUseCase});
 
   Future<void> getCourseMyCources() async {
     try {
-      isLoading.value = true;
+      nextPage > 1 ? isMoreLoading.value = true : isLoading.value = true;
       final DataState<MyCoursesModel> dataState = await myCourseUseCase.call(
           RequestParams(
               url:
-                  "${APIConstants.api}/api/lms/user/my-courses?page=1&limit=10"));
+                  "${APIConstants.api}/api/lms/user/my-courses?status=${selectedStatus.value}&page=$nextPage&limit=10"));
       if (dataState.data != null) {
         myCoursesModel.value = dataState.data!;
+        if (myCoursesModel.value.pages!.next != null) {
+          nextPage = myCoursesModel.value.pages!.next!;
+        } else {
+          isEnd.value = true;
+        }
         isLoading.value = false;
       } else {
         err.value = dataState.exception.toString();
         isLoading.value = false;
+        isMoreLoading.value = false;
       }
     } on Exception catch (e) {
       err.value = e.toString();

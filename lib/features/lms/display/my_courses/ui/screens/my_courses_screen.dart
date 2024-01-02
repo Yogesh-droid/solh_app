@@ -5,6 +5,7 @@ import 'package:solh/features/lms/display/my_courses/ui/widgets/course_status_op
 import 'package:solh/features/lms/display/my_courses/ui/widgets/my_courses_card.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_list_shimmer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -17,11 +18,23 @@ class MyCoursesScreen extends StatefulWidget {
 
 class _MyCoursesScreenState extends State<MyCoursesScreen> {
   MyCoursesController myCoursesController = Get.find();
+  late final ScrollController scrollController;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       myCoursesController.getCourseMyCources();
+
+      scrollController = ScrollController();
+
+      scrollController.addListener(() {
+        if (scrollController.position.pixels ==
+                scrollController.position.maxScrollExtent &&
+            myCoursesController.isLoading.value == false &&
+            myCoursesController.isEnd.value == false) {
+          myCoursesController.getCourseMyCources();
+        }
+      });
     });
 
     super.initState();
@@ -42,7 +55,7 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
             ? const ProductListShimmer()
             : CustomScrollView(
                 slivers: [
-                  const SliverAppBar(
+                  SliverAppBar(
                     pinned: false,
                     snap: true,
                     floating: true,
@@ -79,6 +92,18 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
                     ),
                     separatorBuilder: (context, index) => const SizedBox(
                       height: 12,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Obx(() {
+                          return myCoursesController.isMoreLoading.value
+                              ? const ButtonLoadingAnimation()
+                              : Container();
+                        }),
+                      ],
                     ),
                   )
                 ],
