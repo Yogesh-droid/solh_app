@@ -403,6 +403,14 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.white,
       actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.myCoursesScreen);
+            },
+            icon: const Icon(
+              Icons.book,
+              color: SolhColors.primary_green,
+            )),
         Obx(() => CartButton(
             itemsInCart: cartController.cartEntity.value.cartList != null
                 ? cartController.cartEntity.value.cartList!.items!.length

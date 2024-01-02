@@ -5,6 +5,7 @@ import 'package:solh/features/lms/display/course_cart/ui/screens/product_course_
 import 'package:solh/features/lms/display/course_detail/ui/screens/course_detail_screen.dart';
 import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
+import 'package:solh/features/lms/display/my_courses/ui/screens/my_courses_screen.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
@@ -142,6 +143,7 @@ class AppRoutes {
   static const String courseDetailScreen = '/courseDetailScreen';
 
   static const String courseCheckoutScreen = '/courseCheckoutScreen';
+  static const String myCoursesScreen = '/myCoursesScreen';
 
   /// Group related  ///
   ///
@@ -220,7 +222,7 @@ class AppRoutes {
   static const String cancelOrderPage = '/cancelOrderPage';
   static const String myGoalsScreen = '/myGoalScreen';
 
-  // wishlist_cart common routes
+  // products_cart common routes
 
   static const String productCourseCartParentTab =
       '/courseProductCartTabParent';
@@ -614,6 +616,10 @@ class RouteGenerator {
             builder: ((context) => const ProductCourseCartParentTab()),
             settings: const RouteSettings(
                 name: AppRoutes.productCourseCartParentTab));
+      case AppRoutes.myCoursesScreen:
+        return MaterialPageRoute(
+            builder: ((context) => const MyCoursesScreen()),
+            settings: const RouteSettings(name: AppRoutes.myCoursesScreen));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));
