@@ -123,7 +123,7 @@ class _SolhAppState extends State<SolhApp> {
 
   @override
   Widget build(BuildContext context) {
-    print("Build Solh");
+    debugPrint("Build Solh");
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return FeatureDiscovery(
         child: GetMaterialApp(
