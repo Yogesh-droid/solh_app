@@ -41,13 +41,12 @@ import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
+import '../features/lms/display/course_home/ui/screens/course_homepage.dart';
 import '../routes/routes.dart';
-import '../ui/screens/my-goals/my-goals-screen.dart';
 import '../widgets_constants/constants/org_only_setting.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
 import 'bottom_navigator_controller.dart';
-import '../features/lms/display/course_home/ui/screens/course_homepage.dart';
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({super.key});

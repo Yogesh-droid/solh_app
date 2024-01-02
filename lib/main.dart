@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -21,11 +20,8 @@ import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/core/di/get_it_imports.dart';
 import 'package:solh/features/lms/core/di/course_di_imports.dart';
-import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/services/cache_manager/cache_manager.dart';
 import 'package:solh/services/firebase/local_notification.dart';
-import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
@@ -41,7 +37,6 @@ import 'firebase_options.dart';
 import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'ui/screens/products/core/di/produts_di_imports.dart';
-import 'widgets_constants/constants/textstyles.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -128,7 +123,7 @@ class _SolhAppState extends State<SolhApp> {
 
   @override
   Widget build(BuildContext context) {
-    print("Build Solh");
+    debugPrint("Build Solh");
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return FeatureDiscovery(
         child: GetMaterialApp(

@@ -36,7 +36,6 @@ import 'package:solh/features/lms/display/course_wishlist/domain/usecases/add_re
 import 'package:solh/features/lms/display/course_wishlist/domain/usecases/course_wishlist_usecase.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/controllers/course_wishlist_controller.dart';
-import 'package:solh/features/lms/display/course_wishlist/ui/widgets/course_wishlist.dart';
 import 'package:solh/features/lms/display/my_courses/data/repo/my_courses_repo_impl.dart';
 import 'package:solh/features/lms/display/my_courses/domain/repo/my_courses_repo.dart';
 import 'package:solh/features/lms/display/my_courses/domain/usecases/my_courses_usecase.dart';

@@ -5,7 +5,6 @@ import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/view/widgets/wishlist_card.dart';
-import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -22,7 +21,7 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen>
     with AutomaticKeepAliveClientMixin {
   ProductWishlistController productWishlistController = Get.find();
   AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -33,6 +32,7 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Obx(() {
       return productWishlistController.isLoading.value ||
               addDeleteWishlistItemController.isLoading.value
@@ -106,7 +106,6 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 

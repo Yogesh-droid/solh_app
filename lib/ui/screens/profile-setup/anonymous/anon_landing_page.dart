@@ -9,8 +9,8 @@ import '../../../../controllers/profile/profile_controller.dart';
 import '../../../../widgets_constants/loader/my-loader.dart';
 
 class AnonLandingPage extends StatelessWidget {
-  AnonLandingPage({Key? key}) : super(key: key);
-  AnonController anomymousController = Get.find();
+  AnonLandingPage({super.key});
+  final AnonController anomymousController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +23,19 @@ class AnonLandingPage extends StatelessWidget {
               SizedBox(
                 height: 30.h,
               ),
-              Text(
+              const Text(
                 "Your profile is ready!",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black, fontSize: 24),
               ),
-              Text(
+              const Text(
                 "If you want to maintain your privacy, select the 'Anonymous' option.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 16),
               ),
               SizedBox(height: 35.h),
               SolhGreenButton(
-                  child: Text("Lets Go"),
+                  child: const Text("Lets Go"),
                   height: 6.h,
                   onPressed: () async {
                     showDialog(

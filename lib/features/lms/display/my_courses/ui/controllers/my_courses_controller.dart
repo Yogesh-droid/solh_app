@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/core/data_state/data_state.dart';
@@ -24,15 +26,24 @@ class MyCoursesController extends GetxController {
       final DataState<MyCoursesModel> dataState = await myCourseUseCase.call(
           RequestParams(
               url:
-                  "${APIConstants.api}/api/lms/user/my-courses?status=${selectedStatus.value}&page=$nextPage&limit=10"));
+                  "${APIConstants.api}/api/lms/user/my-courses?status=${selectedStatus.value}&page=$nextPage&limit=6"));
       if (dataState.data != null) {
-        myCoursesModel.value = dataState.data!;
-        if (myCoursesModel.value.pages!.next != null) {
-          nextPage = myCoursesModel.value.pages!.next!;
+        if (nextPage == 1) {
+          myCoursesModel.value = dataState.data!;
+        } else {
+          myCoursesModel.value.myCourseList!
+              .addAll(dataState.data!.myCourseList!.toList());
+          myCoursesModel.refresh();
+        }
+        log(dataState.data!.pages!.next.toString(),
+            name: "myCoursesModel.value.pages!.next");
+        if (dataState.data!.pages!.next != null) {
+          nextPage = dataState.data!.pages!.next!;
         } else {
           isEnd.value = true;
         }
         isLoading.value = false;
+        isMoreLoading.value = false;
       } else {
         err.value = dataState.exception.toString();
         isLoading.value = false;

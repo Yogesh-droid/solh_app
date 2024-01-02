@@ -31,6 +31,8 @@ class CourseStatusOptions extends StatelessWidget {
             ),
             onSelected: (bool value) {
               myCoursesController.selectedStatus.value = 'all';
+              myCoursesController.nextPage = 1;
+              myCoursesController.isEnd.value = false;
               myCoursesController.getCourseMyCources();
             },
           ),
@@ -51,6 +53,8 @@ class CourseStatusOptions extends StatelessWidget {
             ),
             onSelected: (bool value) {
               myCoursesController.selectedStatus.value = 'ongoing';
+              myCoursesController.nextPage = 1;
+              myCoursesController.isEnd.value = false;
               myCoursesController.getCourseMyCources();
             },
           ),
@@ -70,6 +74,8 @@ class CourseStatusOptions extends StatelessWidget {
                             : SolhColors.black)),
             onSelected: (bool value) {
               myCoursesController.selectedStatus.value = 'completed';
+              myCoursesController.nextPage = 1;
+              myCoursesController.isEnd.value = false;
               myCoursesController.getCourseMyCources();
             },
           ),
