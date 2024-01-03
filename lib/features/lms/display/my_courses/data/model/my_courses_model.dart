@@ -1,6 +1,7 @@
 class MyCoursesModel {
   bool? success;
   List<MyCourseList>? myCourseList;
+  Pages? pages;
 
   MyCoursesModel({this.success, this.myCourseList});
 
@@ -12,6 +13,8 @@ class MyCoursesModel {
         myCourseList!.add(MyCourseList.fromJson(v));
       });
     }
+
+    pages = json['pages'] != null ? Pages.fromJson(json['pages']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,7 +32,7 @@ class MyCourseList {
   String? courseId;
   String? courseName;
   String? image;
-  String? totalDuration;
+  TotalDuration? totalDuration;
   int? progressStatus;
 
   MyCourseList(
@@ -45,7 +48,9 @@ class MyCourseList {
     courseId = json['courseId'];
     courseName = json['courseName'];
     image = json['image'];
-    totalDuration = json['totalDuration'];
+    totalDuration = json['totalDuration'] != null
+        ? TotalDuration.fromJson(json['totalDuration'])
+        : null;
     progressStatus = json['progressStatus'];
   }
 
@@ -57,6 +62,44 @@ class MyCourseList {
     data['image'] = image;
     data['totalDuration'] = totalDuration;
     data['progressStatus'] = progressStatus;
+    return data;
+  }
+}
+
+class TotalDuration {
+  int? hours;
+  int? minutes;
+
+  TotalDuration({this.hours, this.minutes});
+
+  TotalDuration.fromJson(Map<String, dynamic> json) {
+    hours = json['hours'];
+    minutes = json['minutes'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['hours'] = this.hours;
+    data['minutes'] = this.minutes;
+    return data;
+  }
+}
+
+class Pages {
+  int? prev;
+  int? next;
+
+  Pages({this.prev, this.next});
+
+  Pages.fromJson(Map<String, dynamic> json) {
+    prev = json['prev'];
+    next = json['next'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['prev'] = prev;
+    data['next'] = next;
     return data;
   }
 }

@@ -9,13 +9,15 @@ class MyCoursesCard extends StatelessWidget {
   const MyCoursesCard(
       {super.key,
       required this.courseId,
-      required this.courseDuration,
+      required this.courseDurationHours,
+      required this.courseDurationMins,
       required this.imageUrl,
       required this.progressPercent,
       required this.title});
 
   final String courseId;
-  final String courseDuration;
+  final String courseDurationHours;
+  final String courseDurationMins;
   final String imageUrl;
   final String progressPercent;
   final String title;
@@ -68,7 +70,7 @@ class MyCoursesCard extends StatelessWidget {
                             width: 3,
                           ),
                           Text(
-                            courseDuration,
+                            "$courseDurationHours hrs $courseDurationMins mins",
                             style: SolhTextStyles.QS_cap_semi,
                           )
                         ],
