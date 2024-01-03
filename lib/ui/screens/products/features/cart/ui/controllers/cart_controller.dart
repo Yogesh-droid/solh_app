@@ -23,7 +23,7 @@ class CartController extends GetxController {
       if (dataState.data != null) {
         cartEntity.value = CartEntity();
         cartEntity.value = dataState.data!;
-        totalPayblePrice.value = cartEntity.value.totalPrice!.toDouble();
+        totalPayblePrice.value = cartEntity.value.finalPrice!.toDouble();
 
         isCartLoading.value = false;
       } else {

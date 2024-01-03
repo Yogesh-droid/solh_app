@@ -45,7 +45,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         //paymentDetails(),
         PaymentDetails(
-            total: double.parse(widget.args['totalPrice'].toString()),
+            total: double.parse(widget.args['finalPrice'].toString()),
             discount: double.parse(widget.args['discount'].toString()),
             shipping: double.parse(widget.args['shipping'].toString()),
             currencySymbol: widget.args['currency']),
@@ -60,9 +60,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                 // launchUrl(Uri.parse(
                 // 'upi://pay?pa=dinesh@dlanzer&pn=Dinesh&am=1&tn=Test Payment&cu=INR'));
 
-                double amount = widget.args['totalPrice'] -
-                    widget.args['discount'] +
-                    widget.args['shipping'];
+                double amount = widget.args['totalPrice'];
                 setState(() {
                   isPaymentStarted = true;
                 });

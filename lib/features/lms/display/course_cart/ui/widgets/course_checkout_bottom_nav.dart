@@ -5,8 +5,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/features/lms/display/course_cart/ui/controllers/country_list_controller.dart';
 import 'package:solh/features/lms/display/course_cart/ui/controllers/get_course_cart_controller.dart';
 import 'package:solh/features/lms/display/course_cart/ui/controllers/make_course_order_controller.dart';
+import 'package:solh/features/lms/display/course_cart/ui/widgets/course_billing_widget.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/products/features/product_payment/data/payment_service.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -47,7 +49,13 @@ class _CourseCheckoutBottomNavState extends State<CourseCheckoutBottomNav> {
           ),
           const Spacer(),
           Obx(() => SolhGreenButton(
-                onPressed: () => startPayment(),
+                onPressed: () {
+                  if (billingFormKey.currentState!.validate()) {
+                    startPayment();
+                  } else {
+                    return;
+                  }
+                },
                 height: 40,
                 child: isPaymentStarted ||
                         Get.find<MakeCourseOrderController>()
@@ -73,6 +81,7 @@ class _CourseCheckoutBottomNavState extends State<CourseCheckoutBottomNav> {
       });
       final user =
           Get.find<ProfileController>().myProfileModel.value.body!.user!;
+      final CountryListController countryListController = Get.find();
       Map<String, dynamic>? paymentIntent =
           await PaymentService.createPaymentIntent({
         'amount': "${widget.price! * 100}",
@@ -113,8 +122,8 @@ class _CourseCheckoutBottomNavState extends State<CourseCheckoutBottomNav> {
           "source": "App",
           "orderItems": items,
           "billingAddress": {
-            "state": "addressController.selectedBillingAddress.value.state",
-            "country": "6242b1b86fabd390bf0063fc"
+            "state": countryListController.selectedState.value,
+            "country": countryListController.selectedCountry.value
           },
           "paymentGateway": "UPI",
           "currency": widget.currency,

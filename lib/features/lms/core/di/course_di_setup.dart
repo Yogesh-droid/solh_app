@@ -72,4 +72,10 @@ void courseControllerSetup() {
   Get.put<MyCourseRepo>(MyCourseRepoImpl());
   Get.put(MyCourseUseCase(myCourseRepo: Get.find<MyCourseRepo>()));
   Get.put(MyCoursesController(myCourseUseCase: Get.find<MyCourseUseCase>()));
+
+  // Country List
+  Get.put<CountryListRepo>(CountryListRepoImpl());
+  Get.put(CountryListUsecase(countryListRepo: Get.find<CountryListRepo>()));
+  Get.put(CountryListController(
+      countryListUsecase: Get.find<CountryListUsecase>()));
 }

@@ -201,7 +201,7 @@ class PaymentSummarySection extends StatelessWidget {
                           color: SolhColors.greenShade4,
                           borderRadius: BorderRadius.circular(5)),
                       child: Text(
-                        "Saved ${cartController.cartEntity.value.currency} ${(cartController.totalPayblePrice.value) - ((cartController.totalPayblePrice.value) - (cartController.cartEntity.value.discount!))} ",
+                        "Saved ${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.discount!} ",
                         style: SolhTextStyles.Caption_2_semi.copyWith(
                             color: SolhColors.primary_green, fontSize: 8),
                       ),
@@ -321,7 +321,7 @@ class CheckoutButton extends StatelessWidget {
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               Obx(() => Text(
-                    "${cartController.cartEntity.value.currency} ${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}",
+                    "${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.finalPrice}",
                     style: SolhTextStyles.QS_head_5.copyWith(
                         color: SolhColors.black),
                   )),
@@ -342,6 +342,7 @@ class CheckoutButton extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.productPaymentPage,
                   arguments: {
                     "totalPrice": cartController.totalPayblePrice.value,
+                    "finalPrice": cartController.cartEntity.value.totalPrice,
                     "shipping": cartController.cartEntity.value.shippingAmount,
                     "discount": cartController.cartEntity.value.discount,
                     "feeCurrency": cartController.cartEntity.value.symbol,

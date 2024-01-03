@@ -55,7 +55,7 @@ class ExpandedWidget extends StatelessWidget {
       onTap: () => onTapped(e.id ?? ''),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
             border: Border.all(color: SolhColors.greyS200),
             borderRadius: BorderRadius.circular(5)),

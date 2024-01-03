@@ -25,6 +25,7 @@ import 'package:solh/controllers/homepage/offer_carousel_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/features/lms/display/course_cart/ui/controllers/country_list_controller.dart';
 import 'package:solh/features/lms/display/course_cart/ui/controllers/get_course_cart_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
@@ -204,6 +205,7 @@ class _HomePageState extends State<HomePage> {
     FirebaseAnalytics.instance
         .logEvent(name: 'HomePageOpen', parameters: {'Page': 'HomeScreen'});
     checkForUserActive();
+    Get.find<CountryListController>().getCountryList();
   }
 
   checkForUserActive() async {

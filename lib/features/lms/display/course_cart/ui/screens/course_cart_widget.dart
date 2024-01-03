@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:solh/features/lms/display/course_cart/ui/controllers/country_list_controller.dart';
 import 'package:solh/features/lms/display/course_cart/ui/controllers/get_course_cart_controller.dart';
 import 'package:solh/features/lms/display/course_cart/ui/screens/course_items_list.dart';
+import 'package:solh/features/lms/display/course_cart/ui/widgets/course_billing_widget.dart';
 import 'package:solh/features/lms/display/course_cart/ui/widgets/course_checkout_bottom_nav.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/empty_cart_widget.dart';
@@ -19,6 +21,16 @@ class CourseCartWidget extends StatefulWidget {
 
 class _CourseCartWidgetState extends State<CourseCartWidget>
     with AutomaticKeepAliveClientMixin {
+  final CountryListController countryListController = Get.find();
+
+  @override
+  void initState() {
+    if (countryListController.countryList.isEmpty) {
+      countryListController.getCountryList();
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -38,6 +50,8 @@ class _CourseCartWidgetState extends State<CourseCartWidget>
                   child: Column(children: [
                     // Cart Items
                     const CourseItemsList(),
+                    const GetHelpDivider(),
+                    const CourseBillingWidget(),
                     const GetHelpDivider(),
                     PaymentDetails(
                         total:
