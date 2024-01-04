@@ -1,17 +1,15 @@
 import 'package:chewie/chewie.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 
-class VideoPreviewWidget extends StatefulWidget {
-  const VideoPreviewWidget({super.key, required this.url});
-  final String url;
+class MyCourseVideoPlayer extends StatefulWidget {
+  const MyCourseVideoPlayer({super.key});
 
   @override
-  State<VideoPreviewWidget> createState() => _VideoPreviewWidgetState();
+  State<MyCourseVideoPlayer> createState() => _MyCourseVideoPlayerState();
 }
 
-class _VideoPreviewWidgetState extends State<VideoPreviewWidget>
-    with SingleTickerProviderStateMixin {
+class _MyCourseVideoPlayerState extends State<MyCourseVideoPlayer> {
   late VideoPlayerController videoPlayerController;
 
   late ChewieController chewieController;
@@ -19,7 +17,7 @@ class _VideoPreviewWidgetState extends State<VideoPreviewWidget>
   @override
   void initState() {
     videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(widget.url))..initialize();
+        VideoPlayerController.networkUrl(Uri.parse("widget.url"))..initialize();
 
     chewieController = ChewieController(
         additionalOptions: null,

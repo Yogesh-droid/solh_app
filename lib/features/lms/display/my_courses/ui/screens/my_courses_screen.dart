@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -46,7 +45,6 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     myCoursesController.isEnd.value = false;
     myCoursesController.nextPage = 1;
     super.dispose();
@@ -140,7 +138,7 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
                           return myCoursesController.isMoreLoading.value
                               ? const ButtonLoadingAnimation()
                               : Container(
-                                  padding: EdgeInsets.only(bottom: 16),
+                                  padding: const EdgeInsets.only(bottom: 16),
                                 );
                         }),
                       ],

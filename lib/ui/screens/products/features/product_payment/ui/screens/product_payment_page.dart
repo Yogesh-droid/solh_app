@@ -179,7 +179,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
             "landmark": addressController.selectedBillingAddress.value.landmark,
             "country": "6242b1b86fabd390bf0063fc"
           },
-          "paymentGateway": "UPI",
+          "paymentGateway": "Stripe",
           "currency": "₹",
           "paymentStatus": "Paid"
         }
