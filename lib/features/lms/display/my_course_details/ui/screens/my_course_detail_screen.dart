@@ -1,8 +1,11 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/controllers/my_course_detail_controller.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/widgets/my_course_content_section.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:video_player/video_player.dart';
 
@@ -20,13 +23,9 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
   late TabController tabController;
 
   late VideoPlayerController videoPlayerController;
-  final List list = [
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-  ];
 
   late ChewieController chewieController;
+  var selectedPanelId = '';
 
   @override
   void initState() {
@@ -60,8 +59,8 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
               decoration: const BoxDecoration(color: Colors.black),
               child: Chewie(controller: chewieController),
             ),
-            TabBar.secondary(
-                indicatorColor: Colors.grey,
+            TabBar(
+                indicatorColor: SolhColors.primary_green,
                 controller: tabController,
                 tabs: const [
                   Tab(
@@ -78,41 +77,43 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
                 ]),
             Expanded(
                 child: TabBarView(controller: tabController, children: [
-              ListView(
-                children: myCourseDetailController.sectionList
-                    .map((e) => ListTile(
-                          title: Text(e.lectures![0].contentData!.data!),
-                          onTap: () {
-                            videoPlayerController.dispose();
-                            videoPlayerController =
-                                VideoPlayerController.networkUrl(Uri.parse(
-                                    e.lectures![0].contentData!.data!));
-                            chewieController.dispose();
-                            initializeChewie(videoPlayerController);
-                            setState(() {});
-                          },
-                        ))
-                    .toList(),
-              ),
+              Obx(() => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: myCourseDetailController.sectionList
+                        .map((e) => AnimatedSize(
+                            duration: const Duration(milliseconds: 200),
+                            child: selectedPanelId == e.id
+                                ? ExpandedWidget(
+                                    e: e,
+                                    onTapped: (id) {
+                                      setState(() {
+                                        selectedPanelId = '';
+                                      });
+                                    },
+                                    onLectureTapped: (lectures) {
+                                      videoPlayerController.dispose();
+                                      videoPlayerController =
+                                          VideoPlayerController.networkUrl(
+                                              Uri.parse(
+                                                  lectures.contentData!.data ??
+                                                      ''));
+                                      chewieController.dispose();
+                                      initializeChewie(videoPlayerController);
+                                      setState(() {});
+                                    })
+                                : CollapsedWidget(
+                                    e: e,
+                                    onTapped: (id) {
+                                      setState(() {
+                                        selectedPanelId = id;
+                                      });
+                                    },
+                                    percentage: e.progressStatus ?? 0,
+                                  )))
+                        .toList(),
+                  )),
               Container()
             ]))
-
-            /* Expanded(
-                child: ListView(
-              children: list
-                  .map((e) => ListTile(
-                        title: Text(e),
-                        onTap: () {
-                          videoPlayerController.dispose();
-                          videoPlayerController =
-                              VideoPlayerController.networkUrl(Uri.parse(e));
-                          chewieController.dispose();
-                          initializeChewie(videoPlayerController);
-                          setState(() {});
-                        },
-                      ))
-                  .toList(),
-            )) */
           ],
         ));
   }
