@@ -45,15 +45,18 @@ class CourseListTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: SolhColors.grey_2)),
             child: Row(children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10)),
-                child: CachedNetworkImage(
-                  imageUrl: image!,
-                  width: 130,
-                  height: 140,
-                  fit: BoxFit.fill,
+              Hero(
+                tag: "$id",
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10)),
+                  child: CachedNetworkImage(
+                    imageUrl: image!,
+                    width: 130,
+                    height: 140,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
               const SizedBox(width: 5),

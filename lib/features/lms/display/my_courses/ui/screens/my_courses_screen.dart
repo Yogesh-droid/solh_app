@@ -78,7 +78,10 @@ class _MyCoursesScreenState extends State<MyCoursesScreen> {
                       child: CourseStatusOptions(),
                     ),
                   ),
-                  myCoursesController.myCoursesModel.value.myCourseList!.isEmpty
+                  myCoursesController.myCoursesModel.value.myCourseList ==
+                              null ||
+                          myCoursesController
+                              .myCoursesModel.value.myCourseList!.isEmpty
                       ? SliverToBoxAdapter(
                           child: Center(
                               child: Padding(

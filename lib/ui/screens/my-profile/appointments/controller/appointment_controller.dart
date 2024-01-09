@@ -150,16 +150,16 @@ class AppointmentController extends GetxController {
       required String extension}) async {
     try {
       isFileDownloading(true);
-      Uri _uri = Uri.parse(url);
+      Uri uri = Uri.parse(url);
       log(extension);
       currentLoadingurl = url;
 
-      var response = await http.get(_uri);
+      var response = await http.get(uri);
       isFileDownloading(false);
       if (response.statusCode == 200 || response.statusCode == 201) {
         var decodedResponse = response.bodyBytes;
 
-        File file = new File('$filePath/$fileName');
+        File file = File('$filePath/$fileName');
         await file.writeAsBytes(decodedResponse);
         downloadedAndLocalfile[url] = '$filePath/$fileName';
         log("${downloadedAndLocalfile[url]}");
@@ -177,7 +177,7 @@ class AppointmentController extends GetxController {
     } on SocketException {
       throw "no-internet";
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

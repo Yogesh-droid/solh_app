@@ -4,8 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
-import 'package:sizer/sizer.dart';
-
 import '../../../controllers/getHelp/allied_controller.dart';
 import '../../../model/get-help/inhouse_package_model.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';

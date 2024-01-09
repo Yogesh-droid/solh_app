@@ -68,6 +68,7 @@ class _CourseHomePageState extends State<CourseHomePage> {
                       image: courseCatController
                               .categoryList[index].displayImage ??
                           '',
+                      id: courseCatController.categoryList[index].id,
                       onTap: () {
                         Navigator.pushNamed(context, AppRoutes.courseListScreen,
                             arguments: {

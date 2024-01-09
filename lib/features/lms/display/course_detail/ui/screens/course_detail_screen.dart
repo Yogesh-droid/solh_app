@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -82,158 +83,185 @@ class _CourseDetailScreenState extends State<CourseDetailScreen> {
             ),
             isLandingScreen: false,
             isVideoCallScreen: true),
-        body: Obx(() => courseDetailController.isLoading.value
-            ? MyLoader()
-            : Column(children: [
-                VideoPreviewWidget(
-                  url: courseDetailController
-                          .courseDetailEntity.value.courseDetail!.preview ??
-                      "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                ),
-                const SizedBox(height: 5),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /// Title
-                          Text(
-                            courseDetailController.courseDetailEntity.value
-                                    .courseDetail!.title ??
-                                '',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: SolhTextStyles.QS_body_1_med.copyWith(
-                                color: const Color(0xFF2E2E2E)),
-                          ),
-                          const SizedBox(height: 10),
-
-                          /// Subtitle
-                          Text(
-                            courseDetailController.courseDetailEntity.value
-                                    .courseDetail!.subTitle ??
-                                '',
-                            style: SolhTextStyles.QS_caption,
-                          ),
-                          const SizedBox(height: 10),
-
-                          /// Instructor And Rating
-                          const InstructorRating(),
-
-                          /// Duration And Language
-                          const DurationLang(),
-
-                          /// Price and Discount
-                          const SizedBox(height: 5),
-                          const PriceDiscount(),
-
-                          /// What You Will Learn Course Learnings
-                          const SizedBox(height: 20),
-                          Text(
-                            "What you'll learn",
-                            style: SolhTextStyles.QS_body_1_med.copyWith(
-                                color: const Color(0xFF2E2E2E)),
-                          ),
-                          CourseIncludes(
-                              data: courseDetailController.courseDetailEntity
-                                      .value.courseDetail!.courseLearning ??
-                                  ''),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: GetHelpDivider(),
-                          ),
-
-                          /// Course Content
-                          const SizedBox(height: 10),
-                          Text(
-                            "Course Content",
-                            style: SolhTextStyles.QS_body_1_med.copyWith(
-                                color: const Color(0xFF2E2E2E)),
-                          ),
-                          const SizedBox(height: 5),
-                          const CourseContent(),
-                          const SizedBox(height: 10),
-
-                          /// Show More Button
-                          if (courseDetailController
-                                  .courseDetailEntity.value.sections!.length >
-                              5)
-                            SolhGreenBorderButton(
-                                borderRadius: BorderRadius.zero,
-                                child: Text(
-                                  "${courseDetailController.courseDetailEntity.value.sections!.length - 5} More Module",
-                                  style: SolhTextStyles.QS_cap_semi.copyWith(
-                                      color: SolhColors.primary_green),
-                                )),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: GetHelpDivider(),
-                          ),
-
-                          /// Course includes
-                          const SizedBox(height: 10),
-                          Text(
-                            "This Course Includes",
-                            style: SolhTextStyles.QS_body_1_med.copyWith(
-                                color: const Color(0xFF2E2E2E)),
-                          ),
-                          const SizedBox(height: 5),
-                          CourseIncludes(
-                              data: courseDetailController.courseDetailEntity
-                                      .value.courseDetail!.courseIncludes ??
-                                  ''),
-
-                          /// Course desciption
-
-                          const SizedBox(height: 10),
-                          Text(
-                            "Description",
-                            style: SolhTextStyles.QS_body_1_med.copyWith(
-                                color: const Color(0xFF2E2E2E)),
-                          ),
-                          const SizedBox(height: 5),
-                          CourseIncludes(
-                              data: courseDetailController.courseDetailEntity
-                                      .value.courseDetail!.description ??
-                                  ''),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: GetHelpDivider(),
-                          ),
-                          // Instructor details
-                          const SizedBox(height: 10),
-                          Text(
-                            "Instructor",
-                            style: SolhTextStyles.QS_body_1_med.copyWith(
-                                color: const Color(0xFF2E2E2E)),
-                          ),
-                          const SizedBox(height: 5),
-                          const InstructorDetails(),
-
-                          // Reviews
-
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            child: GetHelpDivider(),
-                          ),
-                          // Instructor details
-                          const SizedBox(height: 10),
-                          Text(
-                            "Course Feedback",
-                            style: SolhTextStyles.QS_body_1_med.copyWith(
-                                color: const Color(0xFF2E2E2E)),
-                          ),
-                          const SizedBox(height: 5),
-                          const CourseFeedback(),
-                          const SizedBox(height: 200)
-                        ],
+        body: Obx(() => Column(children: [
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 1800),
+                switchInCurve: Curves.easeOut,
+                child: courseDetailController.isLoading.value
+                    ? Hero(
+                        transitionOnUserGestures: true,
+                        tag: "${widget.args['id']}",
+                        child: CachedNetworkImage(
+                          placeholder: (context, url) =>
+                              Image.asset('assets/images/opening_link.gif'),
+                          imageUrl: widget.args['thumbnail'],
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.fill,
+                        ),
+                      )
+                    : VideoPreviewWidget(
+                        url: courseDetailController.courseDetailEntity.value
+                                .courseDetail!.preview ??
+                            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
                       ),
-                    ),
-                  ),
-                )
-              ])));
+              ),
+              const SizedBox(height: 5),
+              courseDetailController.isLoading.value
+                  ? MyLoader()
+                  : Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /// Title
+                              Text(
+                                courseDetailController.courseDetailEntity.value
+                                        .courseDetail!.title ??
+                                    '',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: SolhTextStyles.QS_body_1_med.copyWith(
+                                    color: const Color(0xFF2E2E2E)),
+                              ),
+                              const SizedBox(height: 10),
+
+                              /// Subtitle
+                              Text(
+                                courseDetailController.courseDetailEntity.value
+                                        .courseDetail!.subTitle ??
+                                    '',
+                                style: SolhTextStyles.QS_caption,
+                              ),
+                              const SizedBox(height: 10),
+
+                              /// Instructor And Rating
+                              const InstructorRating(),
+
+                              /// Duration And Language
+                              const DurationLang(),
+
+                              /// Price and Discount
+                              const SizedBox(height: 5),
+                              const PriceDiscount(),
+
+                              /// What You Will Learn Course Learnings
+                              const SizedBox(height: 20),
+                              Text(
+                                "What you'll learn",
+                                style: SolhTextStyles.QS_body_1_med.copyWith(
+                                    color: const Color(0xFF2E2E2E)),
+                              ),
+                              CourseIncludes(
+                                  data: courseDetailController
+                                          .courseDetailEntity
+                                          .value
+                                          .courseDetail!
+                                          .courseLearning ??
+                                      ''),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: GetHelpDivider(),
+                              ),
+
+                              /// Course Content
+                              const SizedBox(height: 10),
+                              Text(
+                                "Course Content",
+                                style: SolhTextStyles.QS_body_1_med.copyWith(
+                                    color: const Color(0xFF2E2E2E)),
+                              ),
+                              const SizedBox(height: 5),
+                              const CourseContent(),
+                              const SizedBox(height: 10),
+
+                              /// Show More Button
+                              if (courseDetailController.courseDetailEntity
+                                      .value.sections!.length >
+                                  5)
+                                SolhGreenBorderButton(
+                                    borderRadius: BorderRadius.zero,
+                                    child: Text(
+                                      "${courseDetailController.courseDetailEntity.value.sections!.length - 5} More Module",
+                                      style:
+                                          SolhTextStyles.QS_cap_semi.copyWith(
+                                              color: SolhColors.primary_green),
+                                    )),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: GetHelpDivider(),
+                              ),
+
+                              /// Course includes
+                              const SizedBox(height: 10),
+                              Text(
+                                "This Course Includes",
+                                style: SolhTextStyles.QS_body_1_med.copyWith(
+                                    color: const Color(0xFF2E2E2E)),
+                              ),
+                              const SizedBox(height: 5),
+                              CourseIncludes(
+                                  data: courseDetailController
+                                          .courseDetailEntity
+                                          .value
+                                          .courseDetail!
+                                          .courseIncludes ??
+                                      ''),
+
+                              /// Course desciption
+
+                              const SizedBox(height: 10),
+                              Text(
+                                "Description",
+                                style: SolhTextStyles.QS_body_1_med.copyWith(
+                                    color: const Color(0xFF2E2E2E)),
+                              ),
+                              const SizedBox(height: 5),
+                              CourseIncludes(
+                                  data: courseDetailController
+                                          .courseDetailEntity
+                                          .value
+                                          .courseDetail!
+                                          .description ??
+                                      ''),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: GetHelpDivider(),
+                              ),
+                              // Instructor details
+                              const SizedBox(height: 10),
+                              Text(
+                                "Instructor",
+                                style: SolhTextStyles.QS_body_1_med.copyWith(
+                                    color: const Color(0xFF2E2E2E)),
+                              ),
+                              const SizedBox(height: 5),
+                              const InstructorDetails(),
+
+                              // Reviews
+
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                child: GetHelpDivider(),
+                              ),
+                              // Instructor details
+                              const SizedBox(height: 10),
+                              Text(
+                                "Course Feedback",
+                                style: SolhTextStyles.QS_body_1_med.copyWith(
+                                    color: const Color(0xFF2E2E2E)),
+                              ),
+                              const SizedBox(height: 5),
+                              const CourseFeedback(),
+                              const SizedBox(height: 200)
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+            ])));
   }
 
   void getCourseDetails(id) {

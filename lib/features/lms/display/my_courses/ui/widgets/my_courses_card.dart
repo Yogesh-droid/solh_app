@@ -28,7 +28,7 @@ class MyCoursesCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed(AppRoutes.myCourseDetailScreen,
-            arguments: {'id': courseId, 'name': title});
+            arguments: {'id': courseId, 'name': title, 'thumbnail': imageUrl});
       },
       child: Container(
         decoration: BoxDecoration(
@@ -36,17 +36,20 @@ class MyCoursesCard extends StatelessWidget {
             border: Border.all(color: SolhColors.grey_2)),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10)),
-              child: CachedNetworkImage(
-                placeholder: (context, url) =>
-                    Image.asset('assets/images/opening_link.gif'),
-                imageUrl: imageUrl,
-                width: 130,
-                height: 120,
-                fit: BoxFit.fill,
+            Hero(
+              tag: courseId,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10)),
+                child: CachedNetworkImage(
+                  placeholder: (context, url) =>
+                      Image.asset('assets/images/opening_link.gif'),
+                  imageUrl: imageUrl,
+                  width: 130,
+                  height: 120,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             Expanded(

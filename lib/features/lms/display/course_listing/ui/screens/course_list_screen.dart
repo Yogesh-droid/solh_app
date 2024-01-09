@@ -36,9 +36,12 @@ class _CourseListScreenState extends State<CourseListScreen> {
         appBar: SolhAppBar(
           title: SizedBox(
             width: MediaQuery.of(context).size.width - 100,
-            child: Text(
-              widget.args['name'],
-              style: SolhTextStyles.QS_body_semi_1,
+            child: Hero(
+              tag: widget.args['id'],
+              child: Text(
+                widget.args['name'],
+                style: SolhTextStyles.QS_body_semi_1,
+              ),
             ),
           ),
           isLandingScreen: false,
@@ -60,7 +63,11 @@ class _CourseListScreenState extends State<CourseListScreen> {
                     isWishListed: course.isWishlisted,
                     onTap: () {
                       Navigator.pushNamed(context, AppRoutes.courseDetailScreen,
-                          arguments: {"id": course.id, "name": course.title});
+                          arguments: {
+                            "id": course.id,
+                            "name": course.title,
+                            "thumbnail": course.thumbnail
+                          });
                     },
                     price: course.price,
                     rating: course.rating,
