@@ -86,5 +86,16 @@ void courseControllerSetup() {
   Get.put(MyCourseDetailController(
       myCourseDetailUsecase: Get.find<MyCourseDetailUsecase>()));
 
-  Get.put(MyCourseDetailPageController());
+  // Course Reviews setup
+  Get.put<CourseReviewRepo>(CourseReviewsRepoImpl());
+  Get.put(CourseReviewUsecase(courseReviewRepo: Get.find<CourseReviewRepo>()));
+  Get.put(CourseReviewController(
+      courseReviewUsecase: Get.find<CourseReviewUsecase>()));
+
+  // Add Course Reviews setup
+  Get.put<AddCourseReviewRepo>(AddCourseReviewRepoImpl());
+  Get.put(AddCourseReviewUsecase(
+      addCourseReviewRepo: Get.find<AddCourseReviewRepo>()));
+  Get.put(AddCourseReviewController(
+      addCourseReviewUsecase: Get.find<AddCourseReviewUsecase>()));
 }

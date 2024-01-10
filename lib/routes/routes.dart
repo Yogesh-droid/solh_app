@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/features/lms/display/course_cart/ui/screens/course_checkout_page.dart';
 import 'package:solh/features/lms/display/course_cart/ui/screens/product_course_cart_parent_tab.dart';
+import 'package:solh/features/lms/display/course_detail/ui/screens/all_reviews_page.dart';
 import 'package:solh/features/lms/display/course_detail/ui/screens/course_detail_screen.dart';
 import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/screens/add_review_page.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/screens/my_course_detail_screen.dart';
 import 'package:solh/features/lms/display/my_courses/ui/screens/my_courses_screen.dart';
 
@@ -223,6 +225,8 @@ class AppRoutes {
   static const String cancelOrderPage = '/cancelOrderPage';
   static const String myGoalsScreen = '/myGoalScreen';
   static const String myCourseDetailScreen = '/myCourseDetailScreen';
+  static const String courseReviewsPage = '/courseReviewsPage';
+  static const String addReviewPage = '/addReviewPage';
 
   // products_cart common routes
 
@@ -629,6 +633,18 @@ class RouteGenerator {
                 MyCourseDetailScreen(args: args as Map<String, dynamic>)),
             settings:
                 const RouteSettings(name: AppRoutes.myCourseDetailScreen));
+
+      case AppRoutes.courseReviewsPage:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                AllReviewsPage(args: args as Map<String, dynamic>)),
+            settings: const RouteSettings(name: AppRoutes.courseReviewsPage));
+
+      case AppRoutes.addReviewPage:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                AddReviewPage(args: args as Map<String, dynamic>)),
+            settings: const RouteSettings(name: AppRoutes.addReviewPage));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

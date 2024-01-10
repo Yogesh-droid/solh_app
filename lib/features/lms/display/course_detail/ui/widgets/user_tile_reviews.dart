@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -23,7 +24,7 @@ class UserTileReviews extends StatelessWidget {
         Row(
           children: [
             CircleAvatar(
-                radius: 30,
+                radius: 20,
                 backgroundImage: CachedNetworkImageProvider(userImage)),
             const SizedBox(width: 10),
             Expanded(
@@ -31,25 +32,30 @@ class UserTileReviews extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(useName,
-                    style: SolhTextStyles.QS_body_1_med.copyWith(
-                        color: Colors.black)),
+                    style: GoogleFonts.quicksand(
+                        textStyle: SolhTextStyles.QS_body_1_med.copyWith(
+                            color: Colors.black))),
                 Container(
-                  width: 60,
-                  padding: const EdgeInsets.all(8),
+                  width: 45,
+                  height: 20,
+                  padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
                       color: SolhColors.primary_green,
                       borderRadius: BorderRadius.circular(5)),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Icon(
                         Icons.star,
                         color: Colors.white,
-                        size: 15,
+                        size: 12,
                       ),
                       const SizedBox(width: 5),
                       Text(
                         rating.toString(),
-                        style: SolhTextStyles.CTA.copyWith(color: Colors.white),
+                        style: SolhTextStyles.CTA
+                            .copyWith(color: Colors.white, fontSize: 12),
                       ),
                     ],
                   ),
@@ -58,10 +64,18 @@ class UserTileReviews extends StatelessWidget {
             ))
           ],
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         Text(
           review ?? '',
-          style: SolhTextStyles.QS_body_2.copyWith(color: Colors.black),
+          style: GoogleFonts.quicksand(
+              textStyle:
+                  SolhTextStyles.QS_body_2.copyWith(color: Colors.black)),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Divider(
+            color: Colors.black,
+          ),
         )
       ],
     );

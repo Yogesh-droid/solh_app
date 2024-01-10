@@ -5,6 +5,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/controllers/my_course_detail_controller.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/widgets/my_course_content_section.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/widgets/my_course_more_options.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -128,7 +129,9 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
                                     )))
                           .toList(),
                     ),
-                    Container()
+                    MyCourseMoreOptions(
+                      courseId: widget.args['id'],
+                    )
                   ]))
                 ],
               )));
