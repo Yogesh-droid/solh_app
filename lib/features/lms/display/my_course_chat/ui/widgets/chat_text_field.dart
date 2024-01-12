@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ChatTextField extends StatelessWidget {
   const ChatTextField(
@@ -37,7 +38,7 @@ class ChatTextField extends StatelessWidget {
                     focusNode: focusNode)),
             const SizedBox(width: 10),
             CircleAvatar(
-              backgroundColor: Colors.grey,
+              backgroundColor: SolhColors.primary_green,
               child: IconButton(
                   onPressed: () {
                     onSendBtnTapped(textEditingController.text);

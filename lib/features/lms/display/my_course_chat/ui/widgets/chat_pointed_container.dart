@@ -23,21 +23,21 @@ class ChatPointedContainer extends StatelessWidget {
               width: 20,
             ),
           ),
-        Container(
-          // width: MediaQuery.of(context).size.width / 1.2,
-          constraints:
-              BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.2),
-          decoration: BoxDecoration(
-              color: color ?? Theme.of(context).colorScheme.onPrimary,
-              border: Border.all(
-                  color: color ?? Theme.of(context).colorScheme.onPrimary),
-              borderRadius: BorderRadius.only(
-                bottomLeft: const Radius.circular(14),
-                bottomRight: const Radius.circular(14),
-                topLeft: isMyChat ? Radius.zero : const Radius.circular(14),
-                topRight: isMyChat ? const Radius.circular(14) : Radius.zero,
-              )),
-          child: child,
+        Flexible(
+          child: Container(
+            width: MediaQuery.of(context).size.width / 1.2,
+            decoration: BoxDecoration(
+                color: color ?? Theme.of(context).colorScheme.onPrimary,
+                border: Border.all(
+                    color: color ?? Theme.of(context).colorScheme.onPrimary),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: const Radius.circular(14),
+                  bottomRight: const Radius.circular(14),
+                  topLeft: isMyChat ? Radius.zero : const Radius.circular(14),
+                  topRight: isMyChat ? const Radius.circular(14) : Radius.zero,
+                )),
+            child: child,
+          ),
         ),
         if (!isMyChat)
           ClipPath(

@@ -45,9 +45,13 @@ import 'package:solh/features/lms/display/course_wishlist/domain/usecases/course
 import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/controllers/course_wishlist_controller.dart';
 import 'package:solh/features/lms/display/my_course_chat/data/repo/course_chat_repo_impl.dart';
+import 'package:solh/features/lms/display/my_course_chat/data/repo/send_course_msg_repo_impl.dart';
 import 'package:solh/features/lms/display/my_course_chat/domain/repo/course_chat_repo.dart';
+import 'package:solh/features/lms/display/my_course_chat/domain/repo/send_course_msg_repo.dart';
 import 'package:solh/features/lms/display/my_course_chat/domain/usecases/course_chat_usecase.dart';
+import 'package:solh/features/lms/display/my_course_chat/domain/usecases/send_course_msg_usecase.dart';
 import 'package:solh/features/lms/display/my_course_chat/ui/controllers/get_course_chat_controller.dart';
+import 'package:solh/features/lms/display/my_course_chat/ui/controllers/send_course_msg_controller.dart';
 import 'package:solh/features/lms/display/my_course_details/data/repo/add_course_review_repo_impl.dart';
 import 'package:solh/features/lms/display/my_course_details/data/repo/my_course_detail_repo_impl.dart';
 import 'package:solh/features/lms/display/my_course_details/data/repo/update_lecture_track_repo_impl.dart';

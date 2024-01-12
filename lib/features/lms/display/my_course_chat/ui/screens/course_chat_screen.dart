@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:solh/features/lms/display/my_course_chat/data/models/course_chat_model.dart';
 import 'package:solh/features/lms/display/my_course_chat/ui/controllers/get_course_chat_controller.dart';
 import 'package:solh/features/lms/display/my_course_chat/ui/widgets/chat_pointed_container.dart';
+import 'package:solh/features/lms/display/my_course_chat/ui/widgets/chat_text_field.dart';
 import 'package:solh/features/lms/display/my_course_chat/ui/widgets/text_chat_card.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../../../../widgets_constants/constants/colors.dart';
+import '../controllers/send_course_msg_controller.dart';
 
 class CourseChatScreen extends StatefulWidget {
   const CourseChatScreen({super.key, required this.args});
@@ -21,6 +25,8 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
   late ScrollController scrollController;
   bool loadMore = false;
   final GetCourseChatController getCourseChatController = Get.find();
+  final TextEditingController textEditingController = TextEditingController();
+  final SendCourseMsgController sendCourseMsgController = Get.find();
 
   @override
   void initState() {
@@ -42,6 +48,12 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
   }
 
   @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SolhAppBar(
@@ -56,7 +68,6 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
                   Expanded(
                     child: ListView.separated(
                       controller: scrollController,
-                      // physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) => ChatPointedContainer(
                           color: getCourseChatController
@@ -77,6 +88,31 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
                           const SizedBox(height: 20),
                     ),
                   ),
+                  ChatTextField(
+                      onSendBtnTapped: (value) {
+                        if (value.isEmpty) {
+                          Utility.showToast("Please type a message");
+                        } else {
+                          if (sendCourseMsgController.isSending.value) {
+                            return;
+                          } else {
+                            sendCourseMsgController.sendMessage(
+                                courseId: widget.args['courseId'],
+                                message: textEditingController.text);
+                            textEditingController.clear();
+                            if (sendCourseMsgController.success.value) {
+                              getCourseChatController.conversationList.add(
+                                  Conversation(
+                                      dateTime: DateTime.now().toString(),
+                                      body: textEditingController.text,
+                                      authorType: 'user'));
+                              getCourseChatController.conversationList
+                                  .refresh();
+                            }
+                          }
+                        }
+                      },
+                      textEditingController: textEditingController)
                 ],
               )));
   }

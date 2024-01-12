@@ -24,7 +24,7 @@ class TextChatCard extends StatelessWidget {
               children: [
                 if (DateTime.tryParse(conversation.dateTime.toString()) != null)
                   Text(
-                    DateFormat('dd MMM yyyy hh:mm a').format(
+                    DateFormat('dd MMM yyy').format(
                         DateTime.parse(conversation.dateTime.toString())),
                     style: SolhTextStyles.Caption_2_semi.copyWith(
                         color: SolhColors.grey_2),

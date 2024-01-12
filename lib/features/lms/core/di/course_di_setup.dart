@@ -110,4 +110,11 @@ void courseControllerSetup() {
   Get.put<CourseChatRepo>(CourseChatRepoImpl());
   Get.put(CourseChatUsecase(courseChatRepo: Get.find<CourseChatRepo>()));
   Get.put(GetCourseChatController(chatUsecase: Get.find<CourseChatUsecase>()));
+
+  // send course message setup
+  Get.put<SendCourseMsgRepo>(SendCourseMsgRepoImpl());
+  Get.put(
+      SendCourseMsgUsecase(sendCourseMsgRepo: Get.find<SendCourseMsgRepo>()));
+  Get.put(SendCourseMsgController(
+      sendCourseMsgUsecase: Get.find<SendCourseMsgUsecase>()));
 }
