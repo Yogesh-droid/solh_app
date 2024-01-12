@@ -23,7 +23,9 @@ class CourseChatScreen extends StatefulWidget {
 
 class _CourseChatScreenState extends State<CourseChatScreen> {
   late ScrollController scrollController;
-  bool loadMore = false;
+
+  int pageNo = 1;
+
   final GetCourseChatController getCourseChatController = Get.find();
   final TextEditingController textEditingController = TextEditingController();
   final SendCourseMsgController sendCourseMsgController = Get.find();
@@ -31,18 +33,13 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
   @override
   void initState() {
     super.initState();
-    getCourseChat(widget.args['courseId']);
+    getCourseChat(widget.args['courseId'], pageNo);
 
     scrollController = ScrollController();
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
           scrollController.position.maxScrollExtent) {
-        setState(() {
-          loadMore = true;
-        });
-        setState(() {
-          loadMore = false;
-        });
+        getCourseChat(widget.args['courseId'], pageNo);
       }
     });
   }
@@ -65,8 +62,11 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
             : Column(
                 children: [
                   const SizedBox(height: 20),
+                  if (getCourseChatController.isLoadingMore.value)
+                    const Center(child: CircularProgressIndicator()),
                   Expanded(
                     child: ListView.separated(
+                      reverse: true,
                       controller: scrollController,
                       shrinkWrap: true,
                       itemBuilder: (context, index) => ChatPointedContainer(
@@ -99,16 +99,14 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
                             sendCourseMsgController.sendMessage(
                                 courseId: widget.args['courseId'],
                                 message: textEditingController.text);
+                            getCourseChatController.conversationList.insert(
+                                0,
+                                Conversation(
+                                    dateTime: DateTime.now().toString(),
+                                    body: textEditingController.text,
+                                    authorType: 'user'));
+                            getCourseChatController.conversationList.refresh();
                             textEditingController.clear();
-                            if (sendCourseMsgController.success.value) {
-                              getCourseChatController.conversationList.add(
-                                  Conversation(
-                                      dateTime: DateTime.now().toString(),
-                                      body: textEditingController.text,
-                                      authorType: 'user'));
-                              getCourseChatController.conversationList
-                                  .refresh();
-                            }
                           }
                         }
                       },
@@ -117,7 +115,8 @@ class _CourseChatScreenState extends State<CourseChatScreen> {
               )));
   }
 
-  void getCourseChat(String id) {
-    getCourseChatController.getCourseChat(id);
+  Future<void> getCourseChat(String id, int page) async {
+    await getCourseChatController.getCourseChat(courseId: id, pageNo: page);
+    pageNo++;
   }
 }

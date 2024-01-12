@@ -1,11 +1,14 @@
 import 'package:solh/features/lms/display/my_course_chat/domain/entities/course_chat_entity.dart';
 
+import '../../../course_detail/data/models/course_review_model.dart';
+
 class CourseChatModel extends CourseChatEntity {
-  CourseChatModel({super.success, super.conversation});
+  CourseChatModel({super.success, super.conversation, super.pages});
 
   factory CourseChatModel.fromJson(Map<String, dynamic> json) {
     return CourseChatModel(
         success: json["success"],
+        pages: json["pages"] == null ? null : Pages.fromJson(json["pages"]),
         conversation: json["conversation"] == null
             ? null
             : (json["conversation"] as List)

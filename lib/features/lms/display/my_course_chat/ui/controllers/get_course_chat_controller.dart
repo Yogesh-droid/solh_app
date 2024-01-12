@@ -14,26 +14,42 @@ class GetCourseChatController extends GetxController {
 
   var isLoading = false.obs;
   var err = ''.obs;
+  var isLast = false.obs;
+  var isLoadingMore = false.obs;
   var conversationList = <Conversation>[].obs;
 
-  Future<void> getCourseChat(String courseId) async {
+  Future<void> getCourseChat(
+      {required String courseId, required int pageNo}) async {
     try {
-      isLoading.value = true;
+      if (pageNo == 1) {
+        isLoading.value = true;
+      } else {
+        isLoadingMore.value = true;
+      }
       final DataState<CourseChatEntity> dataState = await chatUsecase.call(
           RequestParams(
               url:
-                  "${APIConstants.api}/api/lms/user/get-chat?courseId=$courseId"));
+                  "${APIConstants.api}/api/lms/user/get-chat?courseId=$courseId&page=$pageNo"));
 
       if (dataState.data != null) {
         isLoading.value = false;
-        conversationList.value = dataState.data!.conversation ?? [];
+        isLoadingMore.value = false;
+        isLast.value = dataState.data!.pages!.next == null;
+        if (pageNo > 1) {
+          conversationList.addAll(dataState.data!.conversation ?? []);
+          conversationList.refresh();
+        } else {
+          conversationList.value = dataState.data!.conversation ?? [];
+        }
       } else {
         err.value = dataState.exception.toString();
         isLoading.value = false;
+        isLoadingMore.value = false;
       }
     } on Exception catch (e) {
       err.value = e.toString();
       isLoading.value = false;
+      isLoadingMore.value = false;
     }
   }
 }
