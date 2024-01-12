@@ -98,4 +98,16 @@ void courseControllerSetup() {
       addCourseReviewRepo: Get.find<AddCourseReviewRepo>()));
   Get.put(AddCourseReviewController(
       addCourseReviewUsecase: Get.find<AddCourseReviewUsecase>()));
+
+// Update lecture status setup
+  Get.put<UpdateLectureTrackRepo>(UpdateLectureTrackRepoImpl());
+  Get.put(UpdateLectureTrackUsecase(
+      updateLectureTrackRepo: Get.find<UpdateLectureTrackRepo>()));
+  Get.put(UpdateLectureTrackController(
+      updateLectureTrackUsecase: Get.find<UpdateLectureTrackUsecase>()));
+
+  // Get course Chat setup
+  Get.put<CourseChatRepo>(CourseChatRepoImpl());
+  Get.put(CourseChatUsecase(courseChatRepo: Get.find<CourseChatRepo>()));
+  Get.put(GetCourseChatController(chatUsecase: Get.find<CourseChatUsecase>()));
 }

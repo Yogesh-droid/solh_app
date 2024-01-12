@@ -95,6 +95,7 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
                               duration: const Duration(milliseconds: 200),
                               child: selectedPanelId == e.id
                                   ? ExpandedWidget(
+                                      courseId: "${widget.args['id']}",
                                       e: e,
                                       onTapped: (id) {
                                         setState(() {

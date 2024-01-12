@@ -20,7 +20,12 @@ class MyCourseMoreOptions extends StatelessWidget {
           ),
           OptionsTile(
             icon: Icons.message,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.courseChatPage,
+                  arguments: {
+                    'courseId': courseId,
+                  });
+            },
             title: "Message",
           ),
           OptionsTile(

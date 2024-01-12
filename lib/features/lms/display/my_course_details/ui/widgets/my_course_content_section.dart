@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:solh/features/lms/display/my_course_details/data/models/my_course_detail_model.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/controllers/my_course_detail_controller.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/controllers/update_lecture_track_controller.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -8,13 +12,17 @@ class ExpandedWidget extends StatelessWidget {
       {super.key,
       required this.e,
       required this.onTapped,
-      required this.onLectureTapped});
+      required this.onLectureTapped,
+      required this.courseId});
   final SectionList e;
+  final String courseId;
   final Function(String id) onTapped;
   final Function(Lectures) onLectureTapped;
 
   @override
   Widget build(BuildContext context) {
+    final UpdateLectureTrackController updateLectureTrackController =
+        Get.find();
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -68,6 +76,22 @@ class ExpandedWidget extends StatelessWidget {
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Checkbox(
+                                activeColor: SolhColors.primary_green,
+                                value: e1.isDone,
+                                onChanged: (value) async {
+                                  e1.isDone = value;
+                                  Get.find<MyCourseDetailController>()
+                                      .sectionList
+                                      .refresh();
+                                  await updateLectureTrackController
+                                      .updateLectureTrack(
+                                          courseId: courseId,
+                                          lectureId: e1.id ?? '',
+                                          sectionId: e.id ?? '');
+                                  Utility.showToast(updateLectureTrackController
+                                      .message.value);
+                                }),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

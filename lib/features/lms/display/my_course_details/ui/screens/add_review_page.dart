@@ -114,6 +114,7 @@ class AddReviewPage extends StatelessWidget {
                     Utility.showToast(addReviewController.error.value);
                   } else {
                     Utility.showToast(addReviewController.msg.value);
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                   }
                 }

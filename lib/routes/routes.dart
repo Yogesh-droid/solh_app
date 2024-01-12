@@ -6,6 +6,7 @@ import 'package:solh/features/lms/display/course_detail/ui/screens/all_reviews_p
 import 'package:solh/features/lms/display/course_detail/ui/screens/course_detail_screen.dart';
 import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_screen.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
+import 'package:solh/features/lms/display/my_course_chat/ui/screens/course_chat_screen.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/screens/add_review_page.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/screens/my_course_detail_screen.dart';
 import 'package:solh/features/lms/display/my_courses/ui/screens/my_courses_screen.dart';
@@ -227,6 +228,7 @@ class AppRoutes {
   static const String myCourseDetailScreen = '/myCourseDetailScreen';
   static const String courseReviewsPage = '/courseReviewsPage';
   static const String addReviewPage = '/addReviewPage';
+  static const String courseChatPage = '/courseChatPage';
 
   // products_cart common routes
 
@@ -645,6 +647,12 @@ class RouteGenerator {
             builder: ((context) =>
                 AddReviewPage(args: args as Map<String, dynamic>)),
             settings: const RouteSettings(name: AppRoutes.addReviewPage));
+
+      case AppRoutes.courseChatPage:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                CourseChatScreen(args: args as Map<String, dynamic>)),
+            settings: const RouteSettings(name: AppRoutes.courseChatPage));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));
