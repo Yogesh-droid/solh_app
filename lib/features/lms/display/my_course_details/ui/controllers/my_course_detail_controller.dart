@@ -11,6 +11,7 @@ class MyCourseDetailController extends GetxController {
   var isLoading = false.obs;
   var err = ''.obs;
   var sectionList = <SectionList>[].obs;
+  var certificateUrl = ''.obs;
 
   MyCourseDetailController({required this.myCourseDetailUsecase});
 
@@ -22,6 +23,9 @@ class MyCourseDetailController extends GetxController {
               url: "${APIConstants.api}/api/lms/user/course-section-list/$id"));
       if (dataState.data != null) {
         sectionList.value = dataState.data!.sectionList ?? [];
+        certificateUrl.value = dataState.data!.userCertificate ?? '';
+        print(
+            "this is ceritificate ${dataState.data!.userCertificate} && ${dataState.data!.sectionList!.length}");
         isLoading.value = false;
       } else {
         isLoading.value = false;

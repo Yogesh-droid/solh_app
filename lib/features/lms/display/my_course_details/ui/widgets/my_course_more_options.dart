@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/controllers/my_course_detail_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -10,6 +12,7 @@ class MyCourseMoreOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MyCourseDetailController myCourseDetailController = Get.find();
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -30,7 +33,16 @@ class MyCourseMoreOptions extends StatelessWidget {
           ),
           OptionsTile(
             icon: Icons.help_outline,
-            onTap: () {},
+            onTap: () {
+              if (myCourseDetailController.certificateUrl.value.isEmpty) {
+                showAlert(context);
+              } else {
+                Navigator.pushNamed(context, AppRoutes.certificatePage,
+                    arguments: {
+                      "imageUrl": myCourseDetailController.certificateUrl.value
+                    });
+              }
+            },
             title: "Course Certificate",
           ),
           OptionsTile(
@@ -52,9 +64,65 @@ class MyCourseMoreOptions extends StatelessWidget {
             onTap: () {},
             title: "Assignment",
           ),
+          OptionsTile(
+            icon: Icons.question_answer_outlined,
+            onTap: () {
+              Navigator.pushNamed(context, AppRoutes.coursesFaqScreen,
+                  arguments: {
+                    'courseId': courseId,
+                  });
+            },
+            title: "FAQ's",
+          ),
         ],
       ),
     );
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Stack(
+            children: [
+              AlertDialog(
+                actionsPadding: const EdgeInsets.all(8.0),
+                content: Text(
+                  'Finish all lectures to access your certificate. Open first incomplete lecture? '
+                      .tr,
+                  style: SolhTextStyles.JournalingDescriptionText,
+                ),
+                actions: [
+                  InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Open Lecture'.tr,
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.primaryRed),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      }),
+                  const SizedBox(width: 30),
+                  InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Cancel'.tr,
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.primary_green),
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).pop(false);
+                      }),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }
 

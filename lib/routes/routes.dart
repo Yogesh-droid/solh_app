@@ -8,7 +8,9 @@ import 'package:solh/features/lms/display/course_listing/ui/screens/course_list_
 import 'package:solh/features/lms/display/course_wishlist/ui/screens/course_product_tab_parent.dart';
 import 'package:solh/features/lms/display/my_course_chat/ui/screens/course_chat_screen.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/screens/add_review_page.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/screens/my_certificate_page.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/screens/my_course_detail_screen.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/widgets/courses_faq_screen.dart';
 import 'package:solh/features/lms/display/my_courses/ui/screens/my_courses_screen.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
@@ -229,6 +231,8 @@ class AppRoutes {
   static const String courseReviewsPage = '/courseReviewsPage';
   static const String addReviewPage = '/addReviewPage';
   static const String courseChatPage = '/courseChatPage';
+  static const String certificatePage = '/certificatePage';
+  static const String coursesFaqScreen = "/coursesFaqScreen";
 
   // products_cart common routes
 
@@ -653,6 +657,18 @@ class RouteGenerator {
             builder: ((context) =>
                 CourseChatScreen(args: args as Map<String, dynamic>)),
             settings: const RouteSettings(name: AppRoutes.courseChatPage));
+
+      case AppRoutes.certificatePage:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                MyCertificatePage(args: args as Map<String, dynamic>)),
+            settings: const RouteSettings(name: AppRoutes.certificatePage));
+
+      case AppRoutes.coursesFaqScreen:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                CoursesFaqScreeen(args: args as Map<String, dynamic>)),
+            settings: const RouteSettings(name: AppRoutes.coursesFaqScreen));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

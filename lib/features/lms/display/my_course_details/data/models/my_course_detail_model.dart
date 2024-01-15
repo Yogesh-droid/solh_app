@@ -2,7 +2,8 @@ import 'package:solh/features/lms/display/course_detail/data/models/course_detai
 import 'package:solh/features/lms/display/my_course_details/domain/entities/my_course_detail_entity.dart';
 
 class MyCourseDetailModel extends MyCourseDetailEntity {
-  MyCourseDetailModel({super.success, super.sectionList});
+  MyCourseDetailModel(
+      {super.success, super.sectionList, super.userCertificate});
 
   factory MyCourseDetailModel.fromJson(Map<String, dynamic> json) {
     return MyCourseDetailModel(
@@ -11,7 +12,8 @@ class MyCourseDetailModel extends MyCourseDetailEntity {
             ? null
             : (json["sectionList"] as List)
                 .map((e) => SectionList.fromJson(e))
-                .toList());
+                .toList(),
+        userCertificate: json['userCertificate']);
   }
 }
 
