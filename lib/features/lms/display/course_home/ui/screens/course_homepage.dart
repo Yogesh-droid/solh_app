@@ -7,7 +7,6 @@ import 'package:solh/features/lms/display/course_home/ui/controllers/course_cat_
 import 'package:solh/features/lms/display/course_home/ui/controllers/feature_course_controller.dart';
 import 'package:solh/features/lms/display/course_home/ui/widgets/category_container.dart';
 import 'package:solh/features/lms/display/course_home/ui/widgets/course_banner.dart';
-import 'package:solh/features/lms/display/course_home/ui/widgets/course_search_bar.dart';
 import 'package:solh/features/lms/display/course_home/ui/widgets/recommended_course_container.dart';
 import 'package:solh/features/lms/display/course_wishlist/ui/controllers/add_remove_course_wishlist_item_controller.dart';
 import 'package:solh/routes/routes.dart';
@@ -44,15 +43,16 @@ class _CourseHomePageState extends State<CourseHomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const Padding(
-                padding: EdgeInsets.all(10), child: CourseSearchBar()),
-            const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: GetHelpDivider()),
+            // const Padding(
+            //     padding: EdgeInsets.all(10), child: CourseSearchBar()),
+            // const Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 10),
+            //     child: GetHelpDivider()),
             const CourseBanner(),
-            const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: GetHelpDivider()),
+            if (Get.find<CourseBannerController>().bannerList.isNotEmpty)
+              const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: GetHelpDivider()),
 
             /// Categories
             GetHelpCategory(title: "Categories"),
