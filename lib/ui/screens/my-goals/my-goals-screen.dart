@@ -370,7 +370,7 @@ class GoalName extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    width: 16,
+                    width: 14,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

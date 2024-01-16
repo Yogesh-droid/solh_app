@@ -10,7 +10,7 @@ import 'package:solh/features/lms/display/my_course_chat/ui/screens/course_chat_
 import 'package:solh/features/lms/display/my_course_details/ui/screens/add_review_page.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/screens/my_certificate_page.dart';
 import 'package:solh/features/lms/display/my_course_details/ui/screens/my_course_detail_screen.dart';
-import 'package:solh/features/lms/display/my_course_details/ui/widgets/courses_faq_screen.dart';
+import 'package:solh/features/lms/display/my_course_details/ui/screens/courses_faq_screen.dart';
 import 'package:solh/features/lms/display/my_courses/ui/screens/my_courses_screen.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';

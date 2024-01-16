@@ -117,4 +117,15 @@ void courseControllerSetup() {
       SendCourseMsgUsecase(sendCourseMsgRepo: Get.find<SendCourseMsgRepo>()));
   Get.put(SendCourseMsgController(
       sendCourseMsgUsecase: Get.find<SendCourseMsgUsecase>()));
+
+
+ // faq course setup
+  Get.put<CourseFaqRepo>(CourseFaqRepoImpl());
+  Get.put(
+      CourseFaqUsecase(courseFaqRepo: Get.find<CourseFaqRepo>()));
+  Get.put(CourseFaqController(
+      courseFaqUsecase: Get.find<CourseFaqUsecase>()));
+
+
+
 }
