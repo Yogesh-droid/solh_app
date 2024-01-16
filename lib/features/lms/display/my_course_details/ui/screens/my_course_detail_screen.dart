@@ -42,7 +42,8 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SolhAppBar(
+        appBar: 
+        SolhAppBar(
             title: SizedBox(
               width: MediaQuery.of(context).size.width / 1.5,
               child: Text(widget.args['name'] ?? "",
@@ -62,7 +63,9 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
                   fit: BoxFit.fill,
                 ),
               )
-            : Column(
+            :
+            
+             Column(
                 children: [
                   Container(
                     height: 250,
@@ -86,49 +89,67 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
                           style: SolhTextStyles.CTA,
                         ))
                       ]),
+
+
+                     Padding(
+                       padding: const EdgeInsets.only(top: 8.0, bottom:2.0, left:8.0,right:8.0),
+                       child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                             children: [
+                               Text("Module 1- ${myCourseDetailController.sectionList.length.toString()}",
+                                          style: SolhTextStyles.CTA,
+                                        ),
+                                       
+                             ],
+                           ),
+                     ),
+
                   Expanded(
                       child: TabBarView(controller: tabController, children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: myCourseDetailController.sectionList
-                          .map((e) => AnimatedSize(
-                              duration: const Duration(milliseconds: 200),
-                              child: selectedPanelId == e.id
-                                  ? ExpandedWidget(
-                                      courseId: "${widget.args['id']}",
-                                      e: e,
-                                      onTapped: (id) {
-                                        setState(() {
-                                          selectedPanelId = '';
-                                        });
-                                      },
-                                      onLectureTapped: (lectures) {
-                                        if (lectures.contentType == 'video') {
-                                          videoPlayerController.dispose();
-                                          videoPlayerController =
-                                              VideoPlayerController.networkUrl(
-                                                  Uri.parse(lectures
-                                                          .contentData!.data ??
-                                                      ''));
-                                          chewieController.dispose();
-                                          initializeChewie(
-                                              videoPlayerController);
-                                          setState(() {});
-                                        } else {
-                                          launchUrl(Uri.parse(
-                                              lectures.contentData!.data!));
-                                        }
-                                      })
-                                  : CollapsedWidget(
-                                      e: e,
-                                      onTapped: (id) {
-                                        setState(() {
-                                          selectedPanelId = id;
-                                        });
-                                      },
-                                      percentage: e.progressStatus ?? 0,
-                                    )))
-                          .toList(),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: myCourseDetailController.sectionList
+                            .map((e) => AnimatedSize(
+                                duration: const Duration(milliseconds: 200),
+                                child: selectedPanelId == e.id
+                                    ? ExpandedWidget(
+                                        courseId: "${widget.args['id']}",
+                                        e: e,
+                                        onTapped: (id) {
+                                          setState(() {
+                                            selectedPanelId = '';
+                                          });
+                                        },
+                                        onLectureTapped: (lectures) {
+                                          if (lectures.contentType == 'video') {
+                                            videoPlayerController.dispose();
+                                            videoPlayerController =
+                                                VideoPlayerController.networkUrl(
+                                                    Uri.parse(lectures
+                                                            .contentData!.data ??
+                                                        ''));
+                                            chewieController.dispose();
+                                            initializeChewie(
+                                                videoPlayerController);
+                                            setState(() {});
+                                          } else {
+                                            launchUrl(Uri.parse(
+                                                lectures.contentData!.data!));
+                                          }
+                                        })
+                                    : CollapsedWidget(
+                                        e: e,
+                                        onTapped: (id) {
+                                          setState(() {
+                                            selectedPanelId = id;
+                                          });
+                                        },
+                                        percentage: e.progressStatus ?? 0,
+                                      )))
+                            .toList(),
+                      ),
                     ),
                     MyCourseMoreOptions(
                       courseId: widget.args['id'],

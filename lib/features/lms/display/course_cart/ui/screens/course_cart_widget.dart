@@ -46,26 +46,29 @@ class _CourseCartWidgetState extends State<CourseCartWidget>
           ? MyLoader()
           : getCourseCartController.cartList.isEmpty
               ? const EmptyCartWidget()
-              : SingleChildScrollView(
-                  child: Column(children: [
-                    // Cart Items
-                    const CourseItemsList(),
-                    const GetHelpDivider(),
-                    const CourseBillingWidget(),
-                    const GetHelpDivider(),
-                    PaymentDetails(
-                        total:
-                            getCourseCartController.totalPrice.value.toDouble(),
-                        discount: getCourseCartController.totalPrice.value
-                                .toDouble() -
-                            getCourseCartController.grandTotal.value.toDouble(),
-                        currencySymbol:
-                            getCourseCartController.cartList[0].currency ?? '',
-                        horizontalPadding: 8),
-                    const GetHelpDivider(),
-                    const PaymentOptionsTile(horizontalPadding: 8)
-                  ]),
-                )),
+              : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                    child: Column(children: [
+                      // Cart Items
+                      const CourseItemsList(),
+                      const GetHelpDivider(),
+                      const CourseBillingWidget(),
+                      const GetHelpDivider(),
+                      PaymentDetails(
+                          total:
+                              getCourseCartController.totalPrice.value.toDouble(),
+                          discount: getCourseCartController.totalPrice.value
+                                  .toDouble() -
+                              getCourseCartController.grandTotal.value.toDouble(),
+                          currencySymbol:
+                              getCourseCartController.cartList[0].currency ?? '',
+                          horizontalPadding: 8),
+                      const GetHelpDivider(),
+                      const PaymentOptionsTile(horizontalPadding: 8)
+                    ]),
+                  ),
+              )),
     );
   }
 

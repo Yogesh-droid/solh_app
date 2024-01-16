@@ -167,13 +167,14 @@ class CollapsedWidget extends StatelessWidget {
       child: Stack(
         alignment: AlignmentDirectional.center,
         children: [
+          // For showing percentage in color
           Row(
             children: [
               Expanded(
                 flex: percentage,
                 child: Container(
                   color: SolhColors.greenShade3,
-                  width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   height: 50,
                 ),
@@ -182,13 +183,14 @@ class CollapsedWidget extends StatelessWidget {
                 flex: 100 - percentage,
                 child: Container(
                   color: SolhColors.white,
-                  width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   height: 50,
                 ),
               ),
             ],
           ),
+          // Actual UI
           Container(
             width: MediaQuery.of(context).size.width,
             margin: const EdgeInsets.symmetric(vertical: 10),
