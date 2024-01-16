@@ -173,7 +173,7 @@ class CollapsedWidget extends StatelessWidget {
                 flex: percentage,
                 child: Container(
                   color: SolhColors.greenShade3,
-                  width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   height: 50,
                 ),
@@ -182,7 +182,7 @@ class CollapsedWidget extends StatelessWidget {
                 flex: 100 - percentage,
                 child: Container(
                   color: SolhColors.white,
-                  width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   height: 50,
                 ),
