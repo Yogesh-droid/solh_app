@@ -86,6 +86,18 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
                           style: SolhTextStyles.CTA,
                         ))
                       ]),
+                  Padding(
+                    padding: const EdgeInsets.only(left:8.0, right: 8.0, top:6.0, bottom:2.0),
+                   child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Modules 1 - ${myCourseDetailController.sectionList.length}",
+                          style: SolhTextStyles.CTA,
+                        ),
+                      ],
+                    ),
+                  ),
                   Expanded(
                       child: TabBarView(controller: tabController, children: [
                     SingleChildScrollView(
