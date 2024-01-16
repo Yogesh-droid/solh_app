@@ -82,12 +82,12 @@ class _CourseHomePageState extends State<CourseHomePage> {
             const Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: GetHelpDivider()),
+            if (featuredCourseController.featuredCourseList.isNotEmpty)
 
-            /// Recommended Courses
-            GetHelpCategory(
-              title: "Recommended For You",
-              onPressed: () {},
-            ),
+              /// Recommended Courses
+              GetHelpCategory(
+                title: "Featured Courses",
+              ),
             SizedBox(
               height: 250,
               child: Obx(() => ListView.separated(
