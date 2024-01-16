@@ -106,49 +106,51 @@ class _MyCourseDetailScreenState extends State<MyCourseDetailScreen>
 
                   Expanded(
                       child: TabBarView(controller: tabController, children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: myCourseDetailController.sectionList
-                            .map((e) => AnimatedSize(
-                                duration: const Duration(milliseconds: 200),
-                                child: selectedPanelId == e.id
-                                    ? ExpandedWidget(
-                                        courseId: "${widget.args['id']}",
-                                        e: e,
-                                        onTapped: (id) {
-                                          setState(() {
-                                            selectedPanelId = '';
-                                          });
-                                        },
-                                        onLectureTapped: (lectures) {
-                                          if (lectures.contentType == 'video') {
-                                            videoPlayerController.dispose();
-                                            videoPlayerController =
-                                                VideoPlayerController.networkUrl(
-                                                    Uri.parse(lectures
-                                                            .contentData!.data ??
-                                                        ''));
-                                            chewieController.dispose();
-                                            initializeChewie(
-                                                videoPlayerController);
-                                            setState(() {});
-                                          } else {
-                                            launchUrl(Uri.parse(
-                                                lectures.contentData!.data!));
-                                          }
-                                        })
-                                    : CollapsedWidget(
-                                        e: e,
-                                        onTapped: (id) {
-                                          setState(() {
-                                            selectedPanelId = id;
-                                          });
-                                        },
-                                        percentage: e.progressStatus ?? 0,
-                                      )))
-                            .toList(),
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: myCourseDetailController.sectionList
+                              .map((e) => AnimatedSize(
+                                  duration: const Duration(milliseconds: 200),
+                                  child: selectedPanelId == e.id
+                                      ? ExpandedWidget(
+                                          courseId: "${widget.args['id']}",
+                                          e: e,
+                                          onTapped: (id) {
+                                            setState(() {
+                                              selectedPanelId = '';
+                                            });
+                                          },
+                                          onLectureTapped: (lectures) {
+                                            if (lectures.contentType == 'video') {
+                                              videoPlayerController.dispose();
+                                              videoPlayerController =
+                                                  VideoPlayerController.networkUrl(
+                                                      Uri.parse(lectures
+                                                              .contentData!.data ??
+                                                          ''));
+                                              chewieController.dispose();
+                                              initializeChewie(
+                                                  videoPlayerController);
+                                              setState(() {});
+                                            } else {
+                                              launchUrl(Uri.parse(
+                                                  lectures.contentData!.data!));
+                                            }
+                                          })
+                                      : CollapsedWidget(
+                                          e: e,
+                                          onTapped: (id) {
+                                            setState(() {
+                                              selectedPanelId = id;
+                                            });
+                                          },
+                                          percentage: e.progressStatus ?? 0,
+                                        )))
+                              .toList(),
+                        ),
                       ),
                     ),
                     MyCourseMoreOptions(
