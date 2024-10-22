@@ -43,7 +43,7 @@ class TimeSlotBox extends StatelessWidget {
         child: Container(
           height: 32,
           width: 95,
-          padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+          padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12),
           decoration: BoxDecoration(
               color: bookAppointmentController.bookedTimeSlots.value
                       .contains(element)
